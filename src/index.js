@@ -6,11 +6,13 @@ import App from './App';
 import { Auth0Provider } from '@auth0/auth0-react';
 
 ReactDOM.render(
-    <Auth0Provider
-        domain='dev-anaecjke.us.auth0.com'
-        clientId='lXUgspXEEVjxMmlO3rNyTjskiY0hnYPg'
-        redirectUri={window.location.origin}>
-        <App />
-    </Auth0Provider>, 
+    <div className='App'>
+        <Auth0Provider
+            domain='dev-anaecjke.us.auth0.com'
+            clientId='lXUgspXEEVjxMmlO3rNyTjskiY0hnYPg'
+            redirectUri={ window.location.origin }>
+            <App />
+        </Auth0Provider>
+    </div>, 
     document.getElementById('root')
 );

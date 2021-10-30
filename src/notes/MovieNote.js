@@ -1,26 +1,20 @@
 import React, { useState } from 'react'
 import { Form, Input, TextArea } from 'semantic-ui-react'
+import { api } from '../serverCalls/movieCalls'
 
 function MovieNote() {
 
     const [ note, setNote ] = useState(false)
-    const [ count, setCount ] = useState(0)
     const [ movies, setMovies ] = useState([])
-    const [ data, setData ] = useState({ movie: '', minute: 0, type: '', note: '' })
-    
-    var mNotes = async () => {
-        const newData = await fetch('/apiNotes', { method: 'GET' }).then(res => res.json())
-        await setCount(newData.length)
-    }
-    mNotes()
-
-    const api = async () => await fetch('/api', { method: 'GET' }).then(res => res.json())
+    const [ data, setData ] = useState({ title: '', note_minute: 0, note_type: '', note_body: '' })
 
     const getMovies = async () => {
-        var newData = await api()
-        newData.map(m => {
-            return setMovies(prev => [ ...prev, { key: m.id, text: m.title, value: m.id } ])
-        })
+        if (!movies[0]) {
+            var newData = await api()
+            newData.map(m => {
+                return setMovies(prev => [ ...prev, { key: m.id, text: m.title, value: m.id } ])
+            })
+        }
     }
 
     const optionsNote = [
@@ -41,7 +35,7 @@ function MovieNote() {
         const { innerText } = e.target
         setData(prev => ({
             ...prev,
-            type: innerText
+            note_type: innerText
         }))
     }
 
@@ -49,12 +43,12 @@ function MovieNote() {
         const { innerText } = e.target
         setData(prev => ({
             ...prev,
-            movie: innerText
+            title: innerText
         }))
     }
 
     var addMovNote = async () => {
-        const newMovieNote = await fetch('/addMovNote', {
+        await fetch('/addMovNote', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({
@@ -62,7 +56,6 @@ function MovieNote() {
             })
         })
         .then(res => res.json())
-        setData(newMovieNote[0])
     }
 
     function mNote() {
@@ -72,7 +65,7 @@ function MovieNote() {
                     <Form.Select
                         label='Movie'
                         options={ movies }
-                        name='movie'
+                        name='title'
                         placeholder='Movie'
                         onChange={ getMovie }
                     />
@@ -81,14 +74,14 @@ function MovieNote() {
                         type='number'
                         min={ 1 }
                         label='Minute'
-                        name='minute'
+                        name='note_minute'
                         placeholder='#'
                         onChange={ handleChange }
                     />
                     <Form.Select
                         label='Type of Note'
                         options={ optionsNote }
-                        name='type'
+                        name='note_type'
                         placeholder='Note'
                         onChange={ getType }
                     />
@@ -96,12 +89,23 @@ function MovieNote() {
                 <Form.Field
                     control={ TextArea }
                     label='Your Note'
-                    name='note'
+                    name='note_body'
                     width={ 6 }
                     onChange={ handleChange }
                 />
-                <button onClick={ addMovNote } className="ui inverted violet button">Submit</button>
-                <button onClick={ () => setNote(false) } className="ui inverted red button">Cancel</button>
+                <button 
+                    className="ui inverted violet button"
+                    onClick={ () => {
+                        addMovNote()
+                        console.log('Note saved to database...');
+                        setData({ title: '', note_minute: 0, note_type: '', note_body: '' })
+                    }}>Submit</button>
+                <button
+                    className="ui inverted red button" 
+                    onClick={ () => {
+                        setNote(false)
+                        setData({ title: '', note_minute: 0, note_type: '', note_body: '' })
+                    }}>Cancel</button>
             </Form>
         )
     }
@@ -109,16 +113,12 @@ function MovieNote() {
     return (
         <div>
             <button 
-                className="ui olive fade animated button"
+                className="ui olive button"
                 onClick={ () => {
-                        setNote(!note)
-                        getMovies()
-                    }
-                }
-            >
-                <div className="visible content">Movie Note</div>
-                <div className="hidden content">{ count }</div>
-            </button>
+                    setNote(!note)
+                    getMovies()
+                }}
+            >Add Note</button>
             { note && mNote() }
         </div>
     )

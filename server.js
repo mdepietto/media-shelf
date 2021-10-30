@@ -26,6 +26,16 @@ const getMovieNotes = async () => {
     }
 }
 
+const getMovieNotesByTitle = async (title) => {
+    try {
+        const connectDB = await sql.connect(db)
+        const query = connectDB.request().query(`SELECT * FROM Movie_Notes WHERE title = '${ title.title }'`)
+        return query
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 const addMovie = async (movie) => {
     try {
         const connectDB = await sql.connect(db)
@@ -41,8 +51,10 @@ const addMovie = async (movie) => {
 const addMovieNote = async (movie) => {
     try {
         const connectDB = await sql.connect(db)
-        const query = connectDB.request().query(`INSERT INTO Movie_Notes VALUES 
-            ('${ movie.movie }', ${ movie.minute }, '${ movie.type }', '${ movie.note }', GETDATE())
+        const query = connectDB.request().query(`
+            INSERT INTO Movie_Notes VALUES (
+                '${ movie.title }', ${ movie.note_minute }, '${ movie.note_type }', '${ movie.note_body }', GETDATE()
+            )
         `)
         return query
     } catch (err) {
@@ -60,6 +72,11 @@ app.get('/apiNotes', async (req, res) => {
     res.send(data.recordset)
 })
 
+app.post('/apiNotesByTitle', async (req, res) => {
+    const data = await getMovieNotesByTitle(req.body)
+    res.send(data.recordset)
+})
+
 app.post('/addMov', async (req, res) => {
     await addMovie(req.body)
     const data = await getData()
@@ -68,6 +85,7 @@ app.post('/addMov', async (req, res) => {
 
 app.post('/addMovNote', async (req, res) => {
     await addMovieNote(req.body)
+    console.log('Note saved to database...');
     const data = await getData()
     res.send(data.recordset)
 })

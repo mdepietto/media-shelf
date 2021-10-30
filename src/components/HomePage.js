@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 
+import MovieShelf from '../shelves/MovieShelf'
+import MovieNoteShelf from '../shelves/MovieNoteShelf'
+
 // import BookNote from '../notes/BookNote'
 // import ShowNote from '../notes/ShowNote'
 import MovieNote from '../notes/MovieNote'
@@ -41,7 +44,10 @@ function HomePage() {
 
             <div id='movieShelf'>
                 <button className="ui primary button huge" onClick={() => setMovieShelf(!movieShelf)}>Movie Shelf</button>
+                { movieShelf && <MovieShelf /> }
                 { movieShelf && <MovieForm /> }
+                <br />
+                { movieShelf && <MovieNoteShelf /> }
                 { movieShelf && <MovieNote /> }
             </div>
         </div>
