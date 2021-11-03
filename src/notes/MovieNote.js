@@ -47,6 +47,11 @@ function MovieNote() {
         }))
     }
 
+    const sqlApostrophe = () => {
+        var newBody = data.note_body.replace(/'/g, "''")
+        data.note_body = newBody
+    }
+
     var addMovNote = async () => {
         await fetch('/addMovNote', {
             method: 'POST',
@@ -96,8 +101,8 @@ function MovieNote() {
                 <button 
                     className="ui inverted violet button"
                     onClick={ () => {
+                        sqlApostrophe()
                         addMovNote()
-                        console.log('Note saved to database...');
                         setData({ title: '', note_minute: 0, note_type: '', note_body: '' })
                     }}>Submit</button>
                 <button
