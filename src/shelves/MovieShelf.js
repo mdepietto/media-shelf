@@ -5,6 +5,7 @@ const MovieShelf = () => {
     const [ mov, setMov ] = useState([])
     const [ shelf, setShelf ] = useState(false)
     const [ count, setCount ] = useState(0)
+    var toBeDeleted = ''
     
     var getShelf = async () => {
         if (!mov[0]) {
@@ -18,16 +19,39 @@ const MovieShelf = () => {
     }
     getShelf()
 
+    const deleteMovie = async () => {
+        await fetch('/deleteMovie', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ toBeDeleted })
+        })
+        .then(res => res.json())
+    }
+
+    const confirmation = (func) => {
+        if (window.confirm('Are you sure?')) {
+            return func()
+        }
+    }
+
     // creates component for each parameter of movie
     const mShelf = () => {
         return (
             mov.map(movie => {
                 return (
-                    <div key={ movie.id }>
-                        <h3>{ movie.id }: { movie.title }</h3>
+                    <div className='shelf' key={ movie.id }>
+                        <h3>{ mov.indexOf(movie) + 1 }: { movie.title }</h3>
                         <p>Director: { movie.director }</p>
                         <p>Minutes: { movie.minutes }</p>
                         <p>Rating: { movie.rating }</p>
+                        <button
+                            className='ui red button tiny'
+                            onClick={ () => {
+                                toBeDeleted = movie.title
+                                confirmation(deleteMovie)
+                                setShelf(!shelf)
+                            }}>
+                        Delete</button>
                     </div>
                 )
             })

@@ -8,6 +8,7 @@ const MovieNoteShelf = () => {
     const [ movies, setMovies ] = useState([])
     const [ selected, setSelected ] = useState({ title: '' })
     const [ shelf, setShelf ] = useState(false)
+    var toBeDeleted = ''
     
     var getShelf = async () => {
         const newData = await apiNotes()
@@ -31,22 +32,34 @@ const MovieNoteShelf = () => {
         }
     }
 
+    const getMovieNotesByTitle = async () => {
+        const newData = await fetch('/apiNotesByTitle', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ ...selected })
+        })
+        .then(res => res.json())
+        setNotes(newData)
+    }
+    
     const selectedMovie = async (e) => {
         const { innerText } = await e.target
         setSelected({ title: innerText })
     }
 
-    const getMovieNotesByTitle = async () => {
-        const newData = await fetch('/apiNotesByTitle', {
+    const deleteMovieNote = async () => {
+        await fetch('/deleteMovieNote', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({
-                ...selected
-            })
+            body: JSON.stringify({ toBeDeleted })
         })
         .then(res => res.json())
-        await setNotes([])
-        await setNotes(newData)
+    }
+
+    const confirmation = (func) => {
+        if (window.confirm('Are you sure?')) {
+            return func()
+        }
     }
 
     const selectMovie = () => {
@@ -70,10 +83,16 @@ const MovieNoteShelf = () => {
         return (
             notes.map(note => {
                 return (
-                    <div key={ note.id }>
+                    <div className='shelf' key={ note.id }>
                         <p>Created on: { note.note_date }</p>
                         <p>{ note.note_type } for '{ note.title }' at { note.note_minute } minutes</p>
                         <p>'{ note.note_body }'</p>
+                        <button
+                            className='ui red button tiny'
+                            onClick={ () => {
+                                toBeDeleted = note.id
+                                confirmation(deleteMovieNote)
+                        }}>Delete</button>
                     </div>
                 )
             })
