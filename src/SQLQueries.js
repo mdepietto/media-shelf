@@ -24,7 +24,7 @@ exports.getMovieNotes = async () => {
 exports.getMovieNotesByTitle = async (title) => {
     try {
         const connectDB = await sql.connect(db)
-        const query = connectDB.request().query(`SELECT * FROM Movie_Notes WHERE title = '${ title.title }'`)
+        const query = connectDB.request().query(`SELECT * FROM Movie_Notes WHERE title = '${ title.innerText }'`)
         return query
     } catch (err) {
         console.log(err);
@@ -57,11 +57,11 @@ exports.addMovieNote = async (movie) => {
     }
 }
 
-exports.deleteMovie = async (title) => {
+exports.deleteMovie = async (id) => {
     try {
         const connectDB = await sql.connect(db)
         const query = connectDB.request().query(`
-            DELETE FROM Movies WHERE title = '${ title[0] }'
+            DELETE FROM Movies WHERE id = '${ id[0] }'
         `)
         return query
     } catch (err) {

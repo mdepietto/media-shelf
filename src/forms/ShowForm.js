@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import RatingExampleHeart from '../components/Rating'
 import { Form, Input } from 'semantic-ui-react'
 
 
@@ -39,7 +38,6 @@ function ShowForm() {
                     accept="image/x-png,image/gif,image/jpeg/" id='cover-photo'
                     width={3}
                 />
-                <RatingExampleHeart />
                 <br /><br />
                 <button className="ui inverted violet button" onClick={() => setCount(last => last + 1)}>Submit</button>
                 <button onClick={() => setForm(false)} className="ui inverted red button">Cancel</button>

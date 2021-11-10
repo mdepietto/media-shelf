@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import { Rating } from 'semantic-ui-react'
-import { Form, Input } from 'semantic-ui-react'
+import { Form, Input, Rating } from 'semantic-ui-react'
 
 function MovieForm() {
 
-    const [ form, setForm ] = useState(false)
     const [ data, setData ] = useState({ title: '', director: '', minutes: 0, rating: 0 })
 
     const handleChange = (e) => {
@@ -21,6 +19,13 @@ function MovieForm() {
             ...prev,
             rating: ariaPosInSet
         }))
+    }
+
+    const sqlApostrophe = () => {
+        var newTitle = data.title.replace(/'/g, "''")
+        var newDirector = data.director.replace(/'/g, "''")
+        data.title = newTitle
+        data.director = newDirector
     }
 
     var addMov = async () => {
@@ -60,54 +65,43 @@ function MovieForm() {
         )
     }
 
-    function mForm() {
         return (
-            <Form>
-                <Form.Group width='equal'>
-                    { testForm('title', 'Title', 'Title', 'text') }
-                    { testForm('director', 'Director', 'Director', 'text') }
-                    { testForm('minutes', 'Minutes', '#', 'number') }
-                </Form.Group>
-                <Rating 
-                    icon='heart' 
-                    size='huge' 
-                    name='rating'
-                    defaultRating={ 1 } 
-                    maxRating={ 5 } 
-                    clearable
-                    onRate={ getRating }
-                />
-                <br /><br />
-                <button
-                    className="ui inverted violet button"
-                    onClick={ () => {
-                        addMov()
-                        setData({ title: '', director: '', minutes: 0, rating: 0 })
-                        setForm(false)
-                    }}
-                    >Submit</button>
-                <button
-                    className="ui inverted red button" 
-                    onClick={ () => {
-                        setForm(false)
-                        setData({ title: '', director: '', minutes: 0, rating: 0 })
-                    }}
-                    >Cancel
-                </button>
-            </Form>
+            <div>
+                <Form className='movieForm'>
+                    <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column' }}>
+                        { testForm('title', 'Title', 'Title', 'text') }
+                        { testForm('director', 'Director', 'Director', 'text') }
+                        { testForm('minutes', 'Minutes', '#', 'number') }
+                    </Form.Group>
+                    <Rating 
+                        icon='heart' 
+                        size='huge' 
+                        name='rating'
+                        defaultRating={ 1 } 
+                        maxRating={ 5 } 
+                        clearable
+                        onRate={ getRating }
+                    />
+                    <br /><br />
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <button
+                            className="ui inverted violet button"
+                            style={{ marginBottom: '15px' }}
+                            onClick={ async () => {
+                                sqlApostrophe()
+                                await addMov()
+                                setData({ title: '', director: '', minutes: 0, rating: 0 })
+                                window.location.reload()
+                            }}
+                        >Submit</button>
+                        <button
+                            className='ui inverted red button'
+                            onClick={ () => window.location.reload() }
+                        >Cancel</button>
+                    </div>
+                </Form>
+            </div>
         )
-    }
-
-    return (
-        <div>
-            <button
-                className="ui olive button"
-                onClick={ () => setForm(!form) }
-                >Add Movie
-            </button>
-            { form && mForm() }
-        </div>
-    )
 }
 
 export default MovieForm
