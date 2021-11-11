@@ -47,6 +47,25 @@ app.post('/deleteMovieNote', async (req, res) => {
     res.send(data.recordset)
 })
 
+app.get('/apiBooks', async (req, res) => {
+    const data = await query.getBooks()
+    res.send(data.recordset)
+})
+
+app.post('/addBook', async (req, res) => {
+    await query.addBook(req.body)
+    console.log('Book added...');
+    const data = await query.getBooks()
+    res.send(data.recordset)
+})
+
+app.post('/deleteBook', async (req, res) => {
+    await query.deleteBook(Object.values(req.body))
+    console.log('Book deleted...');
+    const data = await query.getBooks()
+    res.send(data.recordset)
+})
+
 app.listen(PORT, () => {
     console.log(`Listening on port ${ PORT }`)
 })

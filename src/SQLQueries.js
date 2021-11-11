@@ -80,3 +80,37 @@ exports.deleteMovieNote = async (id) => {
         console.log(err);
     }
 }
+
+exports.getBooks = async () => {
+    try {
+        const connectDB = await sql.connect(db)
+        const query = connectDB.request().query('SELECT * FROM Books')
+        return query
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+exports.addBook = async (book) => {
+    try {
+        const connectDB = await sql.connect(db)
+        const query = connectDB.request().query(`INSERT INTO Books VALUES 
+            ('${ book.title }', '${ book.author }', ${ book.pages }, ${ book.rating })
+        `)
+        return query
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+exports.deleteBook = async (id) => {
+    try {
+        const connectDB = await sql.connect(db)
+        const query = connectDB.request().query(`
+            DELETE FROM Books WHERE id = '${ id[0] }'
+        `)
+        return query
+    } catch (err) {
+        console.log(err);
+    }
+}

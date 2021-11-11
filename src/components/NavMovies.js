@@ -6,7 +6,7 @@ import MovieNoteShelf from '../shelves/MovieNoteShelf'
 import MovieNote from '../notes/MovieNote'
 import { api, apiNotes } from '../serverCalls/movieCalls'
 
-const Nav = () => {
+const NavMovies = () => {
 
     const [ shelf, setShelf ] = useState(false)
     const [ count, setCount ] = useState(0)
@@ -22,36 +22,37 @@ const Nav = () => {
 
     const [ noteForm, setNoteForm ] = useState(false)
 
-    var getShelf = async () => {
+    const getCount = async () => {
         const newData = await api()
+        setCount(newData.length)
         const newDataNotes = await apiNotes()
+        setNoteCount(newDataNotes.length)
+    }
+    getCount()
+
+    const getShelf = async () => {
+        const newData = await api()
         if (!lib[0]) {
             newData.map(m => {
                 return setLib(prev => [ ...prev, m ])
             })
         }
-        setCount(newData.length)
-        setNoteCount(newDataNotes.length)
     }
-    getShelf()
 
     const getMovies = async () => {
         if (!movies[0]) {
-            var newData = await api()
+            const newData = await api()
             newData.map(m => {
                 return setMovies(prev => [ ...prev, { key: m.id, text: m.title, value: m.id } ])
             })
         }
     }
-    getMovies()
 
     const getMovieNotesByAll = async () => {
         const newData = await apiNotes()
-        // if (!notes[0]) {
-            newData.map(m => {
-                return setNotes(prev => [ ...prev, m ])
-            })
-        // }
+        newData.map(m => {
+            return setNotes(prev => [ ...prev, m ])
+        })
     }
 
     const getMovieNotesByTitle = async (e) => {
@@ -81,8 +82,12 @@ const Nav = () => {
                     <Button
                         color='blue' 
                         style={{ height: '38px', marginLeft: '5px' }}
-                        onClick={ getMovieNotesByAll }
-                        >All</Button>
+                        onClick={ () => {
+                            setNotes([])
+                            getMovieNotesByAll()
+                        }}
+                        >All
+                    </Button>
                 </Form>
                 <h3 style={{ margin: '0' }}>Showing notes for:</h3><br />
                 <h3 style={{ margin: '0' }}>{ notesFor }</h3>
@@ -100,8 +105,9 @@ const Nav = () => {
                         setForm(false)
                         setNoteShelf(false)
                         setNoteForm(false)
+                        getShelf()
                     }}>
-                    <div className='visible content'>Open Movies</div>
+                    <div className='visible content'>Movies</div>
                     <div className='hidden content'>{ count }</div>
                 </button>
                 <Button
@@ -115,34 +121,36 @@ const Nav = () => {
                     }}>
                     <Icon name='plus' />
                 </Button>
-                <button
+                <br />
+                    <button
                     className="ui olive fade animated button"
                     onClick={ () => {
-                        // getMovieNotesByAll()
                         setNoteShelf(!noteShelf)
                         setNoteForm(false)
                         setForm(false)
                         setShelf(false)
+                        getMovies()
+                        getMovieNotesByAll()
                     }}>
-                    <div className='visible content'>Open Notes</div>
+                    <div className='visible content'>Movie Notes</div>
                     <div className='hidden content'>{ noteCount }</div>
                 </button>
                 <Button 
                     icon
                     color='olive'
                     onClick={ () => {
-                        getMovies()
                         setNoteForm(!noteForm)
                         setForm(false)
                         setShelf(false)
                         setNoteShelf(false)
+                        getMovies()
                     }}>
                     <Icon name='plus' />
                 </Button>
             </div>
             <div className='body'>
-                { form && <MovieForm /> }
                 { shelf && <MovieShelf lib={ lib } /> }
+                { form && <MovieForm /> }
                 { noteShelf && <SelectMovie /> }
                 { noteShelf && <MovieNoteShelf notes={ notes } /> }
                 { noteForm && <MovieNote movies={ movies } /> }
@@ -151,4 +159,4 @@ const Nav = () => {
     )
 }
 
-export default Nav
+export default NavMovies
