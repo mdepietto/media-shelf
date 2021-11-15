@@ -38,6 +38,8 @@ function MovieNote(props) {
     const sqlApostrophe = () => {
         var newBody = data.note_body.replace(/'/g, "''")
         data.note_body = newBody
+        var newTitle = data.title.replace(/'/g, "''")
+        data.title = newTitle
     }
 
     var addMovNote = async () => {

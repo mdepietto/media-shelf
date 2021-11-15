@@ -1,11 +1,11 @@
 import React from 'react'
 
-const BookShelf = (props) => {
+const ShowShelf = (props) => {
 
     var toBeDeleted = 0
 
-    const deleteBook = async () => {
-        await fetch('/deleteBook', {
+    const deleteShow = async () => {
+        await fetch('/deleteShow', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ toBeDeleted })
@@ -22,19 +22,18 @@ const BookShelf = (props) => {
     return (
         <div>
             <div>
-            <h1>Your Book Library</h1>
-                { props.bookLib.map(book => {
+            <h1>Your Show Library</h1>
+                { props.showLib.map(show => {
                     return (
-                        <div className='shelf' key={ book.id }>
-                            <h3>{ props.bookLib.indexOf(book) + 1 }: { book.title }</h3>
-                            <p>Author: { book.author }</p>
-                            <p>Pages: { book.pages }</p>
-                            <p>Rating: { book.rating }</p>
+                        <div className='shelf' key={ show.id }>
+                            <h3>{ props.showLib.indexOf(show) + 1 }: { show.title }</h3>
+                            <p>Author: { show.seasons }</p>
+                            <p>Rating: { show.rating }</p>
                             <button
                                 className='ui red button tiny'
                                 onClick={ () => {
-                                    toBeDeleted = book.id
-                                    confirmation(deleteBook)
+                                    toBeDeleted = show.id
+                                    confirmation(deleteShow)
                                     window.location.reload()
                                 }}>
                             Delete</button>
@@ -46,4 +45,4 @@ const BookShelf = (props) => {
     )
 }
 
-export default BookShelf
+export default ShowShelf

@@ -1,15 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-import NavMovies from './NavMovies'
-import NavBooks from './NavBooks'
+import MainPage from './MainPage'
 
 // import LoginButton from './LoginButton'
 // import LogoutButton from './LogoutButton'
 // import Profile from './Profile'
 
 function HomePage() {
-
-    const [ form, setForm ] = useState(false)
 
     return (
         <div id='homePage'>
@@ -18,8 +15,7 @@ function HomePage() {
                 <LogoutButton />
                 <Profile />
             </div> */}
-            <NavMovies />
-            <NavBooks />
+            <MainPage />
         </div>
     )
     

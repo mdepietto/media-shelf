@@ -1,57 +1,102 @@
 import React, { useState } from 'react'
-import { Form, Input } from 'semantic-ui-react'
-
+import { Form, Input, Rating } from 'semantic-ui-react'
 
 function ShowForm() {
+    
+    const [ data, setData ] = useState({ title: '', seasons: 0, rating: 0 })
+    
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setData(prev => ({
+            ...prev,
+            [ name ]: value
+        }))
+    }
 
-    const [ form, setForm ] = useState(false)
-    const [ count, setCount ] = useState(0)
+    const getRating = (e) => {
+        const { ariaPosInSet } = e.target
+        setData(prev => ({
+            ...prev,
+            rating: ariaPosInSet
+        }))
+    }
 
-    function sForm() {
-        return (
-            <Form>
-                <Form.Group width='equal'>
-                    <Form.Field
-                        control={Input}
-                        type='text'
-                        label='Title'
-                        placeholder='Title'
-                    />
-                    <Form.Field
-                        control={Input}
-                        type='text'
-                        label='Director'
-                        placeholder='Director'
-                    />
-                    <Form.Field
-                        control={Input}
-                        type='number'
-                        min={1}
-                        label='Seasons'
-                        placeholder='#'
-                    />
-                </Form.Group>
+    const sqlApostrophe = () => {
+        var newTitle = data.title.replace(/'/g, "''")
+        data.title = newTitle
+    }
+
+    var addShow = async () => {
+        await fetch('/addShow', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+                ...data
+            })
+        })
+        .then(res => res.json())
+    }
+
+    const testForm = (name, label, placeholder, type) => {
+        if (type === 'number') {
+            return (
                 <Form.Field
-                    control={Input}
-                    type='file'
-                    label='Cover Photo'
-                    accept="image/x-png,image/gif,image/jpeg/" id='cover-photo'
-                    width={3}
+                    control={ Input }
+                    type={ type }
+                    min={ 1 }
+                    label={ label }
+                    name={ name }
+                    placeholder={ placeholder }
+                    onChange={ handleChange }
                 />
-                <br /><br />
-                <button className="ui inverted violet button" onClick={() => setCount(last => last + 1)}>Submit</button>
-                <button onClick={() => setForm(false)} className="ui inverted red button">Cancel</button>
-            </Form>
+            )
+        }
+        return (
+            <Form.Field
+                control={ Input }
+                type={ type }
+                label={ label }
+                name={ name }
+                placeholder={ placeholder }
+                onChange={ handleChange }
+            />
         )
     }
 
     return (
         <div>
-            <button className="ui olive fade animated button" onClick={() => setForm(!form)}>
-                <div className="visible content">Add Show</div>
-                <div className="hidden content">{count}</div>
-            </button>
-                { form && sForm() }
+            <Form className='movieForm'>
+                <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column' }}>
+                    { testForm('title', 'Title', 'Title', 'text') }
+                    { testForm('seasons', 'Seasons', '#', 'number') }
+                </Form.Group>
+                <Rating 
+                    icon='heart' 
+                    size='huge' 
+                    name='rating'
+                    defaultRating={ 1 } 
+                    maxRating={ 5 } 
+                    clearable
+                    onRate={ getRating }
+                />
+                <br /><br />
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <button
+                        className="ui inverted violet button"
+                        style={{ marginBottom: '15px' }}
+                        onClick={ async () => {
+                            sqlApostrophe()
+                            await addShow()
+                            setData({ title: '', seasons: 0, rating: 0 })
+                            window.location.reload()
+                        }}
+                    >Submit</button>
+                    <button
+                        className='ui inverted red button'
+                        onClick={ () => window.location.reload() }
+                    >Cancel</button>
+                </div>
+            </Form>
         </div>
     )
 }
