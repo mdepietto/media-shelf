@@ -28,7 +28,7 @@ const MovieNoteShelf = (props) => {
                     <p>{ note.note_type } for '{ note.title }' at { note.note_minute } minutes</p>
                     <p>'{ note.note_body }'</p>
                     <button
-                        className='ui red button tiny'
+                        className='ui red inverted button tiny'
                         onClick={ () => {
                             toBeDeleted = note.id
                             confirmation(deleteMovieNote)

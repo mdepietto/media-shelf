@@ -28,7 +28,7 @@ const ShowNoteShelf = (props) => {
                     <p>{ note.note_type } for '{ note.title }' for episode { note.note_episode } season { note.note_season }</p>
                     <p>'{ note.note_body }'</p>
                     <button
-                        className='ui red button tiny'
+                        className='ui red inverted button tiny'
                         onClick={ () => {
                             toBeDeleted = note.id
                             confirmation(deleteShowNote)

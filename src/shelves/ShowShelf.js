@@ -22,15 +22,14 @@ const ShowShelf = (props) => {
     return (
         <div>
             <div>
-            <h1>Your Show Library</h1>
                 { props.showLib.map(show => {
                     return (
                         <div className='shelf' key={ show.id }>
-                            <h3>{ props.showLib.indexOf(show) + 1 }: { show.title }</h3>
+                            <h3>{ props.showLib.indexOf(show) + 1 }:   { show.title }</h3>
                             <p>Author: { show.seasons }</p>
                             <p>Rating: { show.rating }</p>
                             <button
-                                className='ui red button tiny'
+                                className='ui red inverted button tiny'
                                 onClick={ () => {
                                     toBeDeleted = show.id
                                     confirmation(deleteShow)

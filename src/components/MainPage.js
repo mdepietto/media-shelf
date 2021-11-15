@@ -199,7 +199,7 @@ const NavMovies = () => {
                         />
                     </Form.Group>
                     <Button
-                        color='blue' 
+                        color='inverted blue' 
                         style={{ height: '38px', marginLeft: '5px' }}
                         onClick={ () => {
                             setNotes([])
@@ -208,7 +208,7 @@ const NavMovies = () => {
                         >All
                     </Button>
                 </Form>
-                <h3 style={{ margin: '0' }}>Showing notes for:</h3><br />
+                <h3 style={{ margin: '0' }}>Showing movie notes for:</h3><br />
                 <h3 style={{ margin: '0' }}>{ notesFor }</h3>
             </div>
         )
@@ -227,7 +227,7 @@ const NavMovies = () => {
                         />
                     </Form.Group>
                     <Button
-                        color='blue' 
+                        color='inverted blue' 
                         style={{ height: '38px', marginLeft: '5px' }}
                         onClick={ () => {
                             setBookNotes([])
@@ -236,7 +236,7 @@ const NavMovies = () => {
                         >All
                     </Button>
                 </Form>
-                <h3 style={{ margin: '0' }}>Showing notes for:</h3><br />
+                <h3 style={{ margin: '0' }}>Showing book notes for:</h3><br />
                 <h3 style={{ margin: '0' }}>{ bookNotesFor }</h3>
             </div>
         )
@@ -255,7 +255,7 @@ const NavMovies = () => {
                         />
                     </Form.Group>
                     <Button
-                        color='blue' 
+                        color='inverted blue' 
                         style={{ height: '38px', marginLeft: '5px' }}
                         onClick={ () => {
                             setShowNotes([])
@@ -264,135 +264,155 @@ const NavMovies = () => {
                         >All
                     </Button>
                 </Form>
-                <h3 style={{ margin: '0' }}>Showing notes for:</h3><br />
+                <h3 style={{ margin: '0' }}>Showing show notes for:</h3><br />
                 <h3 style={{ margin: '0' }}>{ showNotesFor }</h3>
             </div>
         )
     }
 
     return (
-        <div>
+        <div className='mainPage'>
             <div className='nav'>
-                <button
-                    className="ui olive fade animated button"
-                    onClick={ () => {
-                        setShelf(!shelf)
-                        setForm(false)
-                        setNoteShelf(false)
-                        setNoteForm(false)
-                        getShelf()
-                    }}>
-                    <div className='visible content'>Movies</div>
-                    <div className='hidden content'>{ count }</div>
-                </button>
-                <Button
-                    icon
-                    color='olive'
-                    onClick={ () => {
-                        setForm(!form)
-                        setShelf(false)
-                        setNoteShelf(false)
-                        setNoteForm(false)
-                    }}>
-                    <Icon name='plus' />
-                </Button>
-                <button
-                    className="ui olive fade animated button"
-                    onClick={ () => {
-                        setNoteShelf(!noteShelf)
-                        setNoteForm(false)
-                        setForm(false)
-                        setShelf(false)
-                        getMovies()
-                        getMovieNotesByAll()
-                    }}>
-                    <div className='visible content'>Movie Notes</div>
-                    <div className='hidden content'>{ noteCount }</div>
-                </button>
-                <Button 
-                    icon
-                    color='olive'
-                    onClick={ () => {
-                        setNoteForm(!noteForm)
-                        setForm(false)
-                        setShelf(false)
-                        setNoteShelf(false)
-                        getMovies()
-                    }}>
-                    <Icon name='plus' />
-                </Button><br /><br />
-                <button
-                    className="ui olive fade animated button"
-                    onClick={ () => {
-                        setBookShelf(!bookShelf)
-                        getBooks()
-                    }}>
-                    <div className='visible content'>Books</div>
-                    <div className='hidden content'>{ bookCount }</div>
-                </button>
-                <Button
-                    icon
-                    color='olive'
-                    onClick={ () => {
-                        setBookForm(!bookForm)
-                    }}>
-                    <Icon name='plus' />
-                </Button>
-                <button
-                    className="ui olive fade animated button"
-                    onClick={ () => {
-                        setBookNoteShelf(!bookNoteShelf)
-                        getBooksDropdown()
-                        getBookNotesByAll()
-                    }}>
-                    <div className='visible content'>Book Notes</div>
-                    <div className='hidden content'>{ bookNoteCount }</div>
-                </button>
-                <Button 
-                    icon
-                    color='olive'
-                    onClick={ () => {
-                        setBookNoteForm(!bookNoteForm)
-                        getBooksDropdown()
-                    }}>
-                    <Icon name='plus' />
-                </Button><br /><br />
-                <button
-                    className="ui olive fade animated button"
-                    onClick={ () => {
-                        setShowShelf(!showShelf)
-                        getShows()
-                    }}>
-                    <div className='visible content'>Shows</div>
-                    <div className='hidden content'>{ showCount }</div>
-                </button>
-                <Button
-                    icon
-                    color='olive'
-                    onClick={ () => {
-                        setShowForm(!showForm)
-                    }}>
-                    <Icon name='plus' />
-                </Button>
-                <button
-                    className="ui olive fade animated button"
-                    onClick={ () => {
-                        setShowNoteShelf(!showNoteShelf)
-                        getShowsDropdown()
-                        getShowNotesByAll()
-                    }}>
-                    <div className='visible content'>Show Notes</div>
-                    <div className='hidden content'>{ showNoteCount }</div>
-                </button>
-                <Button 
-                    icon
-                    color='olive'
-                    onClick={ () => {
-                        setShowNoteForm(!showNoteForm)
-                        getShowsDropdown()
-                    }}>
-                    <Icon name='plus' />
-                </Button>
+                <div className='sbsButtons'>
+                    <button
+                        className="ui inverted olive fade animated button"
+                        style={{ width: '80%' }}
+                        onClick={ () => {
+                            setShelf(!shelf)
+                            setForm(false)
+                            setNoteShelf(false)
+                            setNoteForm(false)
+                            getShelf()
+                        }}>
+                        <div className='visible content'>Movies</div>
+                        <div className='hidden content'>{ count }</div>
+                    </button>
+                    <Button
+                        icon
+                        color='inverted olive'
+                        onClick={ () => {
+                            setForm(!form)
+                            setShelf(false)
+                            setNoteShelf(false)
+                            setNoteForm(false)
+                        }}>
+                        <Icon name='plus' />
+                    </Button>
+                </div>
+                <div className='sbsButtons'>
+                    <button
+                        className="ui inverted olive fade animated button"
+                        style={{ width: '80%' }}
+                        onClick={ () => {
+                            setNoteShelf(!noteShelf)
+                            setNoteForm(false)
+                            setForm(false)
+                            setShelf(false)
+                            getMovies()
+                            getMovieNotesByAll()
+                        }}>
+                        <div className='visible content'>Movie Notes</div>
+                        <div className='hidden content'>{ noteCount }</div>
+                    </button>
+                    <Button 
+                        icon
+                        color='inverted olive'
+                        onClick={ () => {
+                            setNoteForm(!noteForm)
+                            setForm(false)
+                            setShelf(false)
+                            setNoteShelf(false)
+                            getMovies()
+                        }}>
+                        <Icon name='plus' />
+                    </Button>
+                </div>
+                <br /><br />
+                <div className='sbsButtons'>
+                    <button
+                        className="ui inverted olive fade animated button"
+                        style={{ width: '80%' }}
+                        onClick={ () => {
+                            setBookShelf(!bookShelf)
+                            getBooks()
+                        }}>
+                        <div className='visible content'>Books</div>
+                        <div className='hidden content'>{ bookCount }</div>
+                    </button>
+                    <Button
+                        icon
+                        color='inverted olive'
+                        onClick={ () => {
+                            setBookForm(!bookForm)
+                        }}>
+                        <Icon name='plus' />
+                    </Button>
+                </div>
+                <div className='sbsButtons'>
+                    <button
+                        className="ui inverted olive fade animated button"
+                        style={{ width: '80%' }}
+                        onClick={ () => {
+                            setBookNoteShelf(!bookNoteShelf)
+                            getBooksDropdown()
+                            getBookNotesByAll()
+                        }}>
+                        <div className='visible content'>Book Notes</div>
+                        <div className='hidden content'>{ bookNoteCount }</div>
+                    </button>
+                    <Button 
+                        icon
+                        color='inverted olive'
+                        onClick={ () => {
+                            setBookNoteForm(!bookNoteForm)
+                            getBooksDropdown()
+                        }}>
+                        <Icon name='plus' />
+                    </Button>
+                </div>
+                <br /><br />
+                <div className='sbsButtons'>
+                    <button
+                        className="ui inverted olive fade animated button"
+                        style={{ width: '80%' }}
+                        onClick={ () => {
+                            setShowShelf(!showShelf)
+                            getShows()
+                        }}>
+                        <div className='visible content'>Shows</div>
+                        <div className='hidden content'>{ showCount }</div>
+                    </button>
+                    <Button
+                        icon
+                        color='inverted olive'
+                        onClick={ () => {
+                            setShowForm(!showForm)
+                        }}>
+                        <Icon name='plus' />
+                    </Button>
+                </div>
+                <div className='sbsButtons'>
+                    <button
+                        className="ui inverted olive fade animated button"
+                        style={{ width: '80%' }}
+                        onClick={ () => {
+                            setShowNoteShelf(!showNoteShelf)
+                            getShowsDropdown()
+                            getShowNotesByAll()
+                        }}>
+                        <div className='visible content'>Show Notes</div>
+                        <div className='hidden content'>{ showNoteCount }</div>
+                    </button>
+                    <Button 
+                        icon
+                        color='inverted olive'
+                        onClick={ () => {
+                            setShowNoteForm(!showNoteForm)
+                            getShowsDropdown()
+                        }}>
+                        <Icon name='plus' />
+                    </Button>
+                </div>
             </div>
             <div className='body'>
                 { shelf && <MovieShelf lib={ lib } /> }

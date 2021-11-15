@@ -22,16 +22,15 @@ const BookShelf = (props) => {
     return (
         <div>
             <div>
-            <h1>Your Book Library</h1>
                 { props.bookLib.map(book => {
                     return (
                         <div className='shelf' key={ book.id }>
-                            <h3>{ props.bookLib.indexOf(book) + 1 }: { book.title }</h3>
+                            <h3>{ props.bookLib.indexOf(book) + 1 }:   { book.title }</h3>
                             <p>Author: { book.author }</p>
                             <p>Pages: { book.pages }</p>
                             <p>Rating: { book.rating }</p>
                             <button
-                                className='ui red button tiny'
+                                className='ui red inverted button tiny'
                                 onClick={ () => {
                                     toBeDeleted = book.id
                                     confirmation(deleteBook)

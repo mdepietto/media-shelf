@@ -22,16 +22,15 @@ const MovieShelf = (props) => {
     // creates component for each parameter of movie
     return (
         <div>
-            <h1>Your Movie Library</h1>
                 { props.lib.map(movie => {
                     return (
                         <div className='shelf' key={ movie.id }>
-                            <h3>{ props.lib.indexOf(movie) + 1 }: { movie.title }</h3>
+                            <h3>{ props.lib.indexOf(movie) + 1 }:   { movie.title }</h3>
                             <p>Director: { movie.director }</p>
                             <p>Minutes: { movie.minutes }</p>
                             <p>Rating: { movie.rating }</p>
                             <button
-                                className='ui red button tiny'
+                                className='ui red inverted button tiny'
                                 onClick={ () => {
                                     toBeDeleted = movie.id
                                     confirmation(deleteMovie)

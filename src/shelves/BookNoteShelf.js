@@ -28,7 +28,7 @@ const BookNoteShelf = (props) => {
                     <p>{ note.note_type } for '{ note.title }' on { note.note_page } page</p>
                     <p>'{ note.note_body }'</p>
                     <button
-                        className='ui red button tiny'
+                        className='ui red inverted button tiny'
                         onClick={ () => {
                             toBeDeleted = note.id
                             confirmation(deleteBookNote)
