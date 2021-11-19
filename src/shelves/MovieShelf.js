@@ -19,27 +19,26 @@ const MovieShelf = (props) => {
         }
     }
 
-    // creates component for each parameter of movie
     return (
         <div>
-                { props.lib.map(movie => {
-                    return (
-                        <div className='shelf' key={ movie.id }>
-                            <h3>{ props.lib.indexOf(movie) + 1 }:   { movie.title }</h3>
-                            <p>Director: { movie.director }</p>
-                            <p>Minutes: { movie.minutes }</p>
-                            <p>Rating: { movie.rating }</p>
-                            <button
-                                className='ui red inverted button tiny'
-                                onClick={ () => {
-                                    toBeDeleted = movie.id
-                                    confirmation(deleteMovie)
-                                    window.location.reload()
-                                }}>
-                            Delete</button>
-                        </div>
-                    )
-                })}
+            { props.movieLib.map(movie => {
+                return (
+                    <div className='shelf' key={ movie.id }>
+                        <h1 className='mtitles'>{ props.movieLib.indexOf(movie) + 1 }:   { movie.title }</h1>
+                        <p>Director: { movie.director }</p>
+                        <p>Minutes: { movie.minutes }</p>
+                        <p>Rating: { movie.rating }</p>
+                        <button
+                            className='ui red inverted button tiny'
+                            onClick={ () => {
+                                toBeDeleted = movie.id
+                                confirmation(deleteMovie)
+                                window.location.reload()
+                            }}>
+                        Delete</button>
+                    </div>
+                )
+            })}
         </div>
     )
 }

@@ -1,7 +1,7 @@
 const db = require('../db')
 const sql = require('mssql')
 
-exports.getData = async () => {
+exports.getMovies = async () => {
     try {
         const connectDB = await sql.connect(db)
         const query = connectDB.request().query('SELECT * FROM Movies')
@@ -24,7 +24,7 @@ exports.getMovieNotes = async () => {
 exports.getMovieNotesByTitle = async (title) => {
     try {
         const connectDB = await sql.connect(db)
-        const query = connectDB.request().query(`SELECT * FROM Movie_Notes WHERE title = '${ title.innerText }'`)
+        const query = connectDB.request().query(`SELECT * FROM Movie_Notes WHERE title = '${ title }'`)
         return query
     } catch (err) {
         console.log(err);
@@ -154,7 +154,7 @@ exports.getBookNotes = async () => {
 exports.getBookNotesByTitle = async (title) => {
     try {
         const connectDB = await sql.connect(db)
-        const query = connectDB.request().query(`SELECT * FROM Book_Notes WHERE title = '${ title.innerText }'`)
+        const query = connectDB.request().query(`SELECT * FROM Book_Notes WHERE title = '${ title }'`)
         return query
     } catch (err) {
         console.log(err);
@@ -234,7 +234,7 @@ exports.getShowNotes = async () => {
 exports.getShowNotesByTitle = async (title) => {
     try {
         const connectDB = await sql.connect(db)
-        const query = connectDB.request().query(`SELECT * FROM Show_Notes WHERE title = '${ title.innerText }'`)
+        const query = connectDB.request().query(`SELECT * FROM Show_Notes WHERE title = '${ title }'`)
         return query
     } catch (err) {
         console.log(err);

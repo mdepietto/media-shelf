@@ -21,7 +21,7 @@ const MovieNoteShelf = (props) => {
     }
 
     return (
-        props.notes.map(note => {
+        props.movieNotes.map(note => {
             return (
                 <div className='shelf' key={ note.id }>
                     <p>Created on: { note.note_date }</p>

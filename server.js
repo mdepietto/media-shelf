@@ -5,45 +5,45 @@ const query = require('./src/SQLQueries')
 
 app.use(express.json())
 
-app.get('/api', async (req, res) => {
-    const data = await query.getData()
+app.get('/apiMovies', async (req, res) => {
+    const data = await query.getMovies()
     res.send(data.recordset)
 })
 
-app.get('/apiNotes', async (req, res) => {
+app.get('/apiMovieNotes', async (req, res) => {
     const data = await query.getMovieNotes()
     res.send(data.recordset)
 })
 
-app.post('/apiNotesByTitle', async (req, res) => {
-    const data = await query.getMovieNotesByTitle(req.body)
+app.post('/apiMovieNotesByTitle', async (req, res) => {
+    const data = await query.getMovieNotesByTitle(req.body.title)
     res.send(data.recordset)
 })
 
 app.post('/addMov', async (req, res) => {
     await query.addMovie(req.body)
-    const data = await query.getData()
+    const data = await query.getMovies()
     res.send(data.recordset)
 })
 
 app.post('/addMovNote', async (req, res) => {
     await query.addMovieNote(req.body)
     console.log('Note saved to database...');
-    const data = await query.getData()
+    const data = await query.getMovies()
     res.send(data.recordset)
 })
 
 app.post('/deleteMovie', async (req, res) => {
     await query.deleteMovie(Object.values(req.body))
     console.log('Movie deleted...');
-    const data = await query.getData()
+    const data = await query.getMovies()
     res.send(data.recordset)
 })
 
 app.post('/deleteMovieNote', async (req, res) => {
     await query.deleteMovieNote(Object.values(req.body))
     console.log('Movie note deleted...');
-    const data = await query.getData()
+    const data = await query.getMovies()
     res.send(data.recordset)
 })
 
@@ -86,7 +86,7 @@ app.get('/apiBookNotes', async (req, res) => {
 })
 
 app.post('/apiBookNotesByTitle', async (req, res) => {
-    const data = await query.getBookNotesByTitle(req.body)
+    const data = await query.getBookNotesByTitle(req.body.title)
     res.send(data.recordset)
 })
 
@@ -129,7 +129,7 @@ app.get('/apiShowNotes', async (req, res) => {
 })
 
 app.post('/apiShowNotesByTitle', async (req, res) => {
-    const data = await query.getShowNotesByTitle(req.body)
+    const data = await query.getShowNotesByTitle(req.body.title)
     res.send(data.recordset)
 })
 

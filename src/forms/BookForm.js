@@ -67,7 +67,7 @@ function BookForm() {
 
     return (
         <div>
-            <Form className='movieForm'>
+            <Form className='movieForm' inverted>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column' }}>
                     { testForm('title', 'Title', 'Title', 'text') }
                     { testForm('author', 'Author', 'Author', 'text') }

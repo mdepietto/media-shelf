@@ -52,7 +52,7 @@ function MovieNote(props) {
     }
 
     return (
-        <Form className='movieNoteForm'>
+        <Form className='movieNoteForm' inverted>
             <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column' }}>
                 <Form.Select
                     label='Movie'
