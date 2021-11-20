@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from 'semantic-ui-react'
 
 const BookNoteShelf = (props) => {
 
@@ -23,17 +24,19 @@ const BookNoteShelf = (props) => {
     return (
         props.bookNotes.map(note => {
             return (
-                <div className='shelf' key={ note.id }>
-                    <p>Created on: { note.note_date }</p>
-                    <p>{ note.note_type } for '{ note.title }' on { note.note_page } page</p>
-                    <p>'{ note.note_body }'</p>
-                    <button
-                        className='ui red inverted button tiny'
+                <div className='shelf' key={ note.id } style={{ border: '2px solid rgb(202, 237, 114)' }}>
+                    <p style={{ fontSize: '1.1rem' }}>{ note.note_date }</p>
+                    <p style={{ margin: '.5rem' }}><i>{ note.note_type }</i> for <i>{ note.title }</i> on page { note.note_page }</p>
+                    <p>"{ note.note_body }"</p>
+                    <Button
+                        inverted
+                        color='red'
+                        size='large'
                         onClick={ () => {
                             toBeDeleted = note.id
                             confirmation(deleteBookNote)
                             window.location.reload()
-                    }}>Delete</button>
+                    }}>Delete</Button>
                 </div>
             )
         })

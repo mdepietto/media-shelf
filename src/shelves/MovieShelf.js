@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from 'semantic-ui-react'
 
 const MovieShelf = (props) => {
 
@@ -23,19 +24,21 @@ const MovieShelf = (props) => {
         <div>
             { props.movieLib.map(movie => {
                 return (
-                    <div className='shelf' key={ movie.id }>
-                        <h1 className='mtitles'>{ props.movieLib.indexOf(movie) + 1 }:   { movie.title }</h1>
-                        <p>Director: { movie.director }</p>
-                        <p>Minutes: { movie.minutes }</p>
-                        <p>Rating: { movie.rating }</p>
-                        <button
-                            className='ui red inverted button tiny'
+                    <div className='shelf' key={ movie.id } style={{ border: '2px solid rgb(235, 229, 52)' }}>
+                        <h1 className='shelfTitles'>{ props.movieLib.indexOf(movie) + 1 }:   { movie.title }</h1>
+                        <p style={{ margin: '.5rem' }}><i>Director:</i> { movie.director }</p>
+                        <p style={{ margin: '.5rem' }}><i>Minutes:</i> { movie.minutes }</p>
+                        <p style={{ margin: '.5rem' }}><i>Rating:</i> { movie.rating }</p>
+                        <br />
+                        <Button
+                            inverted color='red'
+                            size='large'
                             onClick={ () => {
                                 toBeDeleted = movie.id
                                 confirmation(deleteMovie)
                                 window.location.reload()
                             }}>
-                        Delete</button>
+                        Delete</Button>
                     </div>
                 )
             })}

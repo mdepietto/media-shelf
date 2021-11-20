@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from 'semantic-ui-react'
 
 const ShowShelf = (props) => {
 
@@ -21,25 +22,25 @@ const ShowShelf = (props) => {
 
     return (
         <div>
-            <div>
-                { props.showLib.map(show => {
-                    return (
-                        <div className='shelf' key={ show.id }>
-                            <h3>{ props.showLib.indexOf(show) + 1 }:   { show.title }</h3>
-                            <p>Author: { show.seasons }</p>
-                            <p>Rating: { show.rating }</p>
-                            <button
-                                className='ui red inverted button tiny'
-                                onClick={ () => {
-                                    toBeDeleted = show.id
-                                    confirmation(deleteShow)
-                                    window.location.reload()
-                                }}>
-                            Delete</button>
-                        </div>
-                        )
-                    })}
-            </div>
+            { props.showLib.map(show => {
+                return (
+                    <div className='shelf' key={ show.id } style={{ border: '2px solid rgb(242, 129, 7)' }}>
+                        <h3 className='shelfTitles'>{ props.showLib.indexOf(show) + 1 }:   { show.title }</h3>
+                        <p style={{ margin: '.5rem' }}><i>Seasons:</i> { show.seasons }</p>
+                        <p style={{ margin: '.5rem' }}><i>Rating:</i> { show.rating }</p>
+                        <br />
+                        <Button
+                            inverted color='red'
+                            size='large'
+                            onClick={ () => {
+                                toBeDeleted = show.id
+                                confirmation(deleteShow)
+                                window.location.reload()
+                            }}>
+                        Delete</Button>
+                    </div>
+                )
+            })}
         </div>
     )
 }

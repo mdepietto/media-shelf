@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Input, TextArea } from 'semantic-ui-react'
+import { Form, Input, TextArea, Button } from 'semantic-ui-react'
 
 function ShowNote(props) {
 
@@ -52,7 +52,7 @@ function ShowNote(props) {
     }
 
     return (
-        <Form className='movieNoteForm' inverted>
+        <Form className='noteForm' inverted style={{ border: '2px solid rgb(242, 129, 7)' }}>
             <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column' }}>
                 <Form.Select
                     label='Show'
@@ -61,6 +61,7 @@ function ShowNote(props) {
                     placeholder='Show'
                     onChange={ getTitle }
                 />
+                <br />
                 <Form.Field
                     control={ Input }
                     type='number'
@@ -70,6 +71,7 @@ function ShowNote(props) {
                     placeholder='#'
                     onChange={ handleChange }
                 />
+                <br />
                 <Form.Field
                     control={ Input }
                     type='number'
@@ -79,6 +81,7 @@ function ShowNote(props) {
                     placeholder='#'
                     onChange={ handleChange }
                 />
+                <br />
                 <Form.Select
                     label='Type of Note'
                     options={ optionsNote }
@@ -94,21 +97,25 @@ function ShowNote(props) {
                 name='note_body'
                 onChange={ handleChange }
             />
-            <button 
-                className="ui inverted violet button"
+            <Button
+                inverted
+                color='violet'
+                size='large'
                 style={{ margin: '15px 0' }}
                 onClick={ () => {
                     sqlApostrophe()
                     addShowNote()
                     setData({ title: '', note_episode: 0, note_season: 0, note_type: '', note_body: '' })
                     window.location.reload()
-                }}>Submit</button>
-            <button
-                className="ui inverted red button" 
+                }}>Submit</Button>
+            <Button
+                inverted
+                color='red'
+                size='large'
                 onClick={ () => {
                     setData({ title: '', note_episode: 0, note_season: 0, note_type: '', note_body: '' })
                     window.location.reload()
-                }}>Cancel</button>
+                }}>Cancel</Button>
         </Form>
     )
 }

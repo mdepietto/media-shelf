@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from 'semantic-ui-react'
 
 const BookShelf = (props) => {
 
@@ -21,26 +22,26 @@ const BookShelf = (props) => {
 
     return (
         <div>
-            <div>
-                { props.bookLib.map(book => {
-                    return (
-                        <div className='shelf' key={ book.id }>
-                            <h3>{ props.bookLib.indexOf(book) + 1 }:   { book.title }</h3>
-                            <p>Author: { book.author }</p>
-                            <p>Pages: { book.pages }</p>
-                            <p>Rating: { book.rating }</p>
-                            <button
-                                className='ui red inverted button tiny'
-                                onClick={ () => {
-                                    toBeDeleted = book.id
-                                    confirmation(deleteBook)
-                                    window.location.reload()
-                                }}>
-                            Delete</button>
-                        </div>
-                        )
-                    })}
-            </div>
+            { props.bookLib.map(book => {
+                return (
+                    <div className='shelf' key={ book.id } style={{ border: '2px solid rgb(202, 237, 114)' }}>
+                        <h3 className='shelfTitles'>{ props.bookLib.indexOf(book) + 1 }:   { book.title }</h3>
+                        <p style={{ margin: '.5rem' }}><i>Author:</i> { book.author }</p>
+                        <p style={{ margin: '.5rem' }}><i>Pages:</i> { book.pages }</p>
+                        <p style={{ margin: '.5rem' }}><i>Rating:</i> { book.rating }</p>
+                        <br />
+                        <Button
+                            inverted color='red'
+                            size='large'
+                            onClick={ () => {
+                                toBeDeleted = book.id
+                                confirmation(deleteBook)
+                                window.location.reload()
+                            }}>
+                        Delete</Button>
+                    </div>
+                )
+            })}
         </div>
     )
 }
