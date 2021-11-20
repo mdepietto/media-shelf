@@ -29,7 +29,6 @@ const NavMovies = () => {
     const [ bookNoteShelf, setBookNoteShelf ] = useState(false)
     const [ bookNoteCount, setBookNoteCount ] = useState(0)
     const [ bookNotes, setBookNotes ] = useState([])
-    const [ bookNotesFor, setBookNotesFor ] = useState('')
 
     const [ movieShelf, setMovieShelf ] = useState(false)
     const [ movieCount, setMovieCount ] = useState(0)
@@ -39,7 +38,6 @@ const NavMovies = () => {
     const [ movieNoteCount, setMovieNoteCount ] = useState(0)
     const [ movieNotes, setMovieNotes ] = useState([])
     const [ movies, setMovies ] = useState([{ key: 0, text: 'All', value: 0 }])
-    const [ movieNotesFor, setMovieNotesFor ] = useState('')
     const [ movieNoteForm, setMovieNoteForm ] = useState(false)
 
     const [ showShelf, setShowShelf ] = useState(false)
@@ -51,7 +49,8 @@ const NavMovies = () => {
     const [ showNoteShelf, setShowNoteShelf ] = useState(false)
     const [ showNoteCount, setShowNoteCount ] = useState(0)
     const [ showNotes, setShowNotes ] = useState([])
-    const [ showNotesFor, setShowNotesFor ] = useState('')
+
+    const [ notesFor, setNotesFor ] = useState('')
 
     const getCount = async (api, count) => {
         const newData = await api()
@@ -119,107 +118,27 @@ const NavMovies = () => {
         }
     }
 
-    // const Select = (options, name, placeholder, onChange, all1, all2, noteTitle) => {
-    //     return (
-    //         <div className='selectDrop'>
-    //             <Form style={{ display: 'flex', flexDirection: 'row' }}>
-    //                 <Form.Group width='equal'>
-    //                     <Form.Select
-    //                         options={ options }
-    //                         name={ name }
-    //                         placeholder={ placeholder }
-    //                         onChange={ onChange }
-    //                     />
-    //                 </Form.Group>
-    //                 <Button
-    //                     inverted
-    //                     color='blue' 
-    //                     style={{ height: '38px', marginLeft: '5px' }}
-    //                     onClick={ () => {
-    //                         all1([])
-    //                         all2()
-    //                     }}
-    //                     >All
-    //                 </Button>
-    //             </Form>
-    //             <h3 style={{ margin: '0' }}>Showing { name } notes for:</h3>
-    //             <br />
-    //             <h3 style={{ margin: '0' }}>{ noteTitle }</h3>
-    //         </div>
-    //     )
-    // }
-
-    const SelectBook = () => {
+    const Select = (options, name, placeholder, set, api, title, path) => {
         return (
             <div className='selectDrop' style={{ border: '2px solid rgb(202, 237, 114)' }}>
                 <Form style={{ display: 'flex', flexDirection: 'row' }}>
                     <Form.Group width='equal'>
                         <Form.Select
-                            options={ books }
-                            name='book'
-                            placeholder='Book'
+                            options={ options }
+                            name={ name }
+                            placeholder={ placeholder}
                             onChange={ async (e) => {
                                 var text = e.target.innerText
                                 var newTitle = text.replace(/'/g, "''")
-                                setBookNotes([])
-                                getAll(text, apiBookNotes, setBookNotes, setBookNotesFor)
-                                getNotesByTitle(newTitle, '/apiBookNotesByTitle', setBookNotes, setBookNotesFor)
+                                set([])
+                                getAll(text, api, set, title)
+                                getNotesByTitle(newTitle, path, set, title)
                             }}
                         />
                     </Form.Group>
                 </Form>
-                <h3 style={{ margin: '0 0 6px 0', fontFamily: "'Montagu Slab', serif" }}>Showing book notes for:</h3>
-                <p style={{ margin: '0' }}>{ bookNotesFor }</p>
-            </div>
-        )
-    }
-
-    const SelectMovie = () => {
-        return (
-            <div className='selectDrop' style={{ border: '2px solid rgb(235, 229, 52)' }}>
-                <Form style={{ display: 'flex', flexDirection: 'row' }}>
-                    <Form.Group width='equal'>
-                        <Form.Select
-                            options={ movies }
-                            name='movie'
-                            placeholder='Movies'
-                            onChange={ async (e) => {
-                                var text = e.target.innerText
-                                var newTitle = text.replace(/'/g, "''")
-                                setMovieNotes([])
-                                getAll(text, apiMovieNotes, setMovieNotes, setMovieNotesFor)
-                                getNotesByTitle(newTitle, '/apiMovieNotesByTitle', setMovieNotes, setMovieNotesFor)
-                            }}
-                        />
-                    </Form.Group>
-                </Form>
-                <h3 style={{ margin: '0 0 6px 0', fontFamily: "'Montagu Slab', serif" }}>Showing movie notes for:</h3>
-                <p style={{ margin: '0' }}>{ movieNotesFor }</p>
-            </div>
-        )
-    }
-
-    const SelectShow = () => {
-        return (
-            <div className='selectDrop' style={{ border: '2px solid rgb(242, 129, 7)' }}>
-                <Form style={{ display: 'flex', flexDirection: 'row' }}>
-                    <Form.Group width='equal'>
-                        <Form.Select
-                            options={ shows }
-                            name='show'
-                            placeholder='Show'
-                            onChange={ async (e) => {
-                                var text = e.target.innerText
-                                var newTitle = text.replace(/'/g, "''")
-                                setShowNotes([])
-                                getAll(text, apiShowNotes, setShowNotes, setShowNotesFor)
-                                getNotesByTitle(newTitle, '/apiShowNotesByTitle', setShowNotes, setShowNotesFor)
-                            }}
-                        />
-                    </Form.Group>
-                </Form>
-                <h3 style={{ margin: '0 0 6px 0', fontFamily: "'Montagu Slab', serif" }}>Showing show notes for:</h3>
-                <p style={{ margin: '0' }}>{ showNotesFor }</p>
+                <h3 style={{ margin: '0 0 6px 0', fontFamily: "'Montagu Slab', serif" }}>Showing { name } notes for:</h3>
+                <p style={{ margin: '0' }}>{ notesFor }</p>
             </div>
         )
     }
@@ -528,7 +447,15 @@ const NavMovies = () => {
                     setBookForm={ setBookForm } 
                     setBookLib={ setBookLib } 
                 /> }
-                { bookNoteShelf && <SelectBook /> }
+                { bookNoteShelf && Select(
+                    books,
+                    'book',
+                    'Book',
+                    setBookNotes,
+                    apiBookNotes,
+                    setNotesFor,
+                    '/apiBookNotesByTitle')
+                }
                 { bookNoteShelf && <BookNoteShelf 
                     bookNotes={ bookNotes }
                     setBookNoteShelf={ setBookNoteShelf }
@@ -549,7 +476,15 @@ const NavMovies = () => {
                     setMovieForm={ setMovieForm } 
                     setMovieLib={ setMovieLib }
                 /> }
-                { movieNoteShelf && <SelectMovie /> }
+                { movieNoteShelf && Select(
+                    movies,
+                    'movie',
+                    'Movie',
+                    setMovieNotes,
+                    apiMovieNotes,
+                    setNotesFor,
+                    '/apiMovieNotesByTitle')
+                }
                 { movieNoteShelf && <MovieNoteShelf
                     movieNotes={ movieNotes }
                     setMovieNoteShelf={ setMovieNoteShelf }
@@ -570,7 +505,15 @@ const NavMovies = () => {
                     setShowForm={ setShowForm } 
                     setShowLib={ setShowLib }
                 /> }
-                { showNoteShelf && <SelectShow /> }
+                { showNoteShelf && Select(
+                    shows,
+                    'show',
+                    'Show',
+                    setShowNotes,
+                    apiShowNotes,
+                    setNotesFor,
+                    '/apiShowNotesByTitle')
+                }
                 { showNoteShelf && <ShowNoteShelf
                     showNotes={ showNotes }
                     setShowNoteShelf={ setShowNoteShelf }
