@@ -96,7 +96,9 @@ function MovieNote(props) {
                     sqlApostrophe()
                     addMovNote()
                     setData({ title: '', note_minute: 0, note_type: '', note_body: '' })
-                    window.location.reload()
+                    props.setMovieNoteForm(false)
+                    props.setMovieNotes([])
+                    alert('Note added!')
                 }}>Submit</Button>
             <Button
                 inverted
@@ -104,7 +106,8 @@ function MovieNote(props) {
                 size='large'
                 onClick={ () => {
                     setData({ title: '', note_minute: 0, note_type: '', note_body: '' })
-                    window.location.reload()
+                    props.setMovieNoteForm(false)
+                    alert('Note discarded')
                 }}>Cancel</Button>
         </Form>
     )

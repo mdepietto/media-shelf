@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Form, Input, Rating, Button } from 'semantic-ui-react'
 
-function ShowForm() {
+function ShowForm(props) {
     
     const [ data, setData ] = useState({ title: '', seasons: 0, rating: 0 })
     
@@ -80,14 +80,19 @@ function ShowForm() {
                             sqlApostrophe()
                             await addShow()
                             setData({ title: '', seasons: 0, rating: 0 })
-                            window.location.reload()
+                            props.setShowForm(false)
+                            props.setShowLib([])
+                            alert('Show added!')
                         }}
                     >Submit</Button>
                     <Button
                         inverted
                         size='large'
                         color='red'
-                        onClick={ () => window.location.reload() }
+                        onClick={ () => {
+                            props.setShowForm(false)
+                            alert('Show discarded')
+                        }}
                     >Cancel</Button>
                 </div>
             </Form>

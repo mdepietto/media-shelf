@@ -519,23 +519,68 @@ const NavMovies = () => {
                 </div>
             </div>
             <div className='body'>
-                { bookShelf && <BookShelf bookLib={ bookLib } /> }
-                { bookForm && <BookForm /> }
+                { bookShelf && <BookShelf 
+                    bookLib={ bookLib } 
+                    setBookLib={ setBookLib } 
+                    setBookShelf={ setBookShelf }
+                /> }
+                { bookForm && <BookForm 
+                    setBookForm={ setBookForm } 
+                    setBookLib={ setBookLib } 
+                /> }
                 { bookNoteShelf && <SelectBook /> }
-                { bookNoteShelf && <BookNoteShelf bookNotes={ bookNotes } /> }
-                { bookNoteForm && <BookNote books={ books } />}
+                { bookNoteShelf && <BookNoteShelf 
+                    bookNotes={ bookNotes }
+                    setBookNoteShelf={ setBookNoteShelf }
+                    setBookNotes={ setBookNotes }
+                /> }
+                { bookNoteForm && <BookNote
+                    books={ books }
+                    setBookNoteForm={ setBookNoteForm }
+                    setBookNotes={ setBookNotes }
+                />}
 
-                { movieShelf && <MovieShelf movieLib={ movieLib } /> }
-                { movieForm && <MovieForm /> }
+                { movieShelf && <MovieShelf 
+                    movieLib={ movieLib }
+                    setMovieLib={ setMovieLib } 
+                    setMovieShelf={ setMovieShelf }
+                /> }
+                { movieForm && <MovieForm
+                    setMovieForm={ setMovieForm } 
+                    setMovieLib={ setMovieLib }
+                /> }
                 { movieNoteShelf && <SelectMovie /> }
-                { movieNoteShelf && <MovieNoteShelf movieNotes={ movieNotes } /> }
-                { movieNoteForm && <MovieNote movies={ movies } /> }
+                { movieNoteShelf && <MovieNoteShelf
+                    movieNotes={ movieNotes }
+                    setMovieNoteShelf={ setMovieNoteShelf }
+                    setMovieNotes={ setMovieNotes }
+                /> }
+                { movieNoteForm && <MovieNote
+                    movies={ movies }
+                    setMovieNoteForm={ setMovieNoteForm }
+                    setMovieNotes={ setMovieNotes }
+                /> }
 
-                { showShelf && <ShowShelf showLib={ showLib } /> }
-                { showForm && <ShowForm /> }
+                { showShelf && <ShowShelf
+                    showLib={ showLib }
+                    setShowLib={ setShowLib } 
+                    setShowShelf={ setShowShelf }
+                /> }
+                { showForm && <ShowForm 
+                    setShowForm={ setShowForm } 
+                    setShowLib={ setShowLib }
+                /> }
                 { showNoteShelf && <SelectShow /> }
-                { showNoteShelf && <ShowNoteShelf showNotes={ showNotes } /> }
-                { showNoteForm && <ShowNote shows={ shows } />}
+                { showNoteShelf && <ShowNoteShelf
+                    showNotes={ showNotes }
+                    setShowNoteShelf={ setShowNoteShelf }
+                    setShowNotes={ setShowNotes }
+                /> }
+                { showNoteForm && <ShowNote
+                    shows={ shows }
+                    setShowNoteForm={ setShowNoteForm }
+                    setShowNotes={ setShowNotes }
+                />}
             </div>
         </div>
     )

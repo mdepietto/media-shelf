@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Form, Input, Rating, Button } from 'semantic-ui-react'
 
-function MovieForm() {
+function MovieForm(props) {
 
     const [ data, setData ] = useState({ title: '', director: '', minutes: 0, rating: 0 })
 
@@ -91,14 +91,19 @@ function MovieForm() {
                             sqlApostrophe()
                             await addMov()
                             setData({ title: '', director: '', minutes: 0, rating: 0 })
-                            window.location.reload()
+                            props.setMovieForm(false)
+                            props.setMovieLib([])
+                            alert('Movie added!')
                         }}
                     >Submit</Button>
                     <Button
                         inverted
                         size='large'
                         color='red'
-                        onClick={ () => window.location.reload() }
+                        onClick={ () => {
+                            props.setMovieForm(false)
+                            alert('Movie discarded')
+                        }}
                     >Cancel</Button>
                 </div>
             </Form>

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Form, Input, Rating, Button } from 'semantic-ui-react'
 
-function BookForm() {
-    
+function BookForm(props) {
+
     const [ data, setData ] = useState({ title: '', author: '', pages: 0, rating: 0 })
-    
+
     const handleChange = (e) => {
         const { name, value } = e.target
         setData(prev => ({
@@ -91,14 +91,19 @@ function BookForm() {
                             sqlApostrophe()
                             await addBook()
                             setData({ title: '', author: '', pages: 0, rating: 0 })
-                            window.location.reload()
+                            props.setBookForm(false)
+                            props.setBookLib([])
+                            alert('Book added!')
                         }}
                     >Submit</Button>
                     <Button
                         inverted
                         size='large'
                         color='red'
-                        onClick={ () => window.location.reload() }
+                        onClick={ () => {
+                            props.setBookForm(false)
+                            alert('Book discarded')
+                        }}
                     >Cancel</Button>
                 </div>
             </Form>

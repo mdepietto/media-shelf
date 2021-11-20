@@ -12,7 +12,6 @@ const ShowNoteShelf = (props) => {
             body: JSON.stringify({ toBeDeleted })
         })
         .then(res => res.json())
-        window.location.reload()
     }
 
     const confirmation = (func) => {
@@ -35,7 +34,8 @@ const ShowNoteShelf = (props) => {
                         onClick={ () => {
                             toBeDeleted = note.id
                             confirmation(deleteShowNote)
-                            window.location.reload()
+                            props.setShowNoteShelf(false)
+                            props.setShowNotes([])
                     }}>Delete</Button>
                 </div>
             )

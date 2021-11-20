@@ -61,7 +61,7 @@ exports.deleteMovie = async (id) => {
     try {
         const connectDB = await sql.connect(db)
         const query = connectDB.request().query(`
-            DELETE FROM Movies WHERE id = '${ id[0] }'
+            DELETE FROM Movies WHERE id = '${ id }'
         `)
         return query
     } catch (err) {
@@ -107,7 +107,7 @@ exports.deleteBook = async (id) => {
     try {
         const connectDB = await sql.connect(db)
         const query = connectDB.request().query(`
-            DELETE FROM Books WHERE id = '${ id[0] }'
+            DELETE FROM Books WHERE id = '${ id }'
         `)
         return query
     } catch (err) {
@@ -187,7 +187,7 @@ exports.deleteShow = async (id) => {
     try {
         const connectDB = await sql.connect(db)
         const query = connectDB.request().query(`
-            DELETE FROM Shows WHERE id = '${ id[0] }'
+            DELETE FROM Shows WHERE id = '${ id }'
         `)
         return query
     } catch (err) {

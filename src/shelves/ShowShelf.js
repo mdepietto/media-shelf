@@ -35,7 +35,8 @@ const ShowShelf = (props) => {
                             onClick={ () => {
                                 toBeDeleted = show.id
                                 confirmation(deleteShow)
-                                window.location.reload()
+                                props.setShowShelf(false)
+                                props.setShowLib([])
                             }}>
                         Delete</Button>
                     </div>

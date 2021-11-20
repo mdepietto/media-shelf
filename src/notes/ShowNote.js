@@ -106,7 +106,9 @@ function ShowNote(props) {
                     sqlApostrophe()
                     addShowNote()
                     setData({ title: '', note_episode: 0, note_season: 0, note_type: '', note_body: '' })
-                    window.location.reload()
+                    props.setShowNoteForm(false)
+                    props.setShowNotes([])
+                    alert('Note added!')
                 }}>Submit</Button>
             <Button
                 inverted
@@ -114,7 +116,9 @@ function ShowNote(props) {
                 size='large'
                 onClick={ () => {
                     setData({ title: '', note_episode: 0, note_season: 0, note_type: '', note_body: '' })
-                    window.location.reload()
+                    setData({ title: '', note_minute: 0, note_type: '', note_body: '' })
+                    props.setShowNoteForm(false)
+                    alert('Note discarded')
                 }}>Cancel</Button>
         </Form>
     )

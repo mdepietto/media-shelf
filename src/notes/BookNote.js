@@ -96,7 +96,9 @@ function BookNote(props) {
                     sqlApostrophe()
                     addBookNote()
                     setData({ title: '', note_minute: 0, note_type: '', note_body: '' })
-                    window.location.reload()
+                    props.setBookNoteForm(false)
+                    props.setBookNotes([])
+                    alert('Note added!')
                 }}>Submit</Button>
             <Button
                 inverted
@@ -104,7 +106,8 @@ function BookNote(props) {
                 size='large'
                 onClick={ () => {
                     setData({ title: '', note_minute: 0, note_type: '', note_body: '' })
-                    window.location.reload()
+                    props.setBookNoteForm(false)
+                    alert('Note discarded')
                 }}>Cancel</Button>
         </Form>
     )

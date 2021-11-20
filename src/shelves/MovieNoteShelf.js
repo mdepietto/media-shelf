@@ -12,7 +12,6 @@ const MovieNoteShelf = (props) => {
             body: JSON.stringify({ toBeDeleted })
         })
         .then(res => res.json())
-        window.location.reload()
     }
 
     const confirmation = (func) => {
@@ -35,7 +34,8 @@ const MovieNoteShelf = (props) => {
                         onClick={ () => {
                             toBeDeleted = note.id
                             confirmation(deleteMovieNote)
-                            window.location.reload()
+                            props.setMovieNoteShelf(false)
+                            props.setMovieNotes([])
                     }}>Delete</Button>
                 </div>
             )

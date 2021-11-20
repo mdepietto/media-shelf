@@ -36,7 +36,8 @@ const BookShelf = (props) => {
                             onClick={ () => {
                                 toBeDeleted = book.id
                                 confirmation(deleteBook)
-                                window.location.reload()
+                                props.setBookShelf(false)
+                                props.setBookLib([])
                             }}>
                         Delete</Button>
                     </div>

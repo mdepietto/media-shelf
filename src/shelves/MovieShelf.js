@@ -36,7 +36,8 @@ const MovieShelf = (props) => {
                             onClick={ () => {
                                 toBeDeleted = movie.id
                                 confirmation(deleteMovie)
-                                window.location.reload()
+                                props.setMovieShelf(false)
+                                props.setMovieLib([])
                             }}>
                         Delete</Button>
                     </div>
