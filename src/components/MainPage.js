@@ -1,20 +1,16 @@
 import React, { useState } from 'react'
-import { Button, Icon, Form } from 'semantic-ui-react'
+import { Button, Icon } from 'semantic-ui-react'
 
-import BookShelf from '../shelves/BookShelf'
 import BookForm from '../forms/BookForm'
-import BookNote from '../notes/BookNote'
-import BookNoteShelf from '../shelves/BookNoteShelf'
 
 import MovieForm from '../forms/MovieForm'
-import MovieShelf from '../shelves/MovieShelf'
-import MovieNoteShelf from '../shelves/MovieNoteShelf'
-import MovieNote from '../notes/MovieNote'
 
-import ShowShelf from '../shelves/ShowShelf'
 import ShowForm from '../forms/ShowForm'
-import ShowNote from '../notes/ShowNote'
-import ShowNoteShelf from '../shelves/ShowNoteShelf'
+
+import Dropdown from './Dropdown'
+import Shelf from '../shelves/Shelf'
+import NoteShelf from '../shelves/NoteShelf'
+import NoteForm from '../notes/NoteForm'
 
 import { apiBooks, apiBookNotes, apiMovies, apiMovieNotes, apiShows, apiShowNotes } from '../serverCalls'
 
@@ -49,8 +45,6 @@ const NavMovies = () => {
     const [ showNoteShelf, setShowNoteShelf ] = useState(false)
     const [ showNoteCount, setShowNoteCount ] = useState(0)
     const [ showNotes, setShowNotes ] = useState([])
-
-    const [ notesFor, setNotesFor ] = useState('')
 
     const getCount = async (api, count) => {
         const newData = await api()
@@ -89,58 +83,6 @@ const NavMovies = () => {
                 return noteLib(prev => [ ...prev, media ])
             })
         }
-    }
-
-    const getNotesByTitle = async (title, path, noteLib, noteFor) => {
-        noteLib([])
-        const newData = await fetch(path, {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ title })
-        })
-        .then(res => res.json())
-        newData.map(media => {
-            media.note_date = media.note_date.slice(0, 10)
-            return noteLib(prev => [ ...prev, media ])
-        })
-        noteFor(title)
-    }
-
-    const getAll = async (title, path, setPath, setPathFor) => {
-        if (title === 'All') {
-            const newData = await path()
-            newData.map(media => {
-                media.note_date = media.note_date.slice(0, 10)
-                return setPath(prev => [ ...prev, media ])
-            })
-            setPathFor(title)
-            return setPath(newData)
-        }
-    }
-
-    const Select = (options, name, placeholder, set, api, title, path) => {
-        return (
-            <div className='selectDrop' style={{ border: '2px solid rgb(202, 237, 114)' }}>
-                <Form style={{ display: 'flex', flexDirection: 'row' }}>
-                    <Form.Group width='equal'>
-                        <Form.Select
-                            options={ options }
-                            name={ name }
-                            placeholder={ placeholder}
-                            onChange={ async (e) => {
-                                var text = e.target.innerText
-                                var newTitle = text.replace(/'/g, "''")
-                                set([])
-                                getAll(text, api, set, title)
-                                getNotesByTitle(newTitle, path, set, title)
-                            }}
-                        />
-                    </Form.Group>
-                </Form>
-                <h3 style={{ margin: '0 0 6px 0', fontFamily: "'Montagu Slab', serif" }}>Showing { name } notes for:</h3>
-                <p style={{ margin: '0' }}>{ notesFor }</p>
-            </div>
-        )
     }
 
     return (
@@ -242,7 +184,9 @@ const NavMovies = () => {
                         <Icon name='plus' />
                     </Button>
                 </div>
+
                 <br /><br />
+
                 <div className='sbsButtons'>
                     <Button
                         inverted
@@ -339,7 +283,9 @@ const NavMovies = () => {
                         <Icon name='plus' />
                     </Button>
                 </div>
+
                 <br /><br />
+
                 <div className='sbsButtons'>
                     <Button
                         inverted
@@ -437,93 +383,124 @@ const NavMovies = () => {
                     </Button>
                 </div>
             </div>
+
             <div className='body'>
-                { bookShelf && <BookShelf 
-                    bookLib={ bookLib } 
-                    setBookLib={ setBookLib } 
-                    setBookShelf={ setBookShelf }
+                { bookShelf && <Shelf
+                    name='book'
+                    path='/deleteBook'
+                    lib={ bookLib }
+                    setLib={ setBookLib }
+                    setShelf={ setBookShelf }
                 /> }
                 { bookForm && <BookForm 
                     setBookForm={ setBookForm } 
                     setBookLib={ setBookLib } 
                 /> }
-                { bookNoteShelf && Select(
-                    books,
-                    'book',
-                    'Book',
-                    setBookNotes,
-                    apiBookNotes,
-                    setNotesFor,
-                    '/apiBookNotesByTitle')
+                { bookNoteShelf &&
+                    <div>
+                        <Dropdown
+                            options={ books }
+                            name='book'
+                            placeholder='Book'
+                            set={ setBookNotes }
+                            path={ '/apiBookNotesByTitle' }
+                            api={ apiBookNotes }
+                            border='202, 237, 114'
+                        />
+                        <NoteShelf
+                            path='/deleteBookNote'
+                            name='book'
+                            Notes={ bookNotes }
+                            setNoteShelf={ setBookNoteShelf }
+                            setNotes={ setBookNotes }
+                        />
+                    </div>
                 }
-                { bookNoteShelf && <BookNoteShelf 
-                    bookNotes={ bookNotes }
-                    setBookNoteShelf={ setBookNoteShelf }
-                    setBookNotes={ setBookNotes }
+                { bookNoteForm && <NoteForm
+                    name='book'
+                    lib={ books }
+                    path='/addBookNote'
+                    setNotes={ setBookNotes }
+                    setNoteForm={ setBookNoteForm }
                 /> }
-                { bookNoteForm && <BookNote
-                    books={ books }
-                    setBookNoteForm={ setBookNoteForm }
-                    setBookNotes={ setBookNotes }
-                />}
 
-                { movieShelf && <MovieShelf 
-                    movieLib={ movieLib }
-                    setMovieLib={ setMovieLib } 
-                    setMovieShelf={ setMovieShelf }
+                { movieShelf && <Shelf
+                    name='movie'
+                    path='/deleteMovie'
+                    lib={ movieLib }
+                    setLib={ setMovieLib }
+                    setShelf={ setMovieShelf }
                 /> }
                 { movieForm && <MovieForm
                     setMovieForm={ setMovieForm } 
                     setMovieLib={ setMovieLib }
                 /> }
-                { movieNoteShelf && Select(
-                    movies,
-                    'movie',
-                    'Movie',
-                    setMovieNotes,
-                    apiMovieNotes,
-                    setNotesFor,
-                    '/apiMovieNotesByTitle')
+                { movieNoteShelf &&
+                    <div>
+                        <Dropdown
+                            options={ movies }
+                            name='movie'
+                            placeholder='Movie'
+                            set={ setMovieNotes }
+                            path={ '/apiMovieNotesByTitle' }
+                            api={ apiMovieNotes }
+                            border='235, 229, 52'
+                        />
+                        <NoteShelf
+                            path='/deleteMovieNote'
+                            name='movie'
+                            Notes={ movieNotes }
+                            setNoteShelf={ setMovieNoteShelf }
+                            setNotes={ setMovieNotes }
+                        />
+                    </div>
                 }
-                { movieNoteShelf && <MovieNoteShelf
-                    movieNotes={ movieNotes }
-                    setMovieNoteShelf={ setMovieNoteShelf }
-                    setMovieNotes={ setMovieNotes }
-                /> }
-                { movieNoteForm && <MovieNote
-                    movies={ movies }
-                    setMovieNoteForm={ setMovieNoteForm }
-                    setMovieNotes={ setMovieNotes }
+                { movieNoteForm && <NoteForm
+                    name='movie'
+                    lib={ movies }
+                    path='/addMovieNote'
+                    setNotes={ setMovieNotes }
+                    setNoteForm={ setMovieNoteForm }
                 /> }
 
-                { showShelf && <ShowShelf
-                    showLib={ showLib }
-                    setShowLib={ setShowLib } 
-                    setShowShelf={ setShowShelf }
+                { showShelf && <Shelf
+                    name='show'
+                    path='/deleteShow'
+                    lib={ showLib }
+                    setLib={ setShowLib }
+                    setShelf={ setShowShelf }
                 /> }
                 { showForm && <ShowForm 
                     setShowForm={ setShowForm } 
                     setShowLib={ setShowLib }
                 /> }
-                { showNoteShelf && Select(
-                    shows,
-                    'show',
-                    'Show',
-                    setShowNotes,
-                    apiShowNotes,
-                    setNotesFor,
-                    '/apiShowNotesByTitle')
+                { showNoteShelf &&
+                    <div>
+                        <Dropdown
+                            options={ shows }
+                            name='show'
+                            placeholder='Show'
+                            set={ setShowNotes }
+                            path={ '/apiShowNotesByTitle' }
+                            api={ apiShowNotes }
+                            border='242, 129, 7'
+                        />
+                        <NoteShelf
+                            path='/deleteShowNote'
+                            name='show'
+                            Notes={ showNotes }
+                            setNoteShelf={ setShowNoteShelf }
+                            setNotes={ setShowNotes }
+                        />
+                    </div>
                 }
-                { showNoteShelf && <ShowNoteShelf
-                    showNotes={ showNotes }
-                    setShowNoteShelf={ setShowNoteShelf }
-                    setShowNotes={ setShowNotes }
+                { showNoteForm && <NoteForm
+                    name='show'
+                    lib={ shows }
+                    path='/addShowNote'
+                    setNotes={ setShowNotes }
+                    setNoteForm={ setShowNoteForm }
                 /> }
-                { showNoteForm && <ShowNote
-                    shows={ shows }
-                    setShowNoteForm={ setShowNoteForm }
-                    setShowNotes={ setShowNotes }
-                />}
             </div>
         </div>
     )
