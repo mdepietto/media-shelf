@@ -1,53 +1,59 @@
 import React, { useState } from 'react'
 import { Button, Icon } from 'semantic-ui-react'
+import PropagateLoader from "react-spinners/PropagateLoader";
+import { css } from "@emotion/react";
 
-import BookForm from '../forms/BookForm'
+import ScreenSaver from './components/ScreenSaver'
+import Dropdown from './components/Dropdown'
+import Shelf from './components/Shelf'
+import ShelfForm from './components/ShelfForm'
+import NoteShelf from './components/NoteShelf'
+import NoteForm from './components/NoteForm'
 
-import MovieForm from '../forms/MovieForm'
+import { apiBooks, apiBookNotes, apiMovies, apiMovieNotes, apiShows, apiShowNotes } from './back-end-calls/serverCalls'
 
-import ShowForm from '../forms/ShowForm'
+const MainPage = () => {
 
-import Dropdown from './Dropdown'
-import Shelf from '../shelves/Shelf'
-import NoteShelf from '../shelves/NoteShelf'
-import NoteForm from '../notes/NoteForm'
-
-import { apiBooks, apiBookNotes, apiMovies, apiMovieNotes, apiShows, apiShowNotes } from '../serverCalls'
-
-const NavMovies = () => {
+    const [ loading, setLoading ] = useState(false)
+    const [ screenSaver, setScreenSaver ] = useState(true)
 
     const [ bookShelf, setBookShelf ] = useState(false)
-    const [ bookCount, setBookCount ] = useState(0)
-    const [ bookLib, setBookLib ] = useState([])
     const [ bookForm, setBookForm ] = useState(false)
-    const [ bookNoteForm, setBookNoteForm ] = useState(false)
-    const [ books, setBooks ] = useState([{ key: 0, text: 'All', value: 0 }])
     const [ bookNoteShelf, setBookNoteShelf ] = useState(false)
-    const [ bookNoteCount, setBookNoteCount ] = useState(0)
-    const [ bookNotes, setBookNotes ] = useState([])
+    const [ bookNoteForm, setBookNoteForm ] = useState(false)
 
     const [ movieShelf, setMovieShelf ] = useState(false)
-    const [ movieCount, setMovieCount ] = useState(0)
-    const [ movieLib, setMovieLib ] = useState([])
     const [ movieForm, setMovieForm ] = useState(false)
     const [ movieNoteShelf, setMovieNoteShelf ] = useState(false)
-    const [ movieNoteCount, setMovieNoteCount ] = useState(0)
-    const [ movieNotes, setMovieNotes ] = useState([])
-    const [ movies, setMovies ] = useState([{ key: 0, text: 'All', value: 0 }])
     const [ movieNoteForm, setMovieNoteForm ] = useState(false)
 
     const [ showShelf, setShowShelf ] = useState(false)
-    const [ showCount, setShowCount ] = useState(0)
-    const [ showLib, setShowLib ] = useState([])
     const [ showForm, setShowForm ] = useState(false)
-    const [ showNoteForm, setShowNoteForm ] = useState(false)
-    const [ shows, setShows ] = useState([{ key: 0, text: 'All', value: 0 }])
     const [ showNoteShelf, setShowNoteShelf ] = useState(false)
-    const [ showNoteCount, setShowNoteCount ] = useState(0)
-    const [ showNotes, setShowNotes ] = useState([])
+    const [ showNoteForm, setShowNoteForm ] = useState(false)
 
-    const getCount = async (api, count) => {
-        const newData = await api()
+    const [ bookCount, setBookCount ] = useState(0)
+    const [ bookNoteCount, setBookNoteCount ] = useState(0)
+    const [ movieCount, setMovieCount ] = useState(0)
+    const [ movieNoteCount, setMovieNoteCount ] = useState(0)
+    const [ showCount, setShowCount ] = useState(0)
+    const [ showNoteCount, setShowNoteCount ] = useState(0)
+
+    const [ books, setBooks ] = useState([{ key: 0, text: 'All', value: 0 }])
+    const [ movies, setMovies ] = useState([{ key: 0, text: 'All', value: 0 }])
+    const [ shows, setShows ] = useState([{ key: 0, text: 'All', value: 0 }])
+
+    const [ library, setLibrary ] = useState([])
+    const [ noteLibrary, setNoteLibrary ] = useState([])
+
+    const override = css`
+        position: fixed;
+        top: 50%;
+        left: 63%;
+    `
+
+    const getCount = async (path, count) => {
+        const newData = await path()
         count(newData.length)
     }
     getCount(apiBooks, setBookCount)
@@ -57,13 +63,14 @@ const NavMovies = () => {
     getCount(apiShows, setShowCount)
     getCount(apiShowNotes, setShowNoteCount)
 
-    const getMedia = async (api, lib, setLib) => {
+    const getMedia = async (api) => {
+        setLoading(true)
+        setLibrary([])
         const newData = await api()
-        if (!lib[0]) {
-            newData.map(media => {
-                return setLib(prev => [ ...prev, media ])
-            })
-        }
+        newData.map(media => {
+            return setLibrary(prev => [ ...prev, media ])
+        })
+        setLoading(false)
     }
     
     const getDropdown = async (lib, api, setLib) => {
@@ -75,18 +82,20 @@ const NavMovies = () => {
         }
     }
 
-    const getNotesByAll = async (api, notes, noteLib) => {
+    const getNotesByAll = async (api) => {
+        setLoading(true)
+        setNoteLibrary([])
         const newData = await api()
-        if (!notes[0]) {
-            newData.map(media => {
-                media.note_date = media.note_date.slice(0, 10);
-                return noteLib(prev => [ ...prev, media ])
-            })
-        }
+        newData.map(media => {
+            media.note_date = media.note_date.slice(0, 10);
+            return setNoteLibrary(prev => [ ...prev, media ])
+        })
+        setLoading(false)
     }
 
     return (
         <div className='mainPage'>
+
             <div className='nav'>
                 <div className='sbsButtons'>
                     <Button
@@ -96,7 +105,8 @@ const NavMovies = () => {
                         style={{ width: '80%' }}
                         animated='fade'
                         onClick={ () => {
-                            setBookShelf(!bookShelf)
+                            setBookShelf(true)
+                            setScreenSaver(false)
                             setMovieShelf(false)
                             setMovieForm(false)
                             setMovieNoteShelf(false)
@@ -108,7 +118,7 @@ const NavMovies = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
-                            getMedia(apiBooks, bookLib, setBookLib)
+                            getMedia(apiBooks, setLibrary)
                         }}>
                         <Button.Content visible>Books</Button.Content>
                         <Button.Content hidden>{ bookCount }</Button.Content>
@@ -119,7 +129,8 @@ const NavMovies = () => {
                         size='big'
                         color='olive'
                         onClick={ () => {
-                            setBookForm(!bookForm)
+                            setBookForm(true)
+                            setScreenSaver(false)
                             setMovieShelf(false)
                             setMovieForm(false)
                             setMovieNoteShelf(false)
@@ -143,7 +154,8 @@ const NavMovies = () => {
                         style={{ width: '80%' }}
                         animated='fade'
                         onClick={ () => {
-                            setBookNoteShelf(!bookNoteShelf)
+                            setBookNoteShelf(true)
+                            setScreenSaver(false)
                             setMovieShelf(false)
                             setMovieForm(false)
                             setMovieNoteShelf(false)
@@ -156,7 +168,7 @@ const NavMovies = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             getDropdown(books, apiBooks, setBooks)
-                            getNotesByAll(apiBookNotes, bookNotes, setBookNotes)
+                            getNotesByAll(apiBookNotes)
                         }}>
                         <Button.Content visible>Book Notes</Button.Content>
                         <Button.Content hidden>{ bookNoteCount }</Button.Content>
@@ -167,7 +179,8 @@ const NavMovies = () => {
                         size='big'
                         color='olive'
                         onClick={ () => {
-                            setBookNoteForm(!bookNoteForm)
+                            setBookNoteForm(true)
+                            setScreenSaver(false)
                             setMovieShelf(false)
                             setMovieForm(false)
                             setMovieNoteShelf(false)
@@ -195,7 +208,8 @@ const NavMovies = () => {
                         style={{ width: '80%' }}
                         animated='fade'
                         onClick={ () => {
-                            setMovieShelf(!movieShelf)
+                            setMovieShelf(true)
+                            setScreenSaver(false)
                             setMovieForm(false)
                             setMovieNoteShelf(false)
                             setMovieNoteForm(false)
@@ -207,7 +221,7 @@ const NavMovies = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
-                            getMedia(apiMovies, movieLib, setMovieLib)
+                            getMedia(apiMovies, setLibrary)
                         }}>
                         <Button.Content visible>Movies</Button.Content>
                         <Button.Content hidden>{ movieCount }</Button.Content>
@@ -218,7 +232,8 @@ const NavMovies = () => {
                         size='big'
                         color='yellow'
                         onClick={ () => {
-                            setMovieForm(!movieForm)
+                            setMovieForm(true)
+                            setScreenSaver(false)
                             setMovieShelf(false)
                             setMovieNoteShelf(false)
                             setMovieNoteForm(false)
@@ -242,7 +257,8 @@ const NavMovies = () => {
                         style={{ width: '80%' }}
                         animated='fade'
                         onClick={ () => {
-                            setMovieNoteShelf(!movieNoteShelf)
+                            setMovieNoteShelf(true)
+                            setScreenSaver(false)
                             setMovieShelf(false)
                             setMovieForm(false)
                             setMovieNoteForm(false)
@@ -255,7 +271,7 @@ const NavMovies = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             getDropdown(movies, apiMovies, setMovies)
-                            getNotesByAll(apiMovieNotes, movieNotes, setMovieNotes)
+                            getNotesByAll(apiMovieNotes)
                         }}>
                         <Button.Content visible>Movie Notes</Button.Content>
                         <Button.Content hidden>{ movieNoteCount }</Button.Content>
@@ -266,7 +282,8 @@ const NavMovies = () => {
                         size='big'
                         color='yellow'
                         onClick={ () => {
-                            setMovieNoteForm(!movieNoteForm)
+                            setMovieNoteForm(true)
+                            setScreenSaver(false)
                             setMovieShelf(false)
                             setMovieForm(false)
                             setMovieNoteShelf(false)
@@ -294,7 +311,8 @@ const NavMovies = () => {
                         style={{ width: '80%' }}
                         animated='fade'
                         onClick={ () => {
-                            setShowShelf(!showShelf)
+                            setShowShelf(true)
+                            setScreenSaver(false)
                             setMovieShelf(false)
                             setMovieForm(false)
                             setMovieNoteShelf(false)
@@ -306,7 +324,7 @@ const NavMovies = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
-                            getMedia(apiShows, showLib, setShowLib)
+                            getMedia(apiShows, setLibrary)
                         }}>
                         <Button.Content visible>Shows</Button.Content>
                         <Button.Content hidden>{ showCount }</Button.Content>
@@ -317,7 +335,8 @@ const NavMovies = () => {
                         size='big'
                         color='orange'
                         onClick={ () => {
-                            setShowForm(!showForm)
+                            setShowForm(true)
+                            setScreenSaver(false)
                             setMovieShelf(false)
                             setMovieForm(false)
                             setMovieNoteShelf(false)
@@ -341,7 +360,8 @@ const NavMovies = () => {
                         style={{ width: '80%' }}
                         animated='fade'
                         onClick={ () => {
-                            setShowNoteShelf(!showNoteShelf)
+                            setShowNoteShelf(true)
+                            setScreenSaver(false)
                             setMovieShelf(false)
                             setMovieForm(false)
                             setMovieNoteShelf(false)
@@ -354,7 +374,7 @@ const NavMovies = () => {
                             setShowForm(false)
                             setShowNoteForm(false)
                             getDropdown(shows, apiShows, setShows)
-                            getNotesByAll(apiShowNotes, showNotes, setShowNotes)
+                            getNotesByAll(apiShowNotes)
                         }}>
                         <Button.Content visible>Show Notes</Button.Content>
                         <Button.Content hidden>{ showNoteCount }</Button.Content>
@@ -365,7 +385,8 @@ const NavMovies = () => {
                         size='big'
                         color='orange'
                         onClick={ () => {
-                            setShowNoteForm(!showNoteForm)
+                            setShowNoteForm(true)
+                            setScreenSaver(false)
                             setMovieShelf(false)
                             setMovieForm(false)
                             setMovieNoteShelf(false)
@@ -383,127 +404,141 @@ const NavMovies = () => {
                     </Button>
                 </div>
             </div>
+            
+            { screenSaver && <ScreenSaver /> }
 
-            <div className='body'>
-                { bookShelf && <Shelf
-                    name='book'
-                    path='/deleteBook'
-                    lib={ bookLib }
-                    setLib={ setBookLib }
-                    setShelf={ setBookShelf }
-                /> }
-                { bookForm && <BookForm 
-                    setBookForm={ setBookForm } 
-                    setBookLib={ setBookLib } 
-                /> }
-                { bookNoteShelf &&
-                    <div>
-                        <Dropdown
-                            options={ books }
-                            name='book'
-                            placeholder='Book'
-                            set={ setBookNotes }
-                            path={ '/apiBookNotesByTitle' }
-                            api={ apiBookNotes }
-                            border='202, 237, 114'
-                        />
-                        <NoteShelf
-                            path='/deleteBookNote'
-                            name='book'
-                            Notes={ bookNotes }
-                            setNoteShelf={ setBookNoteShelf }
-                            setNotes={ setBookNotes }
-                        />
-                    </div>
-                }
-                { bookNoteForm && <NoteForm
-                    name='book'
-                    lib={ books }
-                    path='/addBookNote'
-                    setNotes={ setBookNotes }
-                    setNoteForm={ setBookNoteForm }
-                /> }
+            { loading ? <PropagateLoader color={ 'rgb(193, 255, 38)' } css={ override } loading={ loading } size={ 30 } /> :
+                <div className='body'>
+                    { bookShelf && <Shelf
+                        name='book'
+                        path='/deleteBook'
+                        lib={ library }
+                        setLib={ setLibrary }
+                        setShelf={ setBookShelf }
+                    /> }
+                    { bookForm && <ShelfForm
+                        path='/addBook'
+                        name='book'
+                        setForm={ setBookForm } 
+                        setLib={ setLibrary }
+                    /> }
+                    { bookNoteShelf &&
+                        <div>
+                            <Dropdown
+                                options={ books }
+                                name='book'
+                                placeholder='Book'
+                                set={ setNoteLibrary }
+                                path={ '/apiBookNotesByTitle' }
+                                api={ apiBookNotes }
+                                border='202, 237, 114'
+                                setLoading= { setLoading }
+                            />
+                            <NoteShelf
+                                path='/deleteBookNote'
+                                name='book'
+                                Notes={ noteLibrary }
+                                setNoteShelf={ setBookNoteShelf }
+                                setNotes={ setNoteLibrary }
+                            />
+                        </div>
+                    }
+                    { bookNoteForm && <NoteForm
+                        name='book'
+                        lib={ books }
+                        path='/addBookNote'
+                        setNotes={ setNoteLibrary }
+                        setNoteForm={ setBookNoteForm }
+                    /> }
 
-                { movieShelf && <Shelf
-                    name='movie'
-                    path='/deleteMovie'
-                    lib={ movieLib }
-                    setLib={ setMovieLib }
-                    setShelf={ setMovieShelf }
-                /> }
-                { movieForm && <MovieForm
-                    setMovieForm={ setMovieForm } 
-                    setMovieLib={ setMovieLib }
-                /> }
-                { movieNoteShelf &&
-                    <div>
-                        <Dropdown
-                            options={ movies }
-                            name='movie'
-                            placeholder='Movie'
-                            set={ setMovieNotes }
-                            path={ '/apiMovieNotesByTitle' }
-                            api={ apiMovieNotes }
-                            border='235, 229, 52'
-                        />
-                        <NoteShelf
-                            path='/deleteMovieNote'
-                            name='movie'
-                            Notes={ movieNotes }
-                            setNoteShelf={ setMovieNoteShelf }
-                            setNotes={ setMovieNotes }
-                        />
-                    </div>
-                }
-                { movieNoteForm && <NoteForm
-                    name='movie'
-                    lib={ movies }
-                    path='/addMovieNote'
-                    setNotes={ setMovieNotes }
-                    setNoteForm={ setMovieNoteForm }
-                /> }
+                    { movieShelf && <Shelf
+                        name='movie'
+                        path='/deleteMovie'
+                        lib={ library }
+                        setLib={ setLibrary }
+                        setShelf={ setMovieShelf }
+                    /> }
+                    { movieForm && <ShelfForm
+                        path='/addMovie'
+                        name='movie'
+                        setForm={ setMovieForm } 
+                        setLib={ setLibrary }
+                    /> }
+                    { movieNoteShelf &&
+                        <div>
+                            <Dropdown
+                                options={ movies }
+                                name='movie'
+                                placeholder='Movie'
+                                set={ setNoteLibrary }
+                                path={ '/apiMovieNotesByTitle' }
+                                api={ apiMovieNotes }
+                                border='235, 229, 52'
+                                setLoading= { setLoading }
+                            />
+                            <NoteShelf
+                                path='/deleteMovieNote'
+                                name='movie'
+                                Notes={ noteLibrary }
+                                setNoteShelf={ setMovieNoteShelf }
+                                setNotes={ setNoteLibrary }
+                            />
+                        </div>
+                    }
+                    { movieNoteForm && <NoteForm
+                        name='movie'
+                        lib={ movies }
+                        path='/addMovieNote'
+                        setNotes={ setNoteLibrary }
+                        setNoteForm={ setMovieNoteForm }
+                    /> }
 
-                { showShelf && <Shelf
-                    name='show'
-                    path='/deleteShow'
-                    lib={ showLib }
-                    setLib={ setShowLib }
-                    setShelf={ setShowShelf }
-                /> }
-                { showForm && <ShowForm 
-                    setShowForm={ setShowForm } 
-                    setShowLib={ setShowLib }
-                /> }
-                { showNoteShelf &&
-                    <div>
-                        <Dropdown
-                            options={ shows }
-                            name='show'
-                            placeholder='Show'
-                            set={ setShowNotes }
-                            path={ '/apiShowNotesByTitle' }
-                            api={ apiShowNotes }
-                            border='242, 129, 7'
-                        />
-                        <NoteShelf
-                            path='/deleteShowNote'
-                            name='show'
-                            Notes={ showNotes }
-                            setNoteShelf={ setShowNoteShelf }
-                            setNotes={ setShowNotes }
-                        />
-                    </div>
-                }
-                { showNoteForm && <NoteForm
-                    name='show'
-                    lib={ shows }
-                    path='/addShowNote'
-                    setNotes={ setShowNotes }
-                    setNoteForm={ setShowNoteForm }
-                /> }
-            </div>
+                    { showShelf && <Shelf
+                        name='show'
+                        path='/deleteShow'
+                        lib={ library }
+                        setLib={ setLibrary }
+                        setShelf={ setShowShelf }
+                    /> }
+                    { showForm && <ShelfForm
+                        path='/addShow'
+                        name='show'
+                        setForm={ setShowForm } 
+                        setLib={ setLibrary }
+                    /> }
+                    { showNoteShelf &&
+                        <div>
+                            <Dropdown
+                                options={ shows }
+                                name='show'
+                                placeholder='Show'
+                                set={ setNoteLibrary }
+                                path={ '/apiShowNotesByTitle' }
+                                api={ apiShowNotes }
+                                border='242, 129, 7'
+                                setLoading= { setLoading }
+                            />
+                            <NoteShelf
+                                path='/deleteShowNote'
+                                name='show'
+                                Notes={ noteLibrary }
+                                setNoteShelf={ setShowNoteShelf }
+                                setNotes={ setNoteLibrary }
+                            />
+                        </div>
+                    }
+                    { showNoteForm && <NoteForm
+                        name='show'
+                        lib={ shows }
+                        path='/addShowNote'
+                        setNotes={ setNoteLibrary }
+                        setNoteForm={ setShowNoteForm }
+                    /> }
+                </div>
+            }
+
         </div>
     )
 }
 
-export default NavMovies
+export default MainPage

@@ -41,7 +41,7 @@ const NoteShelf = (props) => {
                 return (
                     <div className='shelf' key={ note.id } style={{ border: '2px solid rgb(202, 237, 114)' }}>
                         <p style={{ fontSize: '1.1rem' }}>{ note.note_date }</p>
-                        <p style={{ margin: '.5rem' }}><i>{ note.note_type }</i> for <i>{ note.title }</i> on page { note.note_page }</p>
+                        <p style={{ margin: '.5rem' }}><i>{ note.note_type }</i> for <i>{ note.title }</i> on chapter { note.note_chapter } page { note.note_page }</p>
                         <p>"{ note.note_body }"</p>
                         <DeleteButton note={ note } setNoteShelf={ props.setNoteShelf } setNotes={ props.setNotes } />
                     </div>

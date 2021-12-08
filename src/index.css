@@ -27,9 +27,21 @@ p {
   margin: 2rem 4rem 0 0;
 }
 
+.ScreenSaver {
+  float: right;
+  margin: 11rem 5rem 0 0;
+  width: 60%;
+  padding: 4rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color:rgb(238, 238, 238);
+  background-color: rgba(27, 24, 24, 0.8);
+  border-radius: 20px;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
-  
 }
 
 ::-webkit-scrollbar-track {
@@ -104,4 +116,10 @@ p {
 .shelfTitles {
   font-size: 2.5rem;
   font-family: 'Montagu Slab', serif;
+}
+
+.NavTop {
+  position: fixed;
+  right: 8%;
+  bottom: 8%;
 }

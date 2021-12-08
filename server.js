@@ -1,9 +1,13 @@
 const express = require('express')
 const app = express()
 const PORT = 6500
-const query = require('./src/SQLQueries') 
+const query = require('./src/back-end-calls/SQLQueries') 
+const cors = require('cors')
+const bodyParser = require('body-parser')
 
 app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cors())
 
 app.get('/apiBooks', async (req, res) => {
     const data = await query.getBooks()
@@ -55,6 +59,7 @@ app.get('/apiMovies', async (req, res) => {
 
 app.post('/addMovie', async (req, res) => {
     await query.addMovie(req.body)
+    console.log('Movie added...');
     const data = await query.getMovies()
     res.send(data.recordset)
 })

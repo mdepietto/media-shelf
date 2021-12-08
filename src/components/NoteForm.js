@@ -3,7 +3,7 @@ import { Form, Input, TextArea, Button } from 'semantic-ui-react'
 
 function NoteForm(props) {
 
-    const [ data, setData ] = useState([])
+    const [ data, setData ] = useState({ title: '', note_body: '' })
 
     var noAll = [ ...props.lib ]
     noAll.shift()
@@ -54,30 +54,6 @@ function NoteForm(props) {
         .then(res => res.json())
     }
 
-    const NoteType = () => {
-        return (
-            <Form.Select
-                label='Type of Note'
-                options={ optionsNote }
-                name='note_type'
-                placeholder='Note'
-                onChange={ getType }
-            />
-        )
-    }
-
-    const NoteBody = () => {
-        return (
-            <Form.Field
-                style={{ height: '10rem' }}
-                control={ TextArea }
-                label='Your Note'
-                name='note_body'
-                onChange={ handleChange }
-            />
-        )
-    }
-
     const EndButtons = (props) => {
         return (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -123,15 +99,37 @@ function NoteForm(props) {
                         control={ Input }
                         type='number'
                         min={ 1 }
+                        label='Chapter'
+                        name='note_chapter'
+                        placeholder='#'
+                        onChange={ handleChange }
+                    />
+                    <br />
+                    <Form.Field
+                        control={ Input }
+                        type='number'
+                        min={ 1 }
                         label='Page'
                         name='note_page'
                         placeholder='#'
                         onChange={ handleChange }
                     />
                     <br />
-                    <NoteType />
+                    <Form.Select
+                        label='Type of Note'
+                        options={ optionsNote }
+                        name='note_type'
+                        placeholder='Note'
+                        onChange={ getType }
+                    />
                 </Form.Group>
-                <NoteBody />
+                <Form.Field
+                    style={{ height: '10rem' }}
+                    control={ TextArea }
+                    label='Your Note'
+                    name='note_body'
+                    onChange={ handleChange }
+                />
                 <EndButtons setNotes={ props.setNotes } setNoteForm={ props.setNoteForm } />
             </Form>
         )
@@ -159,9 +157,21 @@ function NoteForm(props) {
                         onChange={ handleChange }
                     />
                     <br />
-                    <NoteType />
+                    <Form.Select
+                        label='Type of Note'
+                        options={ optionsNote }
+                        name='note_type'
+                        placeholder='Note'
+                        onChange={ getType }
+                    />
                 </Form.Group>
-                <NoteBody />
+                <Form.Field
+                    style={{ height: '10rem' }}
+                    control={ TextArea }
+                    label='Your Note'
+                    name='note_body'
+                    onChange={ handleChange }
+                />
                 <EndButtons setNotes={ props.setNotes } setNoteForm={ props.setNoteForm } />
             </Form>
         )
@@ -199,9 +209,21 @@ function NoteForm(props) {
                         onChange={ handleChange }
                     />
                     <br />
-                    <NoteType />
+                    <Form.Select
+                        label='Type of Note'
+                        options={ optionsNote }
+                        name='note_type'
+                        placeholder='Note'
+                        onChange={ getType }
+                    />
                 </Form.Group>
-                <NoteBody />
+                <Form.Field
+                    style={{ height: '10rem' }}
+                    control={ TextArea }
+                    label='Your Note'
+                    name='note_body'
+                    onChange={ handleChange }
+                />
                 <EndButtons setNotes={ props.setNotes } setNoteForm={ props.setNoteForm } />
             </Form>
         )

@@ -43,6 +43,7 @@ const Shelf = (props) => {
                         <div className='shelf' key={ book.id } style={{ border: '2px solid rgb(202, 237, 114)' }}>
                             <h3 className='shelfTitles'>{ props.lib.indexOf(book) + 1 }:   { book.title }</h3>
                             <p style={{ margin: '.5rem' }}><i>Author:</i> { book.author }</p>
+                            <p style={{ margin: '.5rem' }}><i>Chapters:</i> { book.chapters }</p>
                             <p style={{ margin: '.5rem' }}><i>Pages:</i> { book.pages }</p>
                             <p style={{ margin: '.5rem' }}><i>Rating:</i> { book.rating }</p>
                             <br />
