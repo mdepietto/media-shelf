@@ -1,17 +1,23 @@
 const express = require('express')
 const app = express()
 const PORT = 6500
-const query = require('./src/back-end-calls/SQLQueries') 
-const cors = require('cors')
+const query = require('./src/back-end-calls/SQLQueries')
 const bodyParser = require('body-parser')
 
-app.use(express.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(cors())
+const { con } = require('./db')
+const mysql = require('mysql')
 
-app.get('/apiBooks', async (req, res) => {
-    const data = await query.getBooks()
-    res.send(data.recordset)
+app.use(express.json())
+app.use(bodyParser.json())
+
+const db = mysql.createConnection(con)
+
+// clean that up
+app.get('/apiBooks', (req, res) => {
+    db.query('SELECT * FROM Books', (err, rows, fields) => {
+        if (!err) res.send(rows)
+        else console.log(err)
+    })
 })
 
 app.post('/addBook', async (req, res) => {

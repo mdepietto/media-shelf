@@ -1,4 +1,4 @@
-const db = require('../../db')
+const { db } = require('../../db')
 const sql = require('mssql')
 
 dbCall = async (data, call) => {
@@ -12,7 +12,7 @@ dbCall = async (data, call) => {
 }
 
 // book calls
-exports.getBooks = () => dbCall(null, `SELECT * FROM Books`)
+// exports.getBooks = () => dbCall(null, `SELECT * FROM Books`)
 
 exports.addBook = (book) => dbCall(book, `INSERT INTO Books VALUES
     ('${ book.title }', '${ book.author }', ${ book.pages }, ${ book.rating }, ${ book.chapters })
