@@ -10,6 +10,11 @@ import ShelfForm from './components/ShelfForm'
 import NoteShelf from './components/NoteShelf'
 import NoteForm from './components/NoteForm'
 
+import Sort from './components/Sort'
+
+import NavTop from './components/NavTop'
+import NavBottom from './components/NavBottom'
+
 import { apiBooks, apiBookNotes, apiMovies, apiMovieNotes, apiShows, apiShowNotes } from './back-end-calls/serverCalls'
 
 const MainPage = () => {
@@ -31,6 +36,8 @@ const MainPage = () => {
     const [ showForm, setShowForm ] = useState(false)
     const [ showNoteShelf, setShowNoteShelf ] = useState(false)
     const [ showNoteForm, setShowNoteForm ] = useState(false)
+
+    const [ navButtons, setNavButtons ] = useState(false)
 
     const [ bookCount, setBookCount ] = useState(0)
     const [ bookNoteCount, setBookNoteCount ] = useState(0)
@@ -87,7 +94,7 @@ const MainPage = () => {
         setNoteLibrary([])
         const newData = await api()
         newData.map(media => {
-            media.note_date = media.note_date.slice(0, 10);
+            // media.note_date = media.note_date.slice(0, 10);
             return setNoteLibrary(prev => [ ...prev, media ])
         })
         setLoading(false)
@@ -95,6 +102,9 @@ const MainPage = () => {
 
     return (
         <div className='mainPage'>
+
+            { navButtons && <NavTop /> }
+            { navButtons && <NavBottom /> }
 
             <div className='nav'>
                 <div className='sbsButtons'>
@@ -118,6 +128,7 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
+                            setNavButtons(true)
                             getMedia(apiBooks, setLibrary)
                         }}>
                         <Button.Content visible>Books</Button.Content>
@@ -142,6 +153,7 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
+                            setNavButtons(false)
                         }}>
                         <Icon name='plus' />
                     </Button>
@@ -167,6 +179,7 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
+                            setNavButtons(true)
                             getDropdown(books, apiBooks, setBooks)
                             getNotesByAll(apiBookNotes)
                         }}>
@@ -192,6 +205,7 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
+                            setNavButtons(false)
                             getDropdown(books, apiBooks, setBooks)
                         }}>
                         <Icon name='plus' />
@@ -221,6 +235,7 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
+                            setNavButtons(true)
                             getMedia(apiMovies, setLibrary)
                         }}>
                         <Button.Content visible>Movies</Button.Content>
@@ -245,6 +260,7 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
+                            setNavButtons(false)
                         }}>
                         <Icon name='plus' />
                     </Button>
@@ -270,6 +286,7 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
+                            setNavButtons(true)
                             getDropdown(movies, apiMovies, setMovies)
                             getNotesByAll(apiMovieNotes)
                         }}>
@@ -295,6 +312,7 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
+                            setNavButtons(false)
                             getDropdown(movies, apiMovies, setMovies)
                         }}>
                         <Icon name='plus' />
@@ -324,6 +342,7 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
+                            setNavButtons(true)
                             getMedia(apiShows, setLibrary)
                         }}>
                         <Button.Content visible>Shows</Button.Content>
@@ -348,6 +367,7 @@ const MainPage = () => {
                             setShowShelf(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
+                            setNavButtons(false)
                         }}>
                         <Icon name='plus' />
                     </Button>
@@ -373,6 +393,7 @@ const MainPage = () => {
                             setShowShelf(false)
                             setShowForm(false)
                             setShowNoteForm(false)
+                            setNavButtons(true)
                             getDropdown(shows, apiShows, setShows)
                             getNotesByAll(apiShowNotes)
                         }}>
@@ -398,6 +419,7 @@ const MainPage = () => {
                             setShowShelf(false)
                             setShowForm(false)
                             setShowNoteShelf(false)
+                            setNavButtons(false)
                             getDropdown(shows, apiShows, setShows)
                         }}>
                         <Icon name='plus' />
@@ -409,13 +431,24 @@ const MainPage = () => {
 
             { loading ? <PropagateLoader color={ 'rgb(193, 255, 38)' } css={ override } loading={ loading } size={ 30 } /> :
                 <div className='body'>
-                    { bookShelf && <Shelf
-                        name='book'
-                        path='/deleteBook'
-                        lib={ library }
-                        setLib={ setLibrary }
-                        setShelf={ setBookShelf }
-                    /> }
+                    { bookShelf && 
+                        <div>
+                            <Sort
+                                name='books'
+                                lib={ library }
+                                setLib={ setLibrary }
+                                border='202, 237, 114'
+                            />
+                            <Shelf
+                                name='book'
+                                path='/deleteBook'
+                                lib={ library }
+                                setLib={ setLibrary }
+                                setShelf={ setBookShelf }
+                                sortPath='/booksByTitle'
+                            />
+                        </div>
+                    }
                     { bookForm && <ShelfForm
                         path='/addBook'
                         name='book'
@@ -451,13 +484,23 @@ const MainPage = () => {
                         setNoteForm={ setBookNoteForm }
                     /> }
 
-                    { movieShelf && <Shelf
-                        name='movie'
-                        path='/deleteMovie'
-                        lib={ library }
-                        setLib={ setLibrary }
-                        setShelf={ setMovieShelf }
-                    /> }
+                    { movieShelf && 
+                        <div>
+                            <Sort
+                                name='movies'
+                                lib={ library }
+                                setLib={ setLibrary }
+                                border='235, 229, 52'
+                            />
+                            <Shelf
+                                name='movie'
+                                path='/deleteMovie'
+                                lib={ library }
+                                setLib={ setLibrary }
+                                setShelf={ setMovieShelf }
+                            />
+                        </div>
+                    }
                     { movieForm && <ShelfForm
                         path='/addMovie'
                         name='movie'
@@ -493,13 +536,23 @@ const MainPage = () => {
                         setNoteForm={ setMovieNoteForm }
                     /> }
 
-                    { showShelf && <Shelf
-                        name='show'
-                        path='/deleteShow'
-                        lib={ library }
-                        setLib={ setLibrary }
-                        setShelf={ setShowShelf }
-                    /> }
+                    { showShelf && 
+                        <div>
+                            <Sort
+                                name='shows'
+                                lib={ library }
+                                setLib={ setLibrary }
+                                border='242, 129, 7'
+                            />
+                            <Shelf
+                                name='show'
+                                path='/deleteShow'
+                                lib={ library }
+                                setLib={ setLibrary }
+                                setShelf={ setShowShelf }
+                            />
+                        </div>
+                    }
                     { showForm && <ShelfForm
                         path='/addShow'
                         name='show'

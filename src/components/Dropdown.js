@@ -9,7 +9,7 @@ const Dropdown = (props) => {
         if (title === 'All') {
             const newData = await path()
             newData.map(media => {
-                media.note_date = media.note_date.slice(0, 10)
+                // media.note_date = media.note_date.slice(0, 10)
                 return setPath(prev => [ ...prev, media ])
             })
             setPathFor(title)
@@ -26,7 +26,7 @@ const Dropdown = (props) => {
         })
         .then(res => res.json())
         newData.map(media => {
-            media.note_date = media.note_date.slice(0, 10)
+            // media.note_date = media.note_date.slice(0, 10)
             return noteLib(prev => [ ...prev, media ])
         })
         noteFor(title)

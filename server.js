@@ -1,7 +1,6 @@
 const express = require('express')
 const app = express()
 const PORT = 6500
-const query = require('./src/back-end-calls/SQLQueries')
 const bodyParser = require('body-parser')
 
 const { con } = require('./db')
@@ -11,137 +10,253 @@ app.use(express.json())
 app.use(bodyParser.json())
 
 const db = mysql.createConnection(con)
+const calls = require('./src/back-end-calls/SQLCalls')
 
-// clean that up
+const noReturnCall = (call) => {
+    db.query(call, (err) => { if (err) console.log(err) })
+}
+
 app.get('/apiBooks', (req, res) => {
-    db.query('SELECT * FROM Books', (err, rows, fields) => {
-        if (!err) res.send(rows)
-        else console.log(err)
+    db.query(calls.bookLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
     })
 })
 
-app.post('/addBook', async (req, res) => {
-    await query.addBook(req.body)
+app.get('/booksByTitle', (req, res) => {
+    db.query(calls.booksByTitle, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
+})
+
+app.get('/booksByRating', (req, res) => {
+    db.query(calls.booksByRating, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
+})
+
+app.post('/addBook', (req, res) => {
+    const addBook = `INSERT INTO Books (title, author, chapters, pages, rating)
+        VALUES ('${ req.body.title }', '${ req.body.author }', ${ req.body.chapters }, ${ req.body.pages }, ${ req.body.rating })
+    `
+    noReturnCall(addBook)
     console.log('Book added...');
-    const data = await query.getBooks()
-    res.send(data.recordset)
+    db.query(calls.bookLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.post('/deleteBook', async (req, res) => {
-    await query.deleteBook(Object.values(req.body))
-    console.log('Book deleted...');
-    const data = await query.getBooks()
-    res.send(data.recordset)
+app.post('/deleteBook', (req, res) => {
+    const deleteBook = `DELETE FROM Books WHERE id = '${ Object.values(req.body) }'`
+    noReturnCall(deleteBook)
+    console.log('Book deleted...')
+    db.query(calls.bookLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.get('/apiBookNotes', async (req, res) => {
-    const data = await query.getBookNotes()
-    res.send(data.recordset)
+app.get('/apiBookNotes', (req, res) => {
+    db.query(calls.bookNotesLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.post('/apiBookNotesByTitle', async (req, res) => {
-    const data = await query.getBookNotesByTitle(req.body.title)
-    res.send(data.recordset)
+app.post('/apiBookNotesByTitle', (req, res) => {
+    const bookTitle = `SELECT * FROM Book_Notes WHERE title = '${ req.body.title }'`
+    db.query(bookTitle, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.post('/addBookNote', async (req, res) => {
-    await query.addBookNote(req.body)
+app.post('/addBookNote', (req, res) => {
+    const addBookNote = `INSERT INTO Book_Notes (title, note_type, note_chapter, note_page, note_body)
+        VALUES
+            ('${ req.body.title }', '${ req.body.note_type }', ${ req.body.note_chapter }, ${ req.body.note_page }, '${ req.body.note_body }')
+    `
+    noReturnCall(addBookNote)
     console.log('Note saved to database...');
-    const data = await query.getBooks()
-    res.send(data.recordset)
+    db.query(calls.bookNotesLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.post('/deleteBookNote', async (req, res) => {
-    await query.deleteBookNote(Object.values(req.body))
+app.post('/deleteBookNote', (req, res) => {
+    const deleteBookNote = `DELETE FROM Book_Notes WHERE id = '${ Object.values(req.body) }'`
+    noReturnCall(deleteBookNote)
     console.log('Book note deleted...');
-    const data = await query.getBooks()
-    res.send(data.recordset)
+    db.query(calls.bookNotesLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.get('/apiMovies', async (req, res) => {
-    const data = await query.getMovies()
-    res.send(data.recordset)
+app.get('/apiMovies', (req, res) => {
+    db.query(calls.movieLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.post('/addMovie', async (req, res) => {
-    await query.addMovie(req.body)
+app.get('/moviesByTitle', (req, res) => {
+    db.query(calls.moviesByTitle, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
+})
+
+app.get('/moviesByRating', (req, res) => {
+    db.query(calls.moviesByRating, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
+})
+
+app.post('/addMovie', (req, res) => {
+    const addMovie = `INSERT INTO Movies (title, director, minutes, rating)
+        VALUES ('${ req.body.title }', '${ req.body.director }', ${ req.body.minutes }, ${ req.body.rating })
+    `
+    noReturnCall(addMovie)
     console.log('Movie added...');
-    const data = await query.getMovies()
-    res.send(data.recordset)
+    db.query(calls.movieLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.post('/deleteMovie', async (req, res) => {
-    await query.deleteMovie(Object.values(req.body))
-    console.log('Movie deleted...');
-    const data = await query.getMovies()
-    res.send(data.recordset)
+app.post('/deleteMovie', (req, res) => {
+    const deleteMovie = `DELETE FROM Movies WHERE id = '${ Object.values(req.body) }'`
+    noReturnCall(deleteMovie)
+    console.log('Movie deleted...')
+    db.query(calls.movieLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.get('/apiMovieNotes', async (req, res) => {
-    const data = await query.getMovieNotes()
-    res.send(data.recordset)
+app.get('/apiMovieNotes', (req, res) => {
+    db.query(calls.movieNotesLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.post('/apiMovieNotesByTitle', async (req, res) => {
-    const data = await query.getMovieNotesByTitle(req.body.title)
-    res.send(data.recordset)
+app.post('/apiMovieNotesByTitle', (req, res) => {
+    const movieTitle = `SELECT * FROM Movie_Notes WHERE title = '${ req.body.title }'`
+    db.query(movieTitle, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.post('/addMovieNote', async (req, res) => {
-    await query.addMovieNote(req.body)
+app.post('/addMovieNote', (req, res) => {
+    const addMovieNote = `INSERT INTO Movie_Notes (title, note_type, note_minute, note_body)
+        VALUES
+            ('${ req.body.title }', '${ req.body.note_type }', ${ req.body.note_minute }, '${ req.body.note_body }')
+    `
+    noReturnCall(addMovieNote)
     console.log('Note saved to database...');
-    const data = await query.getMovies()
-    res.send(data.recordset)
+    db.query(calls.movieNotesLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.post('/deleteMovieNote', async (req, res) => {
-    await query.deleteMovieNote(Object.values(req.body))
+app.post('/deleteMovieNote', (req, res) => {
+    const deleteMovieNote = `DELETE FROM Movie_Notes WHERE id = '${ Object.values(req.body) }'`
+    noReturnCall(deleteMovieNote)
     console.log('Movie note deleted...');
-    const data = await query.getMovies()
-    res.send(data.recordset)
+    db.query(calls.movieNotesLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.get('/apiShows', async (req, res) => {
-    const data = await query.getShows()
-    res.send(data.recordset)
+app.get('/apiShows', (req, res) => {
+    db.query(calls.showLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.post('/addShow', async (req, res) => {
-    await query.addShow(req.body)
+app.get('/showsByTitle', (req, res) => {
+    db.query(calls.showsByTitle, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
+})
+
+app.get('/showsByRating', (req, res) => {
+    db.query(calls.showsByRating, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
+})
+
+app.post('/addShow', (req, res) => {
+    const addShow = `INSERT INTO Shows (title, seasons, rating)
+        VALUES ('${ req.body.title }', ${ req.body.seasons }, ${ req.body.rating })
+    `
+    noReturnCall(addShow)
     console.log('Show added...');
-    const data = await query.getShows()
-    res.send(data.recordset)
+    db.query(calls.showLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.post('/deleteShow', async (req, res) => {
-    await query.deleteShow(Object.values(req.body))
-    console.log('Show deleted...');
-    const data = await query.getShows()
-    res.send(data.recordset)
+app.post('/deleteShow', (req, res) => {
+    const deleteShow = `DELETE FROM Shows WHERE id = '${ Object.values(req.body) }'`
+    noReturnCall(deleteShow)
+    console.log('Show deleted...')
+    db.query(calls.showLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.get('/apiShowNotes', async (req, res) => {
-    const data = await query.getShowNotes()
-    res.send(data.recordset)
+app.get('/apiShowNotes', (req, res) => {
+    db.query(calls.showNotesLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.post('/apiShowNotesByTitle', async (req, res) => {
-    const data = await query.getShowNotesByTitle(req.body.title)
-    res.send(data.recordset)
+app.post('/apiShowNotesByTitle', (req, res) => {
+    const showTitle = `SELECT * FROM Show_Notes WHERE title = '${ req.body.title }'`
+    db.query(showTitle, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.post('/addShowNote', async (req, res) => {
-    await query.addShowNote(req.body)
+app.post('/addShowNote', (req, res) => {
+    const addShowNote = `INSERT INTO Show_Notes (title, note_type, note_season, note_episode, note_body)
+        VALUES
+            ('${ req.body.title }', '${ req.body.note_type }', ${ req.body.note_season }, ${ req.body.note_episode }, '${ req.body.note_body }')
+    `
+    noReturnCall(addShowNote)
     console.log('Note saved to database...');
-    const data = await query.getShows()
-    res.send(data.recordset)
+    db.query(calls.showNotesLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
-app.post('/deleteShowNote', async (req, res) => {
-    await query.deleteShowNote(Object.values(req.body))
+app.post('/deleteShowNote', (req, res) => {
+    const deleteShowNote = `DELETE FROM Show_Notes WHERE id = '${ Object.values(req.body) }'`
+    noReturnCall(deleteShowNote)
     console.log('Show note deleted...');
-    const data = await query.getShows()
-    res.send(data.recordset)
+    db.query(calls.showNotesLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
 })
 
 app.listen(PORT, () => {

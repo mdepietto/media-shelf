@@ -3,7 +3,7 @@ import { Form, Input, Rating, Button } from 'semantic-ui-react'
 
 function ShelfForm(props) {
 
-    const [ data, setData ] = useState({ title: '', author: '' })
+    const [ data, setData ] = useState({ author: null, chapters: null, pages: null, rating: null, director: null, minutes: null, seasons: null })
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -22,10 +22,13 @@ function ShelfForm(props) {
     }
 
     const sqlApostrophe = () => {
+        if (data.author === null || data.title === null || data.director === null) { return }
         var newTitle = data.title.replace(/'/g, "''")
-        var newDirector = data.author.replace(/'/g, "''")
+        var newAuthor = data.author.replace(/'/g, "''")
+        var newDirector = data.director.replace(/'/g, "''")
         data.title = newTitle
-        data.author = newDirector
+        data.author = newAuthor
+        data.director = newDirector
     }
 
     var addMedia = async () => {
@@ -74,6 +77,7 @@ function ShelfForm(props) {
             <Form className='mediaForm' inverted style={{ border: '2px solid rgb(202, 237, 114)' }}>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
                     <Form.Field
+                        required
                         control={ Input }
                         type='text'
                         label='Title'
@@ -131,6 +135,7 @@ function ShelfForm(props) {
             <Form className='mediaForm' inverted style={{ border: '2px solid rgb(235, 229, 52)' }}>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
                     <Form.Field
+                        required
                         control={ Input }
                         type='text'
                         label='Title'
@@ -178,6 +183,7 @@ function ShelfForm(props) {
             <Form className='mediaForm' inverted style={{ border: '2px solid rgb(242, 129, 7)' }}>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
                     <Form.Field
+                        required
                         control={ Input }
                         type='text'
                         label='Title'

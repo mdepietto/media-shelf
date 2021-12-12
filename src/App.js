@@ -1,7 +1,6 @@
 import React from 'react';
 import MainPage from './MainPage'
 import BackgroundImage from './images/book1.jpg'
-import NavTop from './components/NavTop'
 
 function App() {
 
@@ -13,7 +12,6 @@ function App() {
   return (
     <div className='App'>
       <MainPage />
-      <NavTop />
     </div>
   );
 }

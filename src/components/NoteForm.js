@@ -3,7 +3,7 @@ import { Form, Input, TextArea, Button } from 'semantic-ui-react'
 
 function NoteForm(props) {
 
-    const [ data, setData ] = useState({ title: '', note_body: '' })
+    const [ data, setData ] = useState({ note_chapter: null, note_page: null, note_minute: null, note_episode: null, note_season: null })
 
     var noAll = [ ...props.lib ]
     noAll.shift()
@@ -16,6 +16,13 @@ function NoteForm(props) {
 
     const handleChange = (e) => {
         const { name, value } = e.target
+        if ( name === 'note_chapter' || name === 'note_page') {
+            setData(prev => ({
+                ...prev,
+                [ name ]: parseInt(value)
+            }))
+            return
+        }
         setData(prev => ({
             ...prev,
             [ name ]: value
@@ -93,6 +100,7 @@ function NoteForm(props) {
                         name='title'
                         placeholder='Book'
                         onChange={ getTitle }
+                        required
                     />
                     <br />
                     <Form.Field
@@ -121,6 +129,7 @@ function NoteForm(props) {
                         name='note_type'
                         placeholder='Note'
                         onChange={ getType }
+                        required
                     />
                 </Form.Group>
                 <Form.Field
@@ -129,6 +138,7 @@ function NoteForm(props) {
                     label='Your Note'
                     name='note_body'
                     onChange={ handleChange }
+                    required
                 />
                 <EndButtons setNotes={ props.setNotes } setNoteForm={ props.setNoteForm } />
             </Form>
@@ -145,6 +155,7 @@ function NoteForm(props) {
                         name='title'
                         placeholder='Movie'
                         onChange={ getTitle }
+                        required
                     />
                     <br />
                     <Form.Field
@@ -163,6 +174,7 @@ function NoteForm(props) {
                         name='note_type'
                         placeholder='Note'
                         onChange={ getType }
+                        required
                     />
                 </Form.Group>
                 <Form.Field
@@ -171,6 +183,7 @@ function NoteForm(props) {
                     label='Your Note'
                     name='note_body'
                     onChange={ handleChange }
+                    required
                 />
                 <EndButtons setNotes={ props.setNotes } setNoteForm={ props.setNoteForm } />
             </Form>
@@ -187,6 +200,7 @@ function NoteForm(props) {
                         name='title'
                         placeholder='Show'
                         onChange={ getTitle }
+                        required
                     />
                     <br />
                     <Form.Field
@@ -215,6 +229,7 @@ function NoteForm(props) {
                         name='note_type'
                         placeholder='Note'
                         onChange={ getType }
+                        required
                     />
                 </Form.Group>
                 <Form.Field
@@ -223,6 +238,7 @@ function NoteForm(props) {
                     label='Your Note'
                     name='note_body'
                     onChange={ handleChange }
+                    required
                 />
                 <EndButtons setNotes={ props.setNotes } setNoteForm={ props.setNoteForm } />
             </Form>
