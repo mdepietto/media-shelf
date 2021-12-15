@@ -6,13 +6,18 @@ p {
   font-size: 1.7rem;
 }
 
+.mainPage {
+  margin: 0 5rem;
+}
+
 .nav {
-  height: 80%;
   width: 25%;
-  top: 10%;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
   position: fixed;
   margin-left: 6rem;
-  padding: 20px;
+  padding: 50px 20px;
   color:rgb(238, 238, 238);
   background-color: rgba(27, 24, 24, 0.8);
   border-radius: 20px;
@@ -24,14 +29,14 @@ p {
 .body {
   float: right;
   width: 60%;
-  margin: 2rem 4rem 0 0;
 }
 
 .ScreenSaver {
-  float: right;
-  margin: 11rem 5rem 0 0;
-  width: 60%;
-  padding: 4rem 0;
+  position: fixed;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  padding: 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,12 +125,24 @@ p {
 
 .NavTop {
   position: fixed;
-  right: 8%;
-  bottom: 8%;
+  right: 4%;
+  bottom: 5%;
 }
 
 .NavBottom {
   position: fixed;
-  right: 8%;
-  bottom: 8%;
+  right: 4%;
+  bottom: 5%;
+}
+
+@media screen and (max-width: 980px) {
+  /* .nav {
+    display: none;
+  } */
+
+  .body {
+    margin: 0 auto;
+    float: none;
+    width: 75%;
+  }
 }

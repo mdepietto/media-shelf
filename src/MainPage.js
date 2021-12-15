@@ -447,167 +447,165 @@ const MainPage = () => {
                 </div>
             </div>
             
-            { screenSaver && <ScreenSaver /> }
 
             <div className='body'>
-                <div>
-                    { bookShelf && 
-                        <div>
-                            <Sort
-                                name='books'
-                                setLib={ setLibrary }
-                                border='202, 237, 114'
-                            />
-                            <Shelf
-                                name='book'
-                                path='/deleteBook'
-                                lib={ library }
-                                setLib={ setLibrary }
-                                setShelf={ setBookShelf }
-                                sortPath='/booksByTitle'
-                            />
-                        </div>
-                    }
-                    { bookForm && <ShelfForm
-                        path='/addBook'
-                        name='book'
-                        setForm={ setBookForm } 
-                        setLib={ setLibrary }
-                    /> }
-                    { bookNoteShelf &&
-                        <div>
-                            <Dropdown
-                                options={ books }
-                                name='book'
-                                placeholder='Book'
-                                set={ setNoteLibrary }
-                                path={ '/apiBookNotesByTitle' }
-                                api={ apiBookNotes }
-                                border='202, 237, 114'
-                                setLoading= { setLoading }
-                                notes={ noteLibrary }
-                            />
-                            <NoteShelf
-                                path='/deleteBookNote'
-                                name='book'
-                                Notes={ noteLibrary }
-                                setNoteShelf={ setBookNoteShelf }
-                                setNotes={ setNoteLibrary }
-                            />
-                        </div>
-                    }
-                    { bookNoteForm && <NoteForm
-                        name='book'
-                        lib={ books }
-                        path='/addBookNote'
-                        setNotes={ setNoteLibrary }
-                        setNoteForm={ setBookNoteForm }
-                    /> }
+                { screenSaver && <ScreenSaver /> }
+                { bookShelf && 
+                    <div>
+                        <Sort
+                            name='books'
+                            setLib={ setLibrary }
+                            border='202, 237, 114'
+                        />
+                        <Shelf
+                            name='book'
+                            path='/deleteBook'
+                            lib={ library }
+                            setLib={ setLibrary }
+                            setShelf={ setBookShelf }
+                            sortPath='/booksByTitle'
+                        />
+                    </div>
+                }
+                { bookForm && <ShelfForm
+                    path='/addBook'
+                    name='book'
+                    setForm={ setBookForm } 
+                    setLib={ setLibrary }
+                /> }
+                { bookNoteShelf &&
+                    <div>
+                        <Dropdown
+                            options={ books }
+                            name='book'
+                            placeholder='Book'
+                            set={ setNoteLibrary }
+                            path={ '/apiBookNotesByTitle' }
+                            api={ apiBookNotes }
+                            border='202, 237, 114'
+                            setLoading= { setLoading }
+                            notes={ noteLibrary }
+                        />
+                        <NoteShelf
+                            path='/deleteBookNote'
+                            name='book'
+                            Notes={ noteLibrary }
+                            setNoteShelf={ setBookNoteShelf }
+                            setNotes={ setNoteLibrary }
+                        />
+                    </div>
+                }
+                { bookNoteForm && <NoteForm
+                    name='book'
+                    lib={ books }
+                    path='/addBookNote'
+                    setNotes={ setNoteLibrary }
+                    setNoteForm={ setBookNoteForm }
+                /> }
 
-                    { movieShelf && 
-                        <div>
-                            <Sort
-                                name='movies'
-                                lib={ library }
-                                setLib={ setLibrary }
-                                border='235, 229, 52'
-                            />
-                            <Shelf
-                                name='movie'
-                                path='/deleteMovie'
-                                lib={ library }
-                                setLib={ setLibrary }
-                                setShelf={ setMovieShelf }
-                            />
-                        </div>
-                    }
-                    { movieForm && <ShelfForm
-                        path='/addMovie'
-                        name='movie'
-                        setForm={ setMovieForm } 
-                        setLib={ setLibrary }
-                    /> }
-                    { movieNoteShelf &&
-                        <div>
-                            <Dropdown
-                                options={ movies }
-                                name='movie'
-                                placeholder='Movie'
-                                set={ setNoteLibrary }
-                                path={ '/apiMovieNotesByTitle' }
-                                api={ apiMovieNotes }
-                                border='235, 229, 52'
-                                setLoading= { setLoading }
-                            />
-                            <NoteShelf
-                                path='/deleteMovieNote'
-                                name='movie'
-                                Notes={ noteLibrary }
-                                setNoteShelf={ setMovieNoteShelf }
-                                setNotes={ setNoteLibrary }
-                            />
-                        </div>
-                    }
-                    { movieNoteForm && <NoteForm
-                        name='movie'
-                        lib={ movies }
-                        path='/addMovieNote'
-                        setNotes={ setNoteLibrary }
-                        setNoteForm={ setMovieNoteForm }
-                    /> }
+                { movieShelf && 
+                    <div>
+                        <Sort
+                            name='movies'
+                            lib={ library }
+                            setLib={ setLibrary }
+                            border='235, 229, 52'
+                        />
+                        <Shelf
+                            name='movie'
+                            path='/deleteMovie'
+                            lib={ library }
+                            setLib={ setLibrary }
+                            setShelf={ setMovieShelf }
+                        />
+                    </div>
+                }
+                { movieForm && <ShelfForm
+                    path='/addMovie'
+                    name='movie'
+                    setForm={ setMovieForm } 
+                    setLib={ setLibrary }
+                /> }
+                { movieNoteShelf &&
+                    <div>
+                        <Dropdown
+                            options={ movies }
+                            name='movie'
+                            placeholder='Movie'
+                            set={ setNoteLibrary }
+                            path={ '/apiMovieNotesByTitle' }
+                            api={ apiMovieNotes }
+                            border='235, 229, 52'
+                            setLoading= { setLoading }
+                        />
+                        <NoteShelf
+                            path='/deleteMovieNote'
+                            name='movie'
+                            Notes={ noteLibrary }
+                            setNoteShelf={ setMovieNoteShelf }
+                            setNotes={ setNoteLibrary }
+                        />
+                    </div>
+                }
+                { movieNoteForm && <NoteForm
+                    name='movie'
+                    lib={ movies }
+                    path='/addMovieNote'
+                    setNotes={ setNoteLibrary }
+                    setNoteForm={ setMovieNoteForm }
+                /> }
 
-                    { showShelf && 
-                        <div>
-                            <Sort
-                                name='shows'
-                                lib={ library }
-                                setLib={ setLibrary }
-                                border='242, 129, 7'
-                            />
-                            <Shelf
-                                name='show'
-                                path='/deleteShow'
-                                lib={ library }
-                                setLib={ setLibrary }
-                                setShelf={ setShowShelf }
-                            />
-                        </div>
-                    }
-                    { showForm && <ShelfForm
-                        path='/addShow'
-                        name='show'
-                        setForm={ setShowForm } 
-                        setLib={ setLibrary }
-                    /> }
-                    { showNoteShelf &&
-                        <div>
-                            <Dropdown
-                                options={ shows }
-                                name='show'
-                                placeholder='Show'
-                                set={ setNoteLibrary }
-                                path={ '/apiShowNotesByTitle' }
-                                api={ apiShowNotes }
-                                border='242, 129, 7'
-                                setLoading= { setLoading }
-                            />
-                            <NoteShelf
-                                path='/deleteShowNote'
-                                name='show'
-                                Notes={ noteLibrary }
-                                setNoteShelf={ setShowNoteShelf }
-                                setNotes={ setNoteLibrary }
-                            />
-                        </div>
-                    }
-                    { showNoteForm && <NoteForm
-                        name='show'
-                        lib={ shows }
-                        path='/addShowNote'
-                        setNotes={ setNoteLibrary }
-                        setNoteForm={ setShowNoteForm }
-                    /> }
-                </div>
+                { showShelf && 
+                    <div>
+                        <Sort
+                            name='shows'
+                            lib={ library }
+                            setLib={ setLibrary }
+                            border='242, 129, 7'
+                        />
+                        <Shelf
+                            name='show'
+                            path='/deleteShow'
+                            lib={ library }
+                            setLib={ setLibrary }
+                            setShelf={ setShowShelf }
+                        />
+                    </div>
+                }
+                { showForm && <ShelfForm
+                    path='/addShow'
+                    name='show'
+                    setForm={ setShowForm } 
+                    setLib={ setLibrary }
+                /> }
+                { showNoteShelf &&
+                    <div>
+                        <Dropdown
+                            options={ shows }
+                            name='show'
+                            placeholder='Show'
+                            set={ setNoteLibrary }
+                            path={ '/apiShowNotesByTitle' }
+                            api={ apiShowNotes }
+                            border='242, 129, 7'
+                            setLoading= { setLoading }
+                        />
+                        <NoteShelf
+                            path='/deleteShowNote'
+                            name='show'
+                            Notes={ noteLibrary }
+                            setNoteShelf={ setShowNoteShelf }
+                            setNotes={ setNoteLibrary }
+                        />
+                    </div>
+                }
+                { showNoteForm && <NoteForm
+                    name='show'
+                    lib={ shows }
+                    path='/addShowNote'
+                    setNotes={ setNoteLibrary }
+                    setNoteForm={ setShowNoteForm }
+                /> }
             </div>
         </div>
     )

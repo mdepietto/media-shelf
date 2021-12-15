@@ -22,8 +22,6 @@ const Dropdown = (props) => {
         { key:1, text: 'Chapter', value: 1 }
     ])
 
-    const [ sortBy, setSortBy ] = useState('')
-
     useEffect(() => {
         if (props.name === 'movie') {
             setOptions([
@@ -60,10 +58,15 @@ const Dropdown = (props) => {
         setLoading(true)
         setNotesFor(title)
         await props.set([])
+        if (!title) {
+            getAll('All', props.api, props.set, setNotesFor)
+            return
+        }
         if (title === 'All') {
             setOpenSort(false)
             return
         }
+        setOpenSort(true)
         const newData = await fetch(path, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
@@ -97,7 +100,9 @@ const Dropdown = (props) => {
         setLoading(true)
         props.set([])
         const { innerText } = e.target
-        setSortBy(innerText)
+        if (!innerText) {
+            getNotesByTitle(notesFor, props.path, props.set)
+        }
         if (props.name === 'book') {
             if (innerText === 'Type') await getNotesBySort('/booksByType')
             if (innerText === 'Chapter') await getNotesBySort('/booksByChapter')
@@ -119,11 +124,11 @@ const Dropdown = (props) => {
         { loading && <PropagateLoader color={ `rgb(${ props.border })` } css={ override } loading={ loading } size={ 30 } /> }
         
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <h3 style={{ marginBottom: '4px', fontFamily: "'Montagu Slab', serif" }}>Showing { props.name } notes for:</h3>
-                <h3 style={{ marginTop: '0', fontFamily: "'Montagu Slab', serif" }}>{ notesFor }</h3>
+                <h3 style={{ fontFamily: "'Montagu Slab', serif" }}>Showing { props.name } notes for:</h3>
                 <Form>
                     <Form.Group width='equal'>
                         <Form.Select
+                            clearable
                             options={ props.options }
                             name={ props.name }
                             placeholder={ props.placeholder}
@@ -141,10 +146,11 @@ const Dropdown = (props) => {
 
             { openSort &&
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <h3 style={{ fontFamily: "'Montagu Slab', serif" }}>Sorted by: { sortBy }</h3>
+                    <h3 style={{ fontFamily: "'Montagu Slab', serif" }}>Sorted by:</h3>
                     <Form>
                         <Form.Group width='equal'>
                             <Form.Select
+                                clearable
                                 options={ options }
                                 name='sortNotes'
                                 placeholder='Sort by'
