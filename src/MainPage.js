@@ -53,6 +53,8 @@ const MainPage = () => {
     const [ library, setLibrary ] = useState([])
     const [ noteLibrary, setNoteLibrary ] = useState([])
 
+    const [ loader, setLoader ] = useState('')
+
     const override = css`
         position: fixed;
         top: 50%;
@@ -94,7 +96,7 @@ const MainPage = () => {
         setNoteLibrary([])
         const newData = await api()
         newData.map(media => {
-            // media.note_date = media.note_date.slice(0, 10);
+            media.note_date = media.note_date.slice(0, 10);
             return setNoteLibrary(prev => [ ...prev, media ])
         })
         setLoading(false)
@@ -105,6 +107,12 @@ const MainPage = () => {
 
             { navButtons && <NavTop /> }
             { navButtons && <NavBottom /> }
+            { loading && <PropagateLoader
+                color={ `rgb(${ loader })` }
+                css={ override }
+                loading={ loading }
+                size={ 30 }
+            /> }
 
             <div className='nav'>
                 <div className='sbsButtons'>
@@ -129,6 +137,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(true)
+                            setLoader('202, 237, 114')
                             getMedia(apiBooks, setLibrary)
                         }}>
                         <Button.Content visible>Books</Button.Content>
@@ -154,6 +163,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(false)
+                            setLoader('202, 237, 114')
                         }}>
                         <Icon name='plus' />
                     </Button>
@@ -180,6 +190,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(true)
+                            setLoader('202, 237, 114')
                             getDropdown(books, apiBooks, setBooks)
                             getNotesByAll(apiBookNotes)
                         }}>
@@ -206,6 +217,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(false)
+                            setLoader('202, 237, 114')
                             getDropdown(books, apiBooks, setBooks)
                         }}>
                         <Icon name='plus' />
@@ -236,6 +248,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(true)
+                            setLoader('235, 229, 52')
                             getMedia(apiMovies, setLibrary)
                         }}>
                         <Button.Content visible>Movies</Button.Content>
@@ -261,6 +274,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(false)
+                            setLoader('235, 229, 52')
                         }}>
                         <Icon name='plus' />
                     </Button>
@@ -287,6 +301,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(true)
+                            setLoader('235, 229, 52')
                             getDropdown(movies, apiMovies, setMovies)
                             getNotesByAll(apiMovieNotes)
                         }}>
@@ -313,6 +328,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(false)
+                            setLoader('235, 229, 52')
                             getDropdown(movies, apiMovies, setMovies)
                         }}>
                         <Icon name='plus' />
@@ -343,6 +359,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(true)
+                            setLoader('242, 129, 7')
                             getMedia(apiShows, setLibrary)
                         }}>
                         <Button.Content visible>Shows</Button.Content>
@@ -368,6 +385,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(false)
+                            setLoader('242, 129, 7')
                         }}>
                         <Icon name='plus' />
                     </Button>
@@ -394,6 +412,7 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteForm(false)
                             setNavButtons(true)
+                            setLoader('242, 129, 7')
                             getDropdown(shows, apiShows, setShows)
                             getNotesByAll(apiShowNotes)
                         }}>
@@ -420,6 +439,7 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setNavButtons(false)
+                            setLoader('242, 129, 7')
                             getDropdown(shows, apiShows, setShows)
                         }}>
                         <Icon name='plus' />
@@ -429,13 +449,12 @@ const MainPage = () => {
             
             { screenSaver && <ScreenSaver /> }
 
-            { loading ? <PropagateLoader color={ 'rgb(193, 255, 38)' } css={ override } loading={ loading } size={ 30 } /> :
-                <div className='body'>
+            <div className='body'>
+                <div>
                     { bookShelf && 
                         <div>
                             <Sort
                                 name='books'
-                                lib={ library }
                                 setLib={ setLibrary }
                                 border='202, 237, 114'
                             />
@@ -466,6 +485,7 @@ const MainPage = () => {
                                 api={ apiBookNotes }
                                 border='202, 237, 114'
                                 setLoading= { setLoading }
+                                notes={ noteLibrary }
                             />
                             <NoteShelf
                                 path='/deleteBookNote'
@@ -588,8 +608,7 @@ const MainPage = () => {
                         setNoteForm={ setShowNoteForm }
                     /> }
                 </div>
-            }
-
+            </div>
         </div>
     )
 }

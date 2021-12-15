@@ -67,11 +67,11 @@ const Sort = (props) => {
                         options={ options }
                         name='sort'
                         placeholder='Sort by'
-                        onChange={ onSort}
+                        onChange={ onSort }
                     />
                 </Form.Group>
             </Form>
-            <p style={{ margin: '0' }}>{ sortBy }</p>
+            <h3 style={{ margin: '0 0 6px 0', fontFamily: "'Montagu Slab', serif" }}><i>{ sortBy }</i></h3>
         </div>
     )
 }

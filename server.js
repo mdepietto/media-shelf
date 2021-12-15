@@ -74,6 +74,22 @@ app.post('/apiBookNotesByTitle', (req, res) => {
     })
 })
 
+app.post('/booksByType', (req, res) => {
+    const byType = `SELECT * FROM Book_Notes WHERE title = '${ req.body.notesFor }' ORDER BY note_type`
+    db.query(byType, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
+})
+
+app.post('/booksByChapter', (req, res) => {
+    const byChapter = `SELECT * FROM Book_Notes WHERE title = '${ req.body.notesFor }' ORDER BY note_chapter`
+    db.query(byChapter, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
+})
+
 app.post('/addBookNote', (req, res) => {
     const addBookNote = `INSERT INTO Book_Notes (title, note_type, note_chapter, note_page, note_body)
         VALUES
@@ -142,6 +158,22 @@ app.post('/deleteMovie', (req, res) => {
 
 app.get('/apiMovieNotes', (req, res) => {
     db.query(calls.movieNotesLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
+})
+
+app.post('/moviesByType', (req, res) => {
+    const byType = `SELECT * FROM Movie_Notes WHERE title = '${ req.body.notesFor }' ORDER BY note_type`
+    db.query(byType, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
+})
+
+app.post('/moviesByMinute', (req, res) => {
+    const byMinute = `SELECT * FROM Movie_Notes WHERE title = '${ req.body.notesFor }' ORDER BY note_minute`
+    db.query(byMinute, (err, rows) => {
         if (err) console.log(err)
         res.send(rows)
     })
@@ -223,6 +255,22 @@ app.post('/deleteShow', (req, res) => {
 
 app.get('/apiShowNotes', (req, res) => {
     db.query(calls.showNotesLib, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
+})
+
+app.post('/showsByType', (req, res) => {
+    const byType = `SELECT * FROM Show_Notes WHERE title = '${ req.body.notesFor }' ORDER BY note_type`
+    db.query(byType, (err, rows) => {
+        if (err) console.log(err)
+        res.send(rows)
+    })
+})
+
+app.post('/showsBySeason', (req, res) => {
+    const bySeason = `SELECT * FROM Show_Notes WHERE title = '${ req.body.notesFor }' ORDER BY note_season`
+    db.query(bySeason, (err, rows) => {
         if (err) console.log(err)
         res.send(rows)
     })
