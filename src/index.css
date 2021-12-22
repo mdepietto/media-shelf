@@ -6,43 +6,46 @@ p {
   font-size: 1.7rem;
 }
 
-.mainPage {
-  margin: 0 5rem;
-}
-
 .nav {
-  width: 25%;
+  min-width: none;
+  width: 18%;
+  position: fixed;
   top: 50%;
+  left: 5%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
-  position: fixed;
-  margin-left: 6rem;
   padding: 50px 20px;
   color:rgb(238, 238, 238);
   background-color: rgba(27, 24, 24, 0.8);
-  border-radius: 20px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+}
+
+.navButton {
+  width: 80%;
 }
 
 .body {
-  float: right;
-  width: 60%;
+  margin: 0 auto;
+  width: 50%;
+  position: relative;
+  min-width: 750px;
 }
 
 .ScreenSaver {
-  position: fixed;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
   padding: 3rem;
-  display: flex;
   flex-direction: column;
   align-items: center;
   color:rgb(238, 238, 238);
   background-color: rgba(27, 24, 24, 0.8);
-  border-radius: 20px;
+  border-radius: 10px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  display: flex;
 }
 
 ::-webkit-scrollbar {
@@ -59,7 +62,7 @@ p {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(240, 194, 10, 0.4);
+  background: rgba(255, 226, 109, 0.4);
 }
 
 .sbsButtons {
@@ -69,24 +72,27 @@ p {
 }
 
 .mediaForm {
-  width: 60%;
-  margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 30%;
   padding: 40px;
   color:rgb(238, 238, 238);
   background-color: rgba(27, 24, 24, 0.8);
-  border-radius: 20px;
-  transform: translateY(10%);
+  border-radius: 10px;
 }
 
 .noteForm {
-  width: 60%;
-  margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 30%;
   padding: 40px;
-  border-radius: 20px;
+  border-radius: 10px;
   background-color: rgba(27, 24, 24, 0.8);
   color:rgb(238, 238, 238);
-  display: flex;
-  flex-direction: column;
 }
 
 .selectDrop {
@@ -95,7 +101,7 @@ p {
   width: 40%;
   margin: 20px auto;
   padding: 25px;
-  border-radius: 20px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -111,7 +117,7 @@ p {
 .shelf {
   background-color: rgba(27, 24, 24, 0.8);
   color:rgb(238, 238, 238);
-  border-radius: 20px;
+  border-radius: 10px;
   margin: 20px;
   padding: 2rem;
   font-family: 'Montagu Slab', serif;
@@ -123,26 +129,56 @@ p {
   font-family: 'Montagu Slab', serif;
 }
 
-.NavTop {
+.NavTB {
   position: fixed;
-  right: 4%;
+  right: 15%;
   bottom: 5%;
 }
 
-.NavBottom {
-  position: fixed;
-  right: 4%;
-  bottom: 5%;
-}
+@media screen and (max-width: 1300px) {
+  .ScreenSaver {
+    position: static;
+    -ms-transform: translate(0%, 0%);
+    transform: translate(0%, 0%);
+    width: 80%;
+    margin: 20px auto;
+  }
 
-@media screen and (max-width: 980px) {
-  /* .nav {
-    display: none;
-  } */
+  .nav {
+    position: static;
+    width: 100%;
+    transform: translateY(0%);
+    -ms-transform: translateY(0%);
+    padding: 10px;
+    color:rgb(238, 238, 238);
+    background-size: cover;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+  }
 
-  .body {
-    margin: 0 auto;
-    float: none;
-    width: 75%;
+  .navButton {
+    width: 100%;
+  }
+
+  .sbsButtons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .mediaForm {
+    position: static;
+    margin: 20px auto;
+    width: 80%;
+    top: 0%;
+    left: 0%;
+    -ms-transform: translate(0%, 0%);
+    transform: translate(0%, 0%);
+  }
+
+  .NavTB {
+    position: fixed;
+    right: 2%;
+    bottom: 5%;
   }
 }

@@ -11,7 +11,7 @@ const Sort = (props) => {
     const override = css`
         position: fixed;
         top: 50%;
-        left: 63%;
+        left: 50%;
     `
 
     const options = [

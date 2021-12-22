@@ -13,6 +13,18 @@ function ShelfForm(props) {
         }))
     }
 
+    var pos = {
+        border: props.border,
+        position: 'fixed'
+    }
+
+    if (window.screen.width <= 1300) {
+        pos = {
+            border: props.border,
+            position: 'static'
+        }
+    }
+
     const getRating = (e) => {
         const { ariaPosInSet } = e.target
         setData(prev => ({
@@ -74,7 +86,9 @@ function ShelfForm(props) {
 
     if (props.name === 'book') {
         return (
-            <Form className='mediaForm' inverted style={{ border: '2px solid rgb(202, 237, 114)' }}>
+            <Form className='mediaForm'
+                inverted
+                style={ pos }>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
                     <Form.Field
                         required
@@ -132,7 +146,9 @@ function ShelfForm(props) {
 
     if (props.name === 'movie') {
         return (
-            <Form className='mediaForm' inverted style={{ border: '2px solid rgb(235, 229, 52)' }}>
+            <Form className='mediaForm'
+                inverted
+                style={ pos }>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
                     <Form.Field
                         required
@@ -180,7 +196,9 @@ function ShelfForm(props) {
 
     if (props.name === 'show') {
         return (
-            <Form className='mediaForm' inverted style={{ border: '2px solid rgb(242, 129, 7)' }}>
+            <Form className='mediaForm'
+                inverted
+                style={ pos }>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
                     <Form.Field
                         required

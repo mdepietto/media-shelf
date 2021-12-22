@@ -1,13 +1,25 @@
 const express = require('express')
 const app = express()
-const PORT = 6500
 const bodyParser = require('body-parser')
+const { auth } = require('express-openid-connect')
+require('dotenv').config()
 
+const authSetup = {
+    authRequired: false,
+    auth0Logout: true,
+    secret: process.env.SECRET,
+    baseURL: process.env.BASE,
+    clientID: process.env.CLIENT,
+    issuerBaseURL: process.env.ISSUER
+}
+
+const PORT = process.env.PORT
 const { con } = require('./db')
 const mysql = require('mysql')
 
 app.use(express.json())
 app.use(bodyParser.json())
+app.use(auth(authSetup))
 
 const db = mysql.createConnection(con)
 const calls = require('./src/back-end-calls/SQLCalls')

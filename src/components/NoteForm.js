@@ -61,6 +61,18 @@ function NoteForm(props) {
         .then(res => res.json())
     }
 
+    var pos = {
+        border: props.border,
+        position: 'fixed'
+    }
+
+    if (window.screen.width <= 1300) {
+        pos = {
+            border: props.border,
+            position: 'static'
+        }
+    }
+
     const EndButtons = (props) => {
         return (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -92,7 +104,9 @@ function NoteForm(props) {
 
     if (props.name === 'book') {
         return (
-            <Form className='noteForm' inverted style={{ border: '2px solid rgb(202, 237, 114)' }}>
+            <Form className='mediaForm'
+                inverted
+                style={ pos }>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column' }}>
                     <Form.Select
                         label='Book'
@@ -147,7 +161,9 @@ function NoteForm(props) {
 
     if (props.name === 'movie') {
         return (
-            <Form className='noteForm' inverted style={{ border: '2px solid rgb(235, 229, 52)' }}>
+            <Form className='mediaForm'
+                inverted
+                style={ pos }>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column' }}>
                     <Form.Select
                         label='Movie'
@@ -192,7 +208,9 @@ function NoteForm(props) {
 
     if (props.name === 'show') {
         return (
-            <Form className='noteForm' inverted style={{ border: '2px solid rgb(242, 129, 7)' }}>
+            <Form className='mediaForm'
+                inverted
+                style={ pos }>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column' }}>
                     <Form.Select
                         label='Show'

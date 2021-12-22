@@ -1,6 +1,7 @@
 import React from 'react';
 import MainPage from './MainPage'
 import BackgroundImage from './images/book1.jpg'
+import Auth from './components/Auth';
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
 
   return (
     <div className='App'>
+      <Auth />
       <MainPage />
     </div>
   );

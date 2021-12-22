@@ -10,7 +10,7 @@ const Dropdown = (props) => {
     const override = css`
         position: fixed;
         top: 50%;
-        left: 63%;
+        left: 50%;
     `
 
     const [ notesFor, setNotesFor ] = useState('')

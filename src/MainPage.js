@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Icon } from 'semantic-ui-react'
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { css } from "@emotion/react";
@@ -16,6 +16,7 @@ import NavTop from './components/NavTop'
 import NavBottom from './components/NavBottom'
 
 import { apiBooks, apiBookNotes, apiMovies, apiMovieNotes, apiShows, apiShowNotes } from './back-end-calls/serverCalls'
+
 
 const MainPage = () => {
 
@@ -58,19 +59,23 @@ const MainPage = () => {
     const override = css`
         position: fixed;
         top: 50%;
-        left: 63%;
+        left: 50%;
     `
 
     const getCount = async (path, count) => {
         const newData = await path()
         count(newData.length)
     }
-    getCount(apiBooks, setBookCount)
-    getCount(apiBookNotes, setBookNoteCount)
-    getCount(apiMovies, setMovieCount)
-    getCount(apiMovieNotes, setMovieNoteCount)
-    getCount(apiShows, setShowCount)
-    getCount(apiShowNotes, setShowNoteCount)
+
+    useEffect(() => {
+        getCount(apiBooks, setBookCount)
+        getCount(apiBookNotes, setBookNoteCount)
+        getCount(apiMovies, setMovieCount)
+        getCount(apiMovieNotes, setMovieNoteCount)
+        getCount(apiShows, setShowCount)
+        getCount(apiShowNotes, setShowNoteCount)
+    }, [])
+
 
     const getMedia = async (api) => {
         setLoading(true)
@@ -118,9 +123,9 @@ const MainPage = () => {
                 <div className='sbsButtons'>
                     <Button
                         inverted
-                        size='big'
+                        size='huge'
+                        className='navButton'
                         color='olive'
-                        style={{ width: '80%' }}
                         animated='fade'
                         onClick={ () => {
                             setBookShelf(true)
@@ -146,7 +151,8 @@ const MainPage = () => {
                     <Button
                         icon
                         inverted
-                        size='big'
+                        size='huge'
+                        style={{ margin: '0' }}
                         color='olive'
                         onClick={ () => {
                             setBookForm(true)
@@ -171,9 +177,9 @@ const MainPage = () => {
                 <div className='sbsButtons'>
                     <Button
                         inverted
-                        size='big'
+                        size='huge'
+                        className='navButton'
                         color='olive'
-                        style={{ width: '80%' }}
                         animated='fade'
                         onClick={ () => {
                             setBookNoteShelf(true)
@@ -200,7 +206,8 @@ const MainPage = () => {
                     <Button 
                         icon
                         inverted
-                        size='big'
+                        size='huge'
+                        style={{ margin: '0' }}
                         color='olive'
                         onClick={ () => {
                             setBookNoteForm(true)
@@ -229,9 +236,9 @@ const MainPage = () => {
                 <div className='sbsButtons'>
                     <Button
                         inverted
-                        size='big'
+                        size='huge'
+                        className='navButton'
                         color='yellow'
-                        style={{ width: '80%' }}
                         animated='fade'
                         onClick={ () => {
                             setMovieShelf(true)
@@ -257,7 +264,8 @@ const MainPage = () => {
                     <Button
                         icon
                         inverted
-                        size='big'
+                        size='huge'
+                        style={{ margin: '0' }}
                         color='yellow'
                         onClick={ () => {
                             setMovieForm(true)
@@ -282,9 +290,9 @@ const MainPage = () => {
                 <div className='sbsButtons'>
                     <Button
                         inverted
-                        size='big'
+                        size='huge'
+                        className='navButton'
                         color='yellow'
-                        style={{ width: '80%' }}
                         animated='fade'
                         onClick={ () => {
                             setMovieNoteShelf(true)
@@ -311,7 +319,8 @@ const MainPage = () => {
                     <Button 
                         icon
                         inverted
-                        size='big'
+                        size='huge'
+                        style={{ margin: '0' }}
                         color='yellow'
                         onClick={ () => {
                             setMovieNoteForm(true)
@@ -340,9 +349,9 @@ const MainPage = () => {
                 <div className='sbsButtons'>
                     <Button
                         inverted
-                        size='big'
+                        size='huge'
+                        className='navButton'
                         color='orange'
-                        style={{ width: '80%' }}
                         animated='fade'
                         onClick={ () => {
                             setShowShelf(true)
@@ -368,7 +377,8 @@ const MainPage = () => {
                     <Button
                         icon
                         inverted
-                        size='big'
+                        size='huge'
+                        style={{ margin: '0' }}
                         color='orange'
                         onClick={ () => {
                             setShowForm(true)
@@ -393,9 +403,9 @@ const MainPage = () => {
                 <div className='sbsButtons'>
                     <Button
                         inverted
-                        size='big'
+                        size='huge'
+                        className='navButton'
                         color='orange'
-                        style={{ width: '80%' }}
                         animated='fade'
                         onClick={ () => {
                             setShowNoteShelf(true)
@@ -422,7 +432,8 @@ const MainPage = () => {
                     <Button 
                         icon
                         inverted
-                        size='big'
+                        size='huge'
+                        style={{ margin: '0' }}
                         color='orange'
                         onClick={ () => {
                             setShowNoteForm(true)
@@ -446,10 +457,10 @@ const MainPage = () => {
                     </Button>
                 </div>
             </div>
-            
+                
+            { screenSaver && <ScreenSaver /> }
 
             <div className='body'>
-                { screenSaver && <ScreenSaver /> }
                 { bookShelf && 
                     <div>
                         <Sort
@@ -470,6 +481,7 @@ const MainPage = () => {
                 { bookForm && <ShelfForm
                     path='/addBook'
                     name='book'
+                    border='2px solid rgb(202, 237, 114)'
                     setForm={ setBookForm } 
                     setLib={ setLibrary }
                 /> }
@@ -499,6 +511,7 @@ const MainPage = () => {
                     name='book'
                     lib={ books }
                     path='/addBookNote'
+                    border='2px solid rgb(202, 237, 114)'
                     setNotes={ setNoteLibrary }
                     setNoteForm={ setBookNoteForm }
                 /> }
@@ -523,6 +536,7 @@ const MainPage = () => {
                 { movieForm && <ShelfForm
                     path='/addMovie'
                     name='movie'
+                    border='2px solid rgb(235, 229, 52)'
                     setForm={ setMovieForm } 
                     setLib={ setLibrary }
                 /> }
@@ -551,6 +565,7 @@ const MainPage = () => {
                     name='movie'
                     lib={ movies }
                     path='/addMovieNote'
+                    border='2px solid rgb(235, 229, 52)'
                     setNotes={ setNoteLibrary }
                     setNoteForm={ setMovieNoteForm }
                 /> }
@@ -575,6 +590,7 @@ const MainPage = () => {
                 { showForm && <ShelfForm
                     path='/addShow'
                     name='show'
+                    border='2px solid rgb(242, 129, 7)'
                     setForm={ setShowForm } 
                     setLib={ setLibrary }
                 /> }
@@ -603,6 +619,7 @@ const MainPage = () => {
                     name='show'
                     lib={ shows }
                     path='/addShowNote'
+                    border='2px solid rgb(242, 129, 7)'
                     setNotes={ setNoteLibrary }
                     setNoteForm={ setShowNoteForm }
                 /> }

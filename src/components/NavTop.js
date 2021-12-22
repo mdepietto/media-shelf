@@ -25,7 +25,7 @@ const NavTop = () => {
     window.addEventListener('scroll', toggleVisible);
 
     return (
-        <div className='NavTop'>
+        <div className='NavTB'>
             <Button
                 animated='vertical'
                 circular
