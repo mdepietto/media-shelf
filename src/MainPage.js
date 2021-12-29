@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, Icon } from 'semantic-ui-react'
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { css } from "@emotion/react";
+import { useAuth0 } from '@auth0/auth0-react';
 
 import ScreenSaver from './components/ScreenSaver'
 import Dropdown from './components/Dropdown'
@@ -14,6 +15,8 @@ import Sort from './components/Sort'
 
 import NavTop from './components/NavTop'
 import NavBottom from './components/NavBottom'
+
+import Auth from './components/Auth';
 
 import { apiBooks, apiBookNotes, apiMovies, apiMovieNotes, apiShows, apiShowNotes } from './back-end-calls/serverCalls'
 
@@ -56,31 +59,39 @@ const MainPage = () => {
 
     const [ loader, setLoader ] = useState('')
 
+    const userName = useAuth0().user
+
     const override = css`
         position: fixed;
         top: 50%;
         left: 50%;
     `
 
-    const getCount = async (path, count) => {
-        const newData = await path()
-        count(newData.length)
-    }
+    // const getCount = async (path, count) => {
+    //     const newData = await path()
+    //     count(newData.length)
+    // }
 
-    useEffect(() => {
-        getCount(apiBooks, setBookCount)
-        getCount(apiBookNotes, setBookNoteCount)
-        getCount(apiMovies, setMovieCount)
-        getCount(apiMovieNotes, setMovieNoteCount)
-        getCount(apiShows, setShowCount)
-        getCount(apiShowNotes, setShowNoteCount)
-    }, [])
-
-
-    const getMedia = async (api) => {
+    // useEffect(() => {
+    //     getCount(apiBooks, setBookCount)
+    //     getCount(apiBookNotes, setBookNoteCount)
+    //     getCount(apiMovies, setMovieCount)
+    //     getCount(apiMovieNotes, setMovieNoteCount)
+    //     getCount(apiShows, setShowCount)
+    //     getCount(apiShowNotes, setShowNoteCount)
+    // }, [])
+    
+    const getMedia = async (path) => {
         setLoading(true)
         setLibrary([])
-        const newData = await api()
+        const newData = await fetch(path, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+                userName
+            })
+        })
+        .then(res => res.json())
         newData.map(media => {
             return setLibrary(prev => [ ...prev, media ])
         })
@@ -109,7 +120,7 @@ const MainPage = () => {
 
     return (
         <div className='mainPage'>
-
+            <Auth />
             { navButtons && <NavTop /> }
             { navButtons && <NavBottom /> }
             { loading && <PropagateLoader
@@ -143,7 +154,7 @@ const MainPage = () => {
                             setShowNoteForm(false)
                             setNavButtons(true)
                             setLoader('202, 237, 114')
-                            getMedia(apiBooks, setLibrary)
+                            getMedia('/apiBooks')
                         }}>
                         <Button.Content visible>Books</Button.Content>
                         <Button.Content hidden>{ bookCount }</Button.Content>
@@ -256,7 +267,7 @@ const MainPage = () => {
                             setShowNoteForm(false)
                             setNavButtons(true)
                             setLoader('235, 229, 52')
-                            getMedia(apiMovies, setLibrary)
+                            getMedia('/apiMovies')
                         }}>
                         <Button.Content visible>Movies</Button.Content>
                         <Button.Content hidden>{ movieCount }</Button.Content>
@@ -369,7 +380,7 @@ const MainPage = () => {
                             setShowNoteForm(false)
                             setNavButtons(true)
                             setLoader('242, 129, 7')
-                            getMedia(apiShows, setLibrary)
+                            getMedia('/apiShows')
                         }}>
                         <Button.Content visible>Shows</Button.Content>
                         <Button.Content hidden>{ showCount }</Button.Content>
@@ -464,6 +475,7 @@ const MainPage = () => {
                 { bookShelf && 
                     <div>
                         <Sort
+                            userName={ userName }
                             name='books'
                             setLib={ setLibrary }
                             border='202, 237, 114'
@@ -519,6 +531,7 @@ const MainPage = () => {
                 { movieShelf && 
                     <div>
                         <Sort
+                            userName={ userName }
                             name='movies'
                             lib={ library }
                             setLib={ setLibrary }
@@ -573,6 +586,7 @@ const MainPage = () => {
                 { showShelf && 
                     <div>
                         <Sort
+                            userName={ userName }
                             name='shows'
                             lib={ library }
                             setLib={ setLibrary }

@@ -1,6 +1,10 @@
 const express = require('express')
 const app = express()
+const mysql = require('mysql')
 const bodyParser = require('body-parser')
+const { con } = require('./db')
+const db = mysql.createConnection(con)
+const calls = require('./src/back-end-calls/SQLCalls')
 const { auth } = require('express-openid-connect')
 require('dotenv').config()
 
@@ -13,41 +17,62 @@ const authSetup = {
     issuerBaseURL: process.env.ISSUER
 }
 
+// if crashes, delete .env file
+// move onto add book
+
 const PORT = process.env.PORT
-const { con } = require('./db')
-const mysql = require('mysql')
 
 app.use(express.json())
 app.use(bodyParser.json())
 app.use(auth(authSetup))
 
-const db = mysql.createConnection(con)
-const calls = require('./src/back-end-calls/SQLCalls')
-
 const noReturnCall = (call) => {
     db.query(call, (err) => { if (err) console.log(err) })
 }
 
-app.get('/apiBooks', (req, res) => {
-    db.query(calls.bookLib, (err, rows) => {
+app.post('/apiBooks', (req, res) => {
+    db.query(`${ calls.bookLib } WHERE name = '${ req.body.userName.name }'`, (err, rows) => {
         if (err) console.log(err)
         res.send(rows)
     })
 })
 
-app.get('/booksByTitle', (req, res) => {
-    db.query(calls.booksByTitle, (err, rows) => {
+// app.get('/apiBooks', (req, res) => {
+//     db.query(calls.bookLib, (err, rows) => {
+//         if (err) console.log(err)
+//         res.send(rows)
+//     })
+// })
+
+app.post('/booksByTitle', (req, res) => {
+    const booksByTitle = `SELECT * FROM Books WHERE name = '${ req.body.userName.name }' ORDER BY title`
+    db.query(booksByTitle, (err, rows) => {
         if (err) console.log(err)
         res.send(rows)
     })
 })
 
-app.get('/booksByRating', (req, res) => {
-    db.query(calls.booksByRating, (err, rows) => {
+// app.get('/booksByTitle', (req, res) => {
+//     db.query(calls.booksByTitle, (err, rows) => {
+//         if (err) console.log(err)
+//         res.send(rows)
+//     })
+// })
+
+app.post('/booksByRating', (req, res) => {
+    const booksByRating = `SELECT * FROM Books WHERE name = '${ req.body.userName.name }' ORDER BY rating DESC`
+    db.query(booksByRating, (err, rows) => {
         if (err) console.log(err)
         res.send(rows)
     })
 })
+
+// app.get('/booksByRating', (req, res) => {
+//     db.query(calls.booksByRating, (err, rows) => {
+//         if (err) console.log(err)
+//         res.send(rows)
+//     })
+// })
 
 app.post('/addBook', (req, res) => {
     const addBook = `INSERT INTO Books (title, author, chapters, pages, rating)
@@ -125,26 +150,49 @@ app.post('/deleteBookNote', (req, res) => {
     })
 })
 
-app.get('/apiMovies', (req, res) => {
-    db.query(calls.movieLib, (err, rows) => {
+app.post('/apiMovies', (req, res) => {
+    db.query(`${ calls.movieLib } WHERE name = '${ req.body.userName.name }'`, (err, rows) => {
         if (err) console.log(err)
         res.send(rows)
     })
 })
 
-app.get('/moviesByTitle', (req, res) => {
-    db.query(calls.moviesByTitle, (err, rows) => {
+// app.get('/apiMovies', (req, res) => {
+//     db.query(calls.movieLib, (err, rows) => {
+//         if (err) console.log(err)
+//         res.send(rows)
+//     })
+// })
+
+app.post('/moviesByTitle', (req, res) => {
+    const moviesByTitle = `SELECT * FROM Movies WHERE name = '${ req.body.userName.name }' ORDER BY title`
+    db.query(moviesByTitle, (err, rows) => {
         if (err) console.log(err)
         res.send(rows)
     })
 })
 
-app.get('/moviesByRating', (req, res) => {
-    db.query(calls.moviesByRating, (err, rows) => {
+// app.get('/moviesByTitle', (req, res) => {
+//     db.query(calls.moviesByTitle, (err, rows) => {
+//         if (err) console.log(err)
+//         res.send(rows)
+//     })
+// })
+
+app.post('/moviesByRating', (req, res) => {
+    const moviesByRating = `SELECT * FROM Movies WHERE name = '${ req.body.userName.name }' ORDER BY rating DESC`
+    db.query(moviesByRating, (err, rows) => {
         if (err) console.log(err)
         res.send(rows)
     })
 })
+
+// app.get('/moviesByRating', (req, res) => {
+//     db.query(calls.moviesByRating, (err, rows) => {
+//         if (err) console.log(err)
+//         res.send(rows)
+//     })
+// })
 
 app.post('/addMovie', (req, res) => {
     const addMovie = `INSERT INTO Movies (title, director, minutes, rating)
@@ -222,26 +270,49 @@ app.post('/deleteMovieNote', (req, res) => {
     })
 })
 
-app.get('/apiShows', (req, res) => {
-    db.query(calls.showLib, (err, rows) => {
+app.post('/apiShows', (req, res) => {
+    db.query(`${ calls.showLib } WHERE name = '${ req.body.userName.name }'`, (err, rows) => {
         if (err) console.log(err)
         res.send(rows)
     })
 })
 
-app.get('/showsByTitle', (req, res) => {
-    db.query(calls.showsByTitle, (err, rows) => {
+// app.get('/apiShows', (req, res) => {
+//     db.query(calls.showLib, (err, rows) => {
+//         if (err) console.log(err)
+//         res.send(rows)
+//     })
+// })
+
+app.post('/showsByTitle', (req, res) => {
+    const showsByTitle = `SELECT * FROM Shows WHERE name = '${ req.body.userName.name }' ORDER BY title`
+    db.query(showsByTitle, (err, rows) => {
         if (err) console.log(err)
         res.send(rows)
     })
 })
 
-app.get('/showsByRating', (req, res) => {
-    db.query(calls.showsByRating, (err, rows) => {
+// app.get('/showsByTitle', (req, res) => {
+//     db.query(calls.showsByTitle, (err, rows) => {
+//         if (err) console.log(err)
+//         res.send(rows)
+//     })
+// })
+
+app.post('/showsByRating', (req, res) => {
+    const showsByRating = `SELECT * FROM Shows WHERE name = '${ req.body.userName.name }' ORDER BY rating DESC`
+    db.query(showsByRating, (err, rows) => {
         if (err) console.log(err)
         res.send(rows)
     })
 })
+
+// app.get('/showsByRating', (req, res) => {
+//     db.query(calls.showsByRating, (err, rows) => {
+//         if (err) console.log(err)
+//         res.send(rows)
+//     })
+// })
 
 app.post('/addShow', (req, res) => {
     const addShow = `INSERT INTO Shows (title, seasons, rating)

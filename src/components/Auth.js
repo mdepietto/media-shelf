@@ -5,7 +5,7 @@ import Profile from '../auth/Profile'
 
 const Auth = () => {
     return (
-        <div>
+        <div className='auth'>
             <LoginButton />
             <LogoutButton />
             <Profile />

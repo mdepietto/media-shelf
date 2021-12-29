@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { Form } from 'semantic-ui-react'
-import sort from '../back-end-calls/serverCalls'
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { css } from "@emotion/react";
 
 const Sort = (props) => {
 
     const [ loading, setLoading ] = useState(false)
+
+    const userName = props.userName
 
     const override = css`
         position: fixed;
@@ -21,7 +22,14 @@ const Sort = (props) => {
 
     const getLib = async (path) => {
         setLoading(true)
-        const newData = await path
+        const newData = await fetch(path, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+                userName
+            })
+        })
+        .then(res => res.json())
         newData.map(media => {
             return props.setLib(prev => [ ...prev, media ])
         })
@@ -32,19 +40,19 @@ const Sort = (props) => {
         const { innerText } = e.target
         props.setLib([])
         if (props.name === 'books') {
-            if (!innerText) getLib(sort.apiBooks())
-            if (innerText === 'Title') getLib(sort.booksByTitle())
-            if (innerText === 'Rating') getLib(sort.booksByRating())
+            if (!innerText) getLib('/apiBooks')
+            if (innerText === 'Title') getLib('/booksByTitle')
+            if (innerText === 'Rating') getLib('/booksByRating')
         }
         if (props.name === 'movies') {
-            if (!innerText) getLib(sort.apiMovies())
-            if (innerText === 'Title') getLib(sort.moviesByTitle())
-            if (innerText === 'Rating') getLib(sort.moviesByRating())
+            if (!innerText) getLib('/apiMovies')
+            if (innerText === 'Title') getLib('/moviesByTitle')
+            if (innerText === 'Rating') getLib('/moviesByRating')
         }
         if (props.name === 'shows') {
-            if (!innerText) getLib(sort.apiShows())
-            if (innerText === 'Title') getLib(sort.showsByTitle())
-            if (innerText === 'Rating') getLib(sort.showsByRating())
+            if (!innerText) getLib('/apiShows')
+            if (innerText === 'Title') getLib('/showsByTitle')
+            if (innerText === 'Rating') getLib('/showsByRating')
         }
     }
     

@@ -7,7 +7,7 @@ const Profile = () => {
 
     const info = () => {
         return (
-            <div>
+            <div className='profile'>
                 <img src={ user.picture } alt={ user.name } />
                 <h2>{ user.name }</h2>
                 <p>{ user.email }</p>
@@ -17,7 +17,7 @@ const Profile = () => {
 
     return (
         isAuthenticated && (
-            <div>
+            <div className='profile'>
                 <button onClick={ () => setPro(!pro) }>Show Profile</button>
                 { pro && info() }
             </div>
