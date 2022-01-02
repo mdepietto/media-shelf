@@ -4,7 +4,7 @@
   "private": true,
   "proxy": "http://localhost:6500",
   "dependencies": {
-    "@auth0/auth0-react": "^1.6.0",
+    "@auth0/auth0-react": "^1.8.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -12,7 +12,6 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "express-openid-connect": "^2.5.2",
     "mysql": "^2.18.1",
     "node": "^16.10.0",
     "nodemon": "^2.0.14",

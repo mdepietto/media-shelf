@@ -4,6 +4,7 @@ import LogoutButton from '../auth/LogoutButton'
 import Profile from '../auth/Profile'
 
 const Auth = () => {
+
     return (
         <div className='auth'>
             <LoginButton />

@@ -16,10 +16,7 @@ import Sort from './components/Sort'
 import NavTop from './components/NavTop'
 import NavBottom from './components/NavBottom'
 
-import Auth from './components/Auth';
-
 import { apiBooks, apiBookNotes, apiMovies, apiMovieNotes, apiShows, apiShowNotes } from './back-end-calls/serverCalls'
-
 
 const MainPage = () => {
 
@@ -97,7 +94,7 @@ const MainPage = () => {
         })
         setLoading(false)
     }
-    
+
     const getDropdown = async (lib, api, setLib) => {
         if (!lib[1]) {
             const newData = await api()
@@ -120,7 +117,6 @@ const MainPage = () => {
 
     return (
         <div className='mainPage'>
-            <Auth />
             { navButtons && <NavTop /> }
             { navButtons && <NavBottom /> }
             { loading && <PropagateLoader

@@ -1,5 +1,5 @@
 import React from 'react';
-import MainPage from './MainPage'
+import HomePage from './components/HomePage';
 import BackgroundImage from './images/book1.jpg'
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div className='App'>
-      <MainPage />
+      <HomePage />
     </div>
   );
 }

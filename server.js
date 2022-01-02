@@ -5,26 +5,15 @@ const bodyParser = require('body-parser')
 const { con } = require('./db')
 const db = mysql.createConnection(con)
 const calls = require('./src/back-end-calls/SQLCalls')
-const { auth } = require('express-openid-connect')
-require('dotenv').config()
+// require('dotenv').config()
 
-const authSetup = {
-    authRequired: false,
-    auth0Logout: true,
-    secret: process.env.SECRET,
-    baseURL: process.env.BASE,
-    clientID: process.env.CLIENT,
-    issuerBaseURL: process.env.ISSUER
-}
-
-// if crashes, delete .env file
+// ENV FILE IS THE FUCKIN DEVIL
 // move onto add book
 
-const PORT = process.env.PORT
+const PORT = 6500
 
 app.use(express.json())
 app.use(bodyParser.json())
-app.use(auth(authSetup))
 
 const noReturnCall = (call) => {
     db.query(call, (err) => { if (err) console.log(err) })
