@@ -3,7 +3,9 @@ import { Form, Input, Rating, Button } from 'semantic-ui-react'
 
 function ShelfForm(props) {
 
-    const [ data, setData ] = useState({ author: null, chapters: null, pages: null, rating: null, director: null, minutes: null, seasons: null })
+    const userName = props.userName.name
+
+    const [ data, setData ] = useState({ author: null, chapters: null, pages: null, rating: null, director: null, minutes: null, seasons: null, name: userName })
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -38,9 +40,11 @@ function ShelfForm(props) {
         var newTitle = data.title.replace(/'/g, "''")
         var newAuthor = data.author.replace(/'/g, "''")
         var newDirector = data.director.replace(/'/g, "''")
+        var newName = data.name.replace(/'/g, "''")
         data.title = newTitle
         data.author = newAuthor
         data.director = newDirector
+        data.name = newName
     }
 
     var addMedia = async () => {

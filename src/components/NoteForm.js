@@ -3,7 +3,9 @@ import { Form, Input, TextArea, Button } from 'semantic-ui-react'
 
 function NoteForm(props) {
 
-    const [ data, setData ] = useState({ note_chapter: null, note_page: null, note_minute: null, note_episode: null, note_season: null })
+    const userName = props.userName.name
+
+    const [ data, setData ] = useState({ note_chapter: null, note_page: null, note_minute: null, note_episode: null, note_season: null, name: userName })
 
     var noAll = [ ...props.lib ]
     noAll.shift()
@@ -50,6 +52,8 @@ function NoteForm(props) {
         data.note_body = newBody
         const newTitle = data.title.replace(/'/g, "''")
         data.title = newTitle
+        const newName = data.name.replace(/'/g, "''")
+        data.name = newName
     }
 
     var addNote = async () => {

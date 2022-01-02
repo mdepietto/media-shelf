@@ -16,8 +16,6 @@ import Sort from './components/Sort'
 import NavTop from './components/NavTop'
 import NavBottom from './components/NavBottom'
 
-import { apiBooks, apiBookNotes, apiMovies, apiMovieNotes, apiShows, apiShowNotes } from './back-end-calls/serverCalls'
-
 const MainPage = () => {
 
     const [ loading, setLoading ] = useState(false)
@@ -64,19 +62,25 @@ const MainPage = () => {
         left: 50%;
     `
 
-    // const getCount = async (path, count) => {
-    //     const newData = await path()
-    //     count(newData.length)
-    // }
-
-    // useEffect(() => {
-    //     getCount(apiBooks, setBookCount)
-    //     getCount(apiBookNotes, setBookNoteCount)
-    //     getCount(apiMovies, setMovieCount)
-    //     getCount(apiMovieNotes, setMovieNoteCount)
-    //     getCount(apiShows, setShowCount)
-    //     getCount(apiShowNotes, setShowNoteCount)
-    // }, [])
+    useEffect(() => {
+        const getCount = async (path, count) => {
+            const newData = await fetch(path, {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({
+                    userName
+                })
+            })
+            .then(res => res.json())
+            count(newData.length)
+        }
+        getCount('/apiBooks', setBookCount)
+        getCount('/apiBookNotes', setBookNoteCount)
+        getCount('/apiMovies', setMovieCount)
+        getCount('/apiMovieNotes', setMovieNoteCount)
+        getCount('/apiShows', setShowCount)
+        getCount('/apiShowNotes', setShowNoteCount)
+    }, [ userName ])
     
     const getMedia = async (path) => {
         setLoading(true)
@@ -95,19 +99,33 @@ const MainPage = () => {
         setLoading(false)
     }
 
-    const getDropdown = async (lib, api, setLib) => {
+    const getDropdown = async (lib, path, setLib) => {
         if (!lib[1]) {
-            const newData = await api()
+            const newData = await fetch(path, {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({
+                    userName
+                })
+            })
+            .then(res => res.json())
             newData.map(media => {
                 return setLib(prev => [ ...prev, { key: media.id, text: media.title, value: media.id }])
             })
         }
     }
 
-    const getNotesByAll = async (api) => {
+    const getNotes = async (path) => {
         setLoading(true)
         setNoteLibrary([])
-        const newData = await api()
+        const newData = await fetch(path, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+                userName
+            })
+        })
+        .then(res => res.json())
         newData.map(media => {
             media.note_date = media.note_date.slice(0, 10);
             return setNoteLibrary(prev => [ ...prev, media ])
@@ -204,8 +222,8 @@ const MainPage = () => {
                             setShowNoteForm(false)
                             setNavButtons(true)
                             setLoader('202, 237, 114')
-                            getDropdown(books, apiBooks, setBooks)
-                            getNotesByAll(apiBookNotes)
+                            getDropdown(books, '/apiBooks', setBooks)
+                            getNotes('/apiBookNotes')
                         }}>
                         <Button.Content visible>Book Notes</Button.Content>
                         <Button.Content hidden>{ bookNoteCount }</Button.Content>
@@ -232,7 +250,7 @@ const MainPage = () => {
                             setShowNoteForm(false)
                             setNavButtons(false)
                             setLoader('202, 237, 114')
-                            getDropdown(books, apiBooks, setBooks)
+                            getDropdown(books, '/apiBooks', setBooks)
                         }}>
                         <Icon name='plus' />
                     </Button>
@@ -317,8 +335,8 @@ const MainPage = () => {
                             setShowNoteForm(false)
                             setNavButtons(true)
                             setLoader('235, 229, 52')
-                            getDropdown(movies, apiMovies, setMovies)
-                            getNotesByAll(apiMovieNotes)
+                            getDropdown(movies, '/apiMovies', setMovies)
+                            getNotes('/apiMovieNotes')
                         }}>
                         <Button.Content visible>Movie Notes</Button.Content>
                         <Button.Content hidden>{ movieNoteCount }</Button.Content>
@@ -345,7 +363,7 @@ const MainPage = () => {
                             setShowNoteForm(false)
                             setNavButtons(false)
                             setLoader('235, 229, 52')
-                            getDropdown(movies, apiMovies, setMovies)
+                            getDropdown(movies, '/apiMovies', setMovies)
                         }}>
                         <Icon name='plus' />
                     </Button>
@@ -430,8 +448,8 @@ const MainPage = () => {
                             setShowNoteForm(false)
                             setNavButtons(true)
                             setLoader('242, 129, 7')
-                            getDropdown(shows, apiShows, setShows)
-                            getNotesByAll(apiShowNotes)
+                            getDropdown(shows, '/apiShows', setShows)
+                            getNotes('/apiShowNotes')
                         }}>
                         <Button.Content visible>Show Notes</Button.Content>
                         <Button.Content hidden>{ showNoteCount }</Button.Content>
@@ -458,7 +476,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setNavButtons(false)
                             setLoader('242, 129, 7')
-                            getDropdown(shows, apiShows, setShows)
+                            getDropdown(shows, '/apiShows', setShows)
                         }}>
                         <Icon name='plus' />
                     </Button>
@@ -466,7 +484,7 @@ const MainPage = () => {
             </div>
                 
             { screenSaver && <ScreenSaver /> }
-
+            
             <div className='body'>
                 { bookShelf && 
                     <div>
@@ -490,8 +508,9 @@ const MainPage = () => {
                     path='/addBook'
                     name='book'
                     border='2px solid rgb(202, 237, 114)'
-                    setForm={ setBookForm } 
+                    setForm={ setBookForm }
                     setLib={ setLibrary }
+                    userName={ userName }
                 /> }
                 { bookNoteShelf &&
                     <div>
@@ -501,10 +520,11 @@ const MainPage = () => {
                             placeholder='Book'
                             set={ setNoteLibrary }
                             path={ '/apiBookNotesByTitle' }
-                            api={ apiBookNotes }
+                            api={ '/apiBookNotes' }
                             border='202, 237, 114'
                             setLoading= { setLoading }
                             notes={ noteLibrary }
+                            userName={ userName }
                         />
                         <NoteShelf
                             path='/deleteBookNote'
@@ -522,6 +542,7 @@ const MainPage = () => {
                     border='2px solid rgb(202, 237, 114)'
                     setNotes={ setNoteLibrary }
                     setNoteForm={ setBookNoteForm }
+                    userName={ userName }
                 /> }
 
                 { movieShelf && 
@@ -548,6 +569,7 @@ const MainPage = () => {
                     border='2px solid rgb(235, 229, 52)'
                     setForm={ setMovieForm } 
                     setLib={ setLibrary }
+                    userName={ userName }
                 /> }
                 { movieNoteShelf &&
                     <div>
@@ -557,9 +579,10 @@ const MainPage = () => {
                             placeholder='Movie'
                             set={ setNoteLibrary }
                             path={ '/apiMovieNotesByTitle' }
-                            api={ apiMovieNotes }
+                            api={ '/apiMovieNotes' }
                             border='235, 229, 52'
                             setLoading= { setLoading }
+                            userName={ userName }
                         />
                         <NoteShelf
                             path='/deleteMovieNote'
@@ -577,6 +600,7 @@ const MainPage = () => {
                     border='2px solid rgb(235, 229, 52)'
                     setNotes={ setNoteLibrary }
                     setNoteForm={ setMovieNoteForm }
+                    userName={ userName }
                 /> }
 
                 { showShelf && 
@@ -603,6 +627,7 @@ const MainPage = () => {
                     border='2px solid rgb(242, 129, 7)'
                     setForm={ setShowForm } 
                     setLib={ setLibrary }
+                    userName={ userName }
                 /> }
                 { showNoteShelf &&
                     <div>
@@ -612,9 +637,10 @@ const MainPage = () => {
                             placeholder='Show'
                             set={ setNoteLibrary }
                             path={ '/apiShowNotesByTitle' }
-                            api={ apiShowNotes }
+                            api={ '/apiShowNotes' }
                             border='242, 129, 7'
-                            setLoading= { setLoading }
+                            setLoading={ setLoading }
+                            userName={ userName }
                         />
                         <NoteShelf
                             path='/deleteShowNote'
@@ -632,6 +658,7 @@ const MainPage = () => {
                     border='2px solid rgb(242, 129, 7)'
                     setNotes={ setNoteLibrary }
                     setNoteForm={ setShowNoteForm }
+                    userName={ userName }
                 /> }
             </div>
         </div>

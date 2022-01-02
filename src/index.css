@@ -108,12 +108,6 @@ p {
   align-items: center;
 }
 
-#auth {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-}
-
 .shelf {
   background-color: rgba(27, 24, 24, 0.8);
   color:rgb(238, 238, 238);
@@ -157,16 +151,21 @@ p {
 }
 
 @media screen and (max-width: 1300px) {
+
+  .body {
+    margin-top: 15%;
+  }
+
   .ScreenSaver {
-    position: static;
-    -ms-transform: translate(0%, 0%);
-    transform: translate(0%, 0%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     width: 80%;
     margin: 20px auto;
   }
 
   .nav {
-    position: static;
+    left: 0;
+    top: 0;
     width: 100%;
     transform: translateY(0%);
     -ms-transform: translateY(0%);
@@ -176,6 +175,8 @@ p {
     border-radius: 10px;
     display: flex;
     flex-direction: row;
+    /* background-color: rgba(27, 24, 24); */
+    z-index: 2;
   }
 
   .navButton {
@@ -200,6 +201,11 @@ p {
   .NavTB {
     position: fixed;
     right: 2%;
+    bottom: 5%;
+  }
+
+  .auth {
+    top: 70%;
     bottom: 5%;
   }
 }

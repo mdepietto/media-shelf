@@ -1,19 +1,38 @@
-import React, { useState } from 'react'
+import React from 'react'
 import MainPage from '../MainPage'
 import Auth from './Auth'
+import PropagateLoader from "react-spinners/PropagateLoader"
+import { css } from "@emotion/react"
+
+import { useAuth0 } from '@auth0/auth0-react'
 
 const HomePage = () => {
 
-    const [ main, setMain ] = useState(false)
-    const [ defaultPage, setDefaultPage ] = useState(true)
+    const { isAuthenticated, isLoading } = useAuth0()
+
+    const override = css`
+        position: fixed;
+        top: 50%;
+        left: 50%;
+    `
+
+    const Loader = () => {
+        return (
+            <PropagateLoader
+                color={ `#FFFFFF` }
+                css={ override }
+                loading={ isLoading }
+                size={ 30 }
+            />
+        )
+    }
 
     const DefaultPage = () => {
         return (
             <div className='ScreenSaver'>
                 <p style={{ fontSize: '80px', margin: '0 0 2rem 0' }}>Media-Shelf</p>
                 <ul style={{ justifyContent: 'left' }}>
-                    <li style={{ fontSize: '22px', marginBottom: '1.5rem' }}>View your libraries or add notes</li>
-                    <li style={{ fontSize: '22px' }}>Hovering shows you how full that library is</li>
+                    <li style={{ fontSize: '22px', marginBottom: '1.5rem' }}>A note-taking app for books, movies, and shows</li>
                 </ul>
             </div>
         )
@@ -21,13 +40,14 @@ const HomePage = () => {
 
     return (
         <div>
-            <button onClick={ () => {
-                setMain(!main)
-                setDefaultPage(!defaultPage)
-            }}>test</button>
-            <Auth />
-            { defaultPage && <DefaultPage /> }
-            { main && <MainPage /> }
+            { isLoading && <Loader /> }
+            { !isLoading &&
+                <div> 
+                    <Auth />
+                    { !isAuthenticated && <DefaultPage /> }
+                    { isAuthenticated && <MainPage /> }
+                </div>
+            }
         </div>
     )
 }

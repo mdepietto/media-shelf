@@ -39,11 +39,20 @@ const Dropdown = (props) => {
         }
     }, [ props ])
 
+    const userName = props.userName
+
     const getAll = async (title, path, setPath, setPathFor) => {
         setOpenSort(false)
         setLoading(true)
         if (title === 'All') {
-            const newData = await path()
+            const newData = await fetch(path, {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({
+                    userName
+                })
+            })
+            .then(res => res.json())
             newData.map(media => {
                 media.note_date = media.note_date.slice(0, 10)
                 return setPath(prev => [ ...prev, media ])
@@ -70,7 +79,7 @@ const Dropdown = (props) => {
         const newData = await fetch(path, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ title })
+            body: JSON.stringify({ title, userName })
         })
         .then(res => res.json())
         newData.map(media => {
@@ -86,7 +95,7 @@ const Dropdown = (props) => {
         const newData = await fetch(path, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ notesFor })
+            body: JSON.stringify({ notesFor, userName })
         })
         .then(res => res.json())
         newData.map(media => {
