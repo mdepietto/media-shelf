@@ -9,6 +9,7 @@ const calls = require('./src/back-end-calls/SQLCalls')
 
 // ENV FILE IS THE FUCKIN DEVIL
 // figure out why not refreshing state to update count
+// condense sorting options
 
 const PORT = 6500
 
