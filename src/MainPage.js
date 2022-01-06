@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Icon } from 'semantic-ui-react'
-import PropagateLoader from "react-spinners/PropagateLoader";
-import { css } from "@emotion/react";
 import { useAuth0 } from '@auth0/auth0-react';
 
+import Loader from './components/Loader';
 import ScreenSaver from './components/ScreenSaver'
 import Dropdown from './components/Dropdown'
 import Shelf from './components/Shelf'
 import ShelfForm from './components/ShelfForm'
 import NoteShelf from './components/NoteShelf'
 import NoteForm from './components/NoteForm'
+import Profile from './auth/Profile'
+import LogoutButton from './auth/LogoutButton';
 
 import Sort from './components/Sort'
 
 import NavTop from './components/NavTop'
 import NavBottom from './components/NavBottom'
+// import NoContent from './components/NoContent';
+// figure out how to not show nocontent when loading
 
 const MainPage = () => {
 
     const [ loading, setLoading ] = useState(false)
     const [ screenSaver, setScreenSaver ] = useState(true)
+    const [ profile, setProfile ] = useState(false)
 
     const [ bookShelf, setBookShelf ] = useState(false)
     const [ bookForm, setBookForm ] = useState(false)
@@ -56,20 +60,12 @@ const MainPage = () => {
 
     const userName = useAuth0().user
 
-    const override = css`
-        position: fixed;
-        top: 50%;
-        left: 50%;
-    `
-
     useEffect(() => {
         const getCount = async (path, count) => {
             const newData = await fetch(path, {
                 method: 'POST',
                 headers: { 'content-type': 'application/json' },
-                body: JSON.stringify({
-                    userName
-                })
+                body: JSON.stringify({ userName })
             })
             .then(res => res.json())
             count(newData.length)
@@ -104,9 +100,7 @@ const MainPage = () => {
             const newData = await fetch(path, {
                 method: 'POST',
                 headers: { 'content-type': 'application/json' },
-                body: JSON.stringify({
-                    userName
-                })
+                body: JSON.stringify({ userName })
             })
             .then(res => res.json())
             newData.map(media => {
@@ -121,9 +115,7 @@ const MainPage = () => {
         const newData = await fetch(path, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({
-                userName
-            })
+            body: JSON.stringify({ userName })
         })
         .then(res => res.json())
         newData.map(media => {
@@ -137,14 +129,42 @@ const MainPage = () => {
         <div className='mainPage'>
             { navButtons && <NavTop /> }
             { navButtons && <NavBottom /> }
-            { loading && <PropagateLoader
+            { loading && <Loader
                 color={ `rgb(${ loader })` }
-                css={ override }
                 loading={ loading }
-                size={ 30 }
             /> }
+            
+            { screenSaver && <ScreenSaver /> }
+            { profile && <Profile /> }
 
             <div className='nav'>
+                <div className='sbsButtons'>
+                    <Button
+                        inverted
+                        className='navButton'
+                        color='pink'
+                        size='big'
+                        style={{ margin: '0' }}
+                        onClick={() => {
+                            setScreenSaver(true)
+                            setBookShelf(false)
+                            setMovieShelf(false)
+                            setMovieForm(false)
+                            setMovieNoteShelf(false)
+                            setMovieNoteForm(false)
+                            setBookForm(false)
+                            setBookNoteShelf(false)
+                            setBookNoteForm(false)
+                            setShowShelf(false)
+                            setShowForm(false)
+                            setShowNoteShelf(false)
+                            setShowNoteForm(false)
+                            setNavButtons(false)
+                            setProfile(false)
+                        }}
+                    >Home</Button>
+                </div>
+                <br /><br />
                 <div className='sbsButtons'>
                     <Button
                         inverted
@@ -166,6 +186,7 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
+                            setProfile(false)
                             setNavButtons(true)
                             setLoader('202, 237, 114')
                             getMedia('/apiBooks')
@@ -194,6 +215,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(false)
+                            setProfile(false)
                             setLoader('202, 237, 114')
                         }}>
                         <Icon name='plus' />
@@ -221,6 +243,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(true)
+                            setProfile(false)
                             setLoader('202, 237, 114')
                             getDropdown(books, '/apiBooks', setBooks)
                             getNotes('/apiBookNotes')
@@ -249,6 +272,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(false)
+                            setProfile(false)
                             setLoader('202, 237, 114')
                             getDropdown(books, '/apiBooks', setBooks)
                         }}>
@@ -280,6 +304,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(true)
+                            setProfile(false)
                             setLoader('235, 229, 52')
                             getMedia('/apiMovies')
                         }}>
@@ -307,6 +332,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(false)
+                            setProfile(false)
                             setLoader('235, 229, 52')
                         }}>
                         <Icon name='plus' />
@@ -333,6 +359,7 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
+                            setProfile(false)
                             setNavButtons(true)
                             setLoader('235, 229, 52')
                             getDropdown(movies, '/apiMovies', setMovies)
@@ -362,6 +389,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(false)
+                            setProfile(false)
                             setLoader('235, 229, 52')
                             getDropdown(movies, '/apiMovies', setMovies)
                         }}>
@@ -392,6 +420,7 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
+                            setProfile(false)
                             setNavButtons(true)
                             setLoader('242, 129, 7')
                             getMedia('/apiShows')
@@ -420,6 +449,7 @@ const MainPage = () => {
                             setShowNoteShelf(false)
                             setShowNoteForm(false)
                             setNavButtons(false)
+                            setProfile(false)
                             setLoader('242, 129, 7')
                         }}>
                         <Icon name='plus' />
@@ -446,6 +476,7 @@ const MainPage = () => {
                             setShowShelf(false)
                             setShowForm(false)
                             setShowNoteForm(false)
+                            setProfile(false)
                             setNavButtons(true)
                             setLoader('242, 129, 7')
                             getDropdown(shows, '/apiShows', setShows)
@@ -475,18 +506,46 @@ const MainPage = () => {
                             setShowForm(false)
                             setShowNoteShelf(false)
                             setNavButtons(false)
+                            setProfile(false)
                             setLoader('242, 129, 7')
                             getDropdown(shows, '/apiShows', setShows)
                         }}>
                         <Icon name='plus' />
                     </Button>
                 </div>
+                <br /><br />
+                <div className='sbsButtons'>
+                    <Button
+                        inverted
+                        size='big'
+                        className='navButton'
+                        color='teal'
+                        onClick={() => {
+                            setProfile(true)
+                            setScreenSaver(false)
+                            setBookShelf(false)
+                            setMovieShelf(false)
+                            setMovieForm(false)
+                            setMovieNoteShelf(false)
+                            setMovieNoteForm(false)
+                            setBookForm(false)
+                            setBookNoteShelf(false)
+                            setBookNoteForm(false)
+                            setShowShelf(false)
+                            setShowForm(false)
+                            setShowNoteShelf(false)
+                            setShowNoteForm(false)
+                            setNavButtons(false)
+                        }}
+                    >
+                        Profile
+                    </Button>
+                    <LogoutButton />
+                </div>
             </div>
-                
-            { screenSaver && <ScreenSaver /> }
-            
+
             <div className='body'>
-                { bookShelf && 
+                { bookShelf &&
                     <div>
                         <Sort
                             userName={ userName }

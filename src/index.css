@@ -23,7 +23,7 @@ p {
 }
 
 .navButton {
-  width: 80%;
+  width: 100%;
 }
 
 .body {
@@ -34,7 +34,8 @@ p {
 }
 
 .ScreenSaver {
-  padding: 3rem;
+  padding: 3rem 8rem;
+  border: 2px solid rgb(222, 106, 185);
   flex-direction: column;
   align-items: center;
   color:rgb(238, 238, 238);
@@ -68,7 +69,7 @@ p {
 .sbsButtons {
   display: flex;
   justify-content: center;
-  margin: .5rem;
+  margin: .2rem;
 }
 
 .mediaForm {
@@ -127,27 +128,6 @@ p {
   position: fixed;
   right: 15%;
   bottom: 5%;
-}
-
-.auth {
-  background-color: rgba(27, 24, 24, 0.8);
-  padding: 30px;
-  border-radius: 10px;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  right: 2%;
-  top: 5%;
-}
-
-.profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 5px;
 }
 
 @media screen and (max-width: 1300px) {

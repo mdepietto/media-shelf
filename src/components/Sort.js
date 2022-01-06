@@ -1,19 +1,12 @@
 import React, { useState } from 'react'
 import { Form } from 'semantic-ui-react'
-import PropagateLoader from "react-spinners/PropagateLoader";
-import { css } from "@emotion/react";
+import Loader from './Loader'
 
 const Sort = (props) => {
 
     const [ loading, setLoading ] = useState(false)
 
     const userName = props.userName
-
-    const override = css`
-        position: fixed;
-        top: 50%;
-        left: 50%;
-    `
 
     const options = [
         { key: 0, text: 'Title', value: 0 },
@@ -59,7 +52,7 @@ const Sort = (props) => {
     return (
         <div className='selectDrop' style={{ border: `2px solid rgb(${ props.border })` }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                { loading && <PropagateLoader color={ `rgb(${ props.border })` } css={ override } loading={ loading } size={ 30 } /> }
+                { loading && <Loader color={ `rgb(${ props.border })` } loading={ loading } /> }
                 <h3 style={{ margin: '0 0 15px 0', fontFamily: "'Montagu Slab', serif" }}>Sort by:</h3>
                 <Form style={{ display: 'flex', flexDirection: 'row' }}>
                     <Form.Group width='equal'>

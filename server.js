@@ -7,7 +7,8 @@ const db = mysql.createConnection(con)
 const calls = require('./src/back-end-calls/SQLCalls')
 // require('dotenv').config()
 
-// ENV FILE IS THE FUCKIN DEVIL
+// ENV FILE IS THE DEVIL
+
 // figure out why not refreshing state to update count
 // condense sorting options
 
