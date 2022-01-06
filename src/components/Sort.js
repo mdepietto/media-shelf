@@ -27,10 +27,20 @@ const Sort = (props) => {
         setLoading(false)
     }
 
-    const testFunc = () => {
-        const newData = props.lib.map(title => title.title.toLowerCase())
-        console.log(newData.sort());
-        // props.setLib([{ title: 'title', author: 'author', pages: 50, rating: 5 }])
+// put (a.title, b.title) as argument to condense
+
+    const byTitle = () => {
+        const newData = props.lib.sort((a, b) => (a.title > b.title) ? 1 : -1)
+        newData.map(media => {
+            return props.setLib(prev => [ ...prev, media ])
+        })
+    }
+
+    const byRating = () => {
+        const newData = props.lib.sort((a, b) => (a.rating < b.rating) ? 1 : -1)
+        newData.map(media => {
+            return props.setLib(prev => [ ...prev, media ])
+        })
     }
 
     const onSort = async (e) => {
@@ -38,9 +48,8 @@ const Sort = (props) => {
         props.setLib([])
         if (props.name === 'books') {
             if (!innerText) getLib('/apiBooks')
-            // if (innerText === 'Title') getLib('/booksByTitle')
-            if (innerText === 'Title') testFunc()
-            if (innerText === 'Rating') getLib('/booksByRating')
+            if (innerText === 'Title') byTitle()
+            if (innerText === 'Rating') byRating()
         }
         if (props.name === 'movies') {
             if (!innerText) getLib('/apiMovies')
