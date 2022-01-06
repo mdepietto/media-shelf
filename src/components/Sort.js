@@ -18,9 +18,7 @@ const Sort = (props) => {
         const newData = await fetch(path, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({
-                userName
-            })
+            body: JSON.stringify({ userName })
         })
         .then(res => res.json())
         newData.map(media => {
@@ -29,12 +27,19 @@ const Sort = (props) => {
         setLoading(false)
     }
 
+    const testFunc = () => {
+        const newData = props.lib.map(title => title.title.toLowerCase())
+        console.log(newData.sort());
+        // props.setLib([{ title: 'title', author: 'author', pages: 50, rating: 5 }])
+    }
+
     const onSort = async (e) => {
         const { innerText } = e.target
         props.setLib([])
         if (props.name === 'books') {
             if (!innerText) getLib('/apiBooks')
-            if (innerText === 'Title') getLib('/booksByTitle')
+            // if (innerText === 'Title') getLib('/booksByTitle')
+            if (innerText === 'Title') testFunc()
             if (innerText === 'Rating') getLib('/booksByRating')
         }
         if (props.name === 'movies') {

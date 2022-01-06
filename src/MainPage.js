@@ -84,9 +84,7 @@ const MainPage = () => {
         const newData = await fetch(path, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({
-                userName
-            })
+            body: JSON.stringify({ userName })
         })
         .then(res => res.json())
         newData.map(media => {
@@ -550,6 +548,7 @@ const MainPage = () => {
                         <Sort
                             userName={ userName }
                             name='books'
+                            lib={ library }
                             setLib={ setLibrary }
                             border='202, 237, 114'
                         />
