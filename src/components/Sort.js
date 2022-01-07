@@ -1,74 +1,50 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Form } from 'semantic-ui-react'
 import Loader from './Loader'
 
 const Sort = (props) => {
-
-    const [ loading, setLoading ] = useState(false)
-
-    const userName = props.userName
 
     const options = [
         { key: 0, text: 'Title', value: 0 },
         { key: 1, text: 'Rating', value: 1 }
     ]
 
-    const getLib = async (path) => {
-        setLoading(true)
-        const newData = await fetch(path, {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ userName })
-        })
-        .then(res => res.json())
-        newData.map(media => {
-            return props.setLib(prev => [ ...prev, media ])
-        })
-        setLoading(false)
-    }
-
-// put (a.title, b.title) as argument to condense
-
-    const byTitle = () => {
-        const newData = props.lib.sort((a, b) => (a.title > b.title) ? 1 : -1)
-        newData.map(media => {
-            return props.setLib(prev => [ ...prev, media ])
-        })
-    }
-
-    const byRating = () => {
-        const newData = props.lib.sort((a, b) => (a.rating < b.rating) ? 1 : -1)
-        newData.map(media => {
-            return props.setLib(prev => [ ...prev, media ])
-        })
-    }
+    const newLib = (newData) => newData.map(media => props.setLib(prev => [ ...prev, media ]))
 
     const onSort = async (e) => {
         const { innerText } = e.target
+        const byType = () => {
+            if (innerText === 'Title') {
+                const newData = props.lib.sort((a, b) => (a.title > b.title) ? 1 : -1)
+                newLib(newData)
+            }
+            if (innerText === 'Rating') {
+                const newData = props.lib.sort((a, b) => (a.rating < b.rating) ? 1 : -1)
+                newLib(newData)
+            }
+        }
         props.setLib([])
         if (props.name === 'books') {
-            if (!innerText) getLib('/apiBooks')
-            if (innerText === 'Title') byTitle()
-            if (innerText === 'Rating') byRating()
+            if (!innerText) props.getMedia('/apiBooks')
+            byType()
         }
         if (props.name === 'movies') {
-            if (!innerText) getLib('/apiMovies')
-            if (innerText === 'Title') getLib('/moviesByTitle')
-            if (innerText === 'Rating') getLib('/moviesByRating')
+            if (!innerText) props.getMedia('/apiMovies')
+            byType()
         }
         if (props.name === 'shows') {
-            if (!innerText) getLib('/apiShows')
-            if (innerText === 'Title') getLib('/showsByTitle')
-            if (innerText === 'Rating') getLib('/showsByRating')
+            if (!innerText) props.getMedia('/apiShows')
+            byType()
         }
     }
     
     return (
         <div className='selectDrop' style={{ border: `2px solid rgb(${ props.border })` }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                { loading && <Loader color={ `rgb(${ props.border })` } loading={ loading } /> }
-                <h3 style={{ margin: '0 0 15px 0', fontFamily: "'Montagu Slab', serif" }}>Sort by:</h3>
-                <Form style={{ display: 'flex', flexDirection: 'row' }}>
+
+                { props.loading && <Loader color={ `rgb(${ props.border })` } loading={ props.loading } /> }
+
+                <h3>Sort by:</h3>
+                <Form>
                     <Form.Group width='equal'>
                         <Form.Select
                             clearable
@@ -79,7 +55,6 @@ const Sort = (props) => {
                         />
                     </Form.Group>
                 </Form>
-            </div>
         </div>
     )
 }

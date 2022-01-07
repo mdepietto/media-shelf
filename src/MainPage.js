@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button, Icon } from 'semantic-ui-react'
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -16,8 +16,9 @@ import Sort from './components/Sort'
 
 import NavTop from './components/NavTop'
 import NavBottom from './components/NavBottom'
-// import NoContent from './components/NoContent';
+// import NoContent from './components/NoContent'
 // figure out how to not show nocontent when loading
+// reload mainpage when submitted
 
 const MainPage = () => {
 
@@ -60,23 +61,21 @@ const MainPage = () => {
 
     const userName = useAuth0().user
 
-    useEffect(() => {
-        const getCount = async (path, count) => {
-            const newData = await fetch(path, {
-                method: 'POST',
-                headers: { 'content-type': 'application/json' },
-                body: JSON.stringify({ userName })
-            })
-            .then(res => res.json())
-            count(newData.length)
-        }
-        getCount('/apiBooks', setBookCount)
-        getCount('/apiBookNotes', setBookNoteCount)
-        getCount('/apiMovies', setMovieCount)
-        getCount('/apiMovieNotes', setMovieNoteCount)
-        getCount('/apiShows', setShowCount)
-        getCount('/apiShowNotes', setShowNoteCount)
-    }, [ userName ])
+    const getCount = async (path, count) => {
+        const newData = await fetch(path, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ userName })
+        })
+        .then(res => res.json())
+        count(newData.length)
+    }
+    getCount('/apiBooks', setBookCount)
+    getCount('/apiBookNotes', setBookNoteCount)
+    getCount('/apiMovies', setMovieCount)
+    getCount('/apiMovieNotes', setMovieNoteCount)
+    getCount('/apiShows', setShowCount)
+    getCount('/apiShowNotes', setShowNoteCount)
     
     const getMedia = async (path) => {
         setLoading(true)
@@ -133,7 +132,14 @@ const MainPage = () => {
             /> }
             
             { screenSaver && <ScreenSaver /> }
-            { profile && <Profile /> }
+            { profile && <Profile
+                bookCount={ bookCount }
+                bookNoteCount={ bookNoteCount }
+                movieCount={ movieCount }
+                movieNoteCount={ movieNoteCount }
+                showCount={ showCount }
+                showNoteCount={ showNoteCount }
+            /> }
 
             <div className='nav'>
                 <div className='sbsButtons'>
@@ -143,7 +149,7 @@ const MainPage = () => {
                         color='pink'
                         size='big'
                         style={{ margin: '0' }}
-                        onClick={() => {
+                        onClick={ () => {
                             setScreenSaver(true)
                             setBookShelf(false)
                             setMovieShelf(false)
@@ -551,6 +557,8 @@ const MainPage = () => {
                             lib={ library }
                             setLib={ setLibrary }
                             border='202, 237, 114'
+                            getMedia={ getMedia }
+                            loading={ loading }
                         />
                         <Shelf
                             name='book'
@@ -580,9 +588,8 @@ const MainPage = () => {
                             path={ '/apiBookNotesByTitle' }
                             api={ '/apiBookNotes' }
                             border='202, 237, 114'
-                            setLoading= { setLoading }
-                            notes={ noteLibrary }
                             userName={ userName }
+                            noteLibrary={ noteLibrary }
                         />
                         <NoteShelf
                             path='/deleteBookNote'
@@ -611,6 +618,8 @@ const MainPage = () => {
                             lib={ library }
                             setLib={ setLibrary }
                             border='235, 229, 52'
+                            getMedia={ getMedia }
+                            loading={ loading }
                         />
                         <Shelf
                             name='movie'
@@ -639,8 +648,8 @@ const MainPage = () => {
                             path={ '/apiMovieNotesByTitle' }
                             api={ '/apiMovieNotes' }
                             border='235, 229, 52'
-                            setLoading= { setLoading }
                             userName={ userName }
+                            noteLibrary={ noteLibrary }
                         />
                         <NoteShelf
                             path='/deleteMovieNote'
@@ -669,6 +678,8 @@ const MainPage = () => {
                             lib={ library }
                             setLib={ setLibrary }
                             border='242, 129, 7'
+                            getMedia={ getMedia }
+                            loading={ loading }
                         />
                         <Shelf
                             name='show'
@@ -697,8 +708,8 @@ const MainPage = () => {
                             path={ '/apiShowNotesByTitle' }
                             api={ '/apiShowNotes' }
                             border='242, 129, 7'
-                            setLoading={ setLoading }
                             userName={ userName }
+                            noteLibrary={ noteLibrary }
                         />
                         <NoteShelf
                             path='/deleteShowNote'

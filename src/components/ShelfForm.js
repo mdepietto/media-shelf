@@ -5,13 +5,14 @@ function ShelfForm(props) {
 
     const userName = props.userName.name
 
-    const [ data, setData ] = useState({ author: null, chapters: null, pages: null, rating: null, director: null, minutes: null, seasons: null, name: userName })
+    const [ data, setData ] = useState({ chapters: null, pages: null, rating: null, minutes: null, seasons: null, name: userName })
 
     const handleChange = (e) => {
-        const { name, value } = e.target
+        const { name, value, ariaPosInSet } = e.target
         setData(prev => ({
             ...prev,
-            [ name ]: value
+            [ name ]: value,
+            rating: ariaPosInSet
         }))
     }
 
@@ -27,40 +28,40 @@ function ShelfForm(props) {
         }
     }
 
-    const getRating = (e) => {
-        const { ariaPosInSet } = e.target
-        setData(prev => ({
-            ...prev,
-            rating: ariaPosInSet
-        }))
-    }
-
     const sqlApostrophe = () => {
-        if (data.author === null || data.title === null || data.director === null) { return }
-        var newTitle = data.title.replace(/'/g, "''")
-        var newAuthor = data.author.replace(/'/g, "''")
-        var newDirector = data.director.replace(/'/g, "''")
         var newName = data.name.replace(/'/g, "''")
-        data.title = newTitle
-        data.author = newAuthor
-        data.director = newDirector
-        data.name = newName
+        var newTitle = data.title.replace(/'/g, "''")
+
+        if (props.name === 'book') {
+            var newAuthor = data.author.replace(/'/g, "''")
+            data.name = newName
+            data.title = newTitle
+            data.author = newAuthor
+        }
+        if (props.name === 'movie') {
+            var newDirector = data.director.replace(/'/g, "''")
+            data.name = newName
+            data.title = newTitle
+            data.director = newDirector
+        }
+        if (props.name === 'show') {
+            data.name = newName
+            data.title = newTitle
+        }
     }
 
     var addMedia = async () => {
         await fetch(props.path, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({
-                ...data
-            })
+            body: JSON.stringify({ ...data })
         })
         .then(res => res.json())
     }
 
     const EndButtons = (props) => {
         return (
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div className='endButtons'>
                 <Button
                     inverted
                     size='large'
@@ -68,8 +69,9 @@ function ShelfForm(props) {
                     style={{ marginBottom: '15px' }}
                     onClick={ async () => {
                         sqlApostrophe()
+                        console.log(data);
                         await addMedia()
-                        setData({ title: '', author: '' })
+                        setData({ chapters: null, pages: null, rating: null, minutes: null, seasons: null, name: userName })
                         props.setForm(false)
                         props.setLib([])
                         alert('Content added!')
@@ -105,6 +107,7 @@ function ShelfForm(props) {
                     />
                     <br />
                     <Form.Field
+                        required
                         control={ Input }
                         type='text'
                         label='Author'
@@ -140,7 +143,7 @@ function ShelfForm(props) {
                     defaultRating={ 1 } 
                     maxRating={ 5 } 
                     clearable
-                    onRate={ getRating }
+                    onRate={ handleChange }
                 />
                 <br /><br />
                 <EndButtons setForm={ props.setForm } setLib={ props.setLib } />
@@ -165,6 +168,7 @@ function ShelfForm(props) {
                     />
                     <br />
                     <Form.Field
+                        required
                         control={ Input }
                         type='text'
                         label='Director'
@@ -190,7 +194,7 @@ function ShelfForm(props) {
                     defaultRating={ 1 } 
                     maxRating={ 5 } 
                     clearable
-                    onRate={ getRating }
+                    onRate={ handleChange }
                 />
                 <br /><br />
                 <EndButtons setForm={ props.setForm } setLib={ props.setLib } />
@@ -231,7 +235,7 @@ function ShelfForm(props) {
                     defaultRating={ 1 } 
                     maxRating={ 5 } 
                     clearable
-                    onRate={ getRating }
+                    onRate={ handleChange }
                 />
                 <br /><br />
                 <EndButtons setForm={ props.setForm } setLib={ props.setLib } />

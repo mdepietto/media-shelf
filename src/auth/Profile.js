@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react'
 
-const Profile = () => {
+const Profile = (props) => {
     const { user } = useAuth0()
     return (
         <div
@@ -13,8 +13,13 @@ const Profile = () => {
                 alt={ user.name }
                 style={{ marginBottom: '15px' }}
             />
-            <p style={{ marginBottom: '3px' }}>Name: { user.name }</p>
-            <p style={{ marginBottom: '3px' }}>Email: { user.email }</p>
+            <p style={{ marginBottom: '.5rem' }}>Name: { user.name }</p>
+            <p style={{ marginBottom: '.5rem' }}>Email: { user.email }</p>
+            <br />
+            <p style={{ marginBottom: '.5rem' }}>You have:</p>
+            <p style={{ marginBottom: '.5rem' }}>{ props.bookCount } books / { props.bookNoteCount } notes</p>
+            <p style={{ marginBottom: '.5rem' }}>{ props.movieCount } movies / { props.movieNoteCount } notes</p>
+            <p style={{ marginBottom: '.5rem' }}>{ props.showCount } shows / { props.showNoteCount } notes</p>
         </div>
     )
 }

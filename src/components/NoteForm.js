@@ -49,10 +49,10 @@ function NoteForm(props) {
 
     const sqlApostrophe = () => {
         const newBody = data.note_body.replace(/'/g, "''")
-        data.note_body = newBody
         const newTitle = data.title.replace(/'/g, "''")
-        data.title = newTitle
         const newName = data.name.replace(/'/g, "''")
+        data.note_body = newBody
+        data.title = newTitle
         data.name = newName
     }
 
@@ -79,7 +79,7 @@ function NoteForm(props) {
 
     const EndButtons = (props) => {
         return (
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div className='endButtons'>
                 <Button
                     inverted
                     color='violet'
@@ -88,17 +88,17 @@ function NoteForm(props) {
                     onClick={ () => {
                         sqlApostrophe()
                         addNote()
-                        setData([])
+                        setData({ note_chapter: null, note_page: null, note_minute: null, note_episode: null, note_season: null, name: userName })
                         props.setNoteForm(false)
                         props.setNotes([])
                         alert('Note added!')
                 }}>Submit</Button>
                 <Button
                     inverted
-                    color='red' 
+                    color='red'
                     size='large'
                     onClick={ () => {
-                        setData([])
+                        setData({ note_chapter: null, note_page: null, note_minute: null, note_episode: null, note_season: null, name: userName })
                         props.setNoteForm(false)
                         alert('Note discarded')
                 }}>Cancel</Button>

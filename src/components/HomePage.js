@@ -10,7 +10,7 @@ const HomePage = () => {
 
     return (
         <div>
-            { isLoading && <Loader color={ `rgb(202, 237, 114)` } loading={ isLoading } /> }
+            { isLoading && <Loader color={ `rgb(222, 106, 185)` } loading={ isLoading } /> }
             { !isLoading &&
                 <div>
                     { !isAuthenticated && <DefaultPage /> }

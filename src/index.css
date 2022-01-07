@@ -84,6 +84,11 @@ p {
   border-radius: 10px;
 }
 
+.endButtons {
+  display: flex;
+  flex-direction: column;
+}
+
 .noteForm {
   top: 50%;
   left: 50%;

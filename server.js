@@ -8,9 +8,7 @@ const calls = require('./src/back-end-calls/SQLCalls')
 // require('dotenv').config()
 
 // ENV FILE IS THE DEVIL
-
-// figure out why not refreshing state to update count
-// condense sorting options
+// sort for notes
 
 const PORT = 6500
 
@@ -23,22 +21,6 @@ const noReturnCall = (call) => {
 
 app.post('/apiBooks', (req, res) => {
     db.query(`${ calls.bookLib } WHERE name = '${ req.body.userName.name }'`, (err, rows) => {
-        if (err) console.log(err)
-        res.send(rows)
-    })
-})
-
-app.post('/booksByTitle', (req, res) => {
-    const booksByTitle = `SELECT * FROM Books WHERE name = '${ req.body.userName.name }' ORDER BY title`
-    db.query(booksByTitle, (err, rows) => {
-        if (err) console.log(err)
-        res.send(rows)
-    })
-})
-
-app.post('/booksByRating', (req, res) => {
-    const booksByRating = `SELECT * FROM Books WHERE name = '${ req.body.userName.name }' ORDER BY rating DESC`
-    db.query(booksByRating, (err, rows) => {
         if (err) console.log(err)
         res.send(rows)
     })
@@ -81,22 +63,6 @@ app.post('/apiBookNotesByTitle', (req, res) => {
     })
 })
 
-app.post('/booksByType', (req, res) => {
-    const byType = `SELECT * FROM Book_Notes WHERE title = '${ req.body.notesFor }' && name = '${ req.body.userName.name }' ORDER BY note_type`
-    db.query(byType, (err, rows) => {
-        if (err) console.log(err)
-        res.send(rows)
-    })
-})
-
-app.post('/booksByChapter', (req, res) => {
-    const byChapter = `SELECT * FROM Book_Notes WHERE title = '${ req.body.notesFor }' && name = '${ req.body.userName.name }' ORDER BY note_chapter`
-    db.query(byChapter, (err, rows) => {
-        if (err) console.log(err)
-        res.send(rows)
-    })
-})
-
 app.post('/addBookNote', (req, res) => {
     const addBookNote = `INSERT INTO Book_Notes (title, note_type, note_chapter, note_page, note_body, name)
         VALUES
@@ -127,22 +93,6 @@ app.post('/apiMovies', (req, res) => {
     })
 })
 
-app.post('/moviesByTitle', (req, res) => {
-    const moviesByTitle = `SELECT * FROM Movies WHERE name = '${ req.body.userName.name }' ORDER BY title`
-    db.query(moviesByTitle, (err, rows) => {
-        if (err) console.log(err)
-        res.send(rows)
-    })
-})
-
-app.post('/moviesByRating', (req, res) => {
-    const moviesByRating = `SELECT * FROM Movies WHERE name = '${ req.body.userName.name }' ORDER BY rating DESC`
-    db.query(moviesByRating, (err, rows) => {
-        if (err) console.log(err)
-        res.send(rows)
-    })
-})
-
 app.post('/addMovie', (req, res) => {
     const addMovie = `INSERT INTO Movies (title, director, minutes, rating, name)
         VALUES ('${ req.body.title }', '${ req.body.director }', ${ req.body.minutes }, ${ req.body.rating }, '${ req.body.name }')
@@ -167,22 +117,6 @@ app.post('/deleteMovie', (req, res) => {
 
 app.post('/apiMovieNotes', (req, res) => {
     db.query(`${ calls.movieNotesLib } WHERE name = '${ req.body.userName.name }'`, (err, rows) => {
-        if (err) console.log(err)
-        res.send(rows)
-    })
-})
-
-app.post('/moviesByType', (req, res) => {
-    const byType = `SELECT * FROM Movie_Notes WHERE title = '${ req.body.notesFor }' && name = '${ req.body.userName.name }' ORDER BY note_type`
-    db.query(byType, (err, rows) => {
-        if (err) console.log(err)
-        res.send(rows)
-    })
-})
-
-app.post('/moviesByMinute', (req, res) => {
-    const byMinute = `SELECT * FROM Movie_Notes WHERE title = '${ req.body.notesFor }' && name = '${ req.body.userName.name }' ORDER BY note_minute`
-    db.query(byMinute, (err, rows) => {
         if (err) console.log(err)
         res.send(rows)
     })
@@ -226,22 +160,6 @@ app.post('/apiShows', (req, res) => {
     })
 })
 
-app.post('/showsByTitle', (req, res) => {
-    const showsByTitle = `SELECT * FROM Shows WHERE name = '${ req.body.userName.name }' ORDER BY title`
-    db.query(showsByTitle, (err, rows) => {
-        if (err) console.log(err)
-        res.send(rows)
-    })
-})
-
-app.post('/showsByRating', (req, res) => {
-    const showsByRating = `SELECT * FROM Shows WHERE name = '${ req.body.userName.name }' ORDER BY rating DESC`
-    db.query(showsByRating, (err, rows) => {
-        if (err) console.log(err)
-        res.send(rows)
-    })
-})
-
 app.post('/addShow', (req, res) => {
     const addShow = `INSERT INTO Shows (title, seasons, rating, name)
         VALUES ('${ req.body.title }', ${ req.body.seasons }, ${ req.body.rating }, '${ req.body.name }')
@@ -266,22 +184,6 @@ app.post('/deleteShow', (req, res) => {
 
 app.post('/apiShowNotes', (req, res) => {
     db.query(`${ calls.showNotesLib } WHERE name = '${ req.body.userName.name }'`, (err, rows) => {
-        if (err) console.log(err)
-        res.send(rows)
-    })
-})
-
-app.post('/showsByType', (req, res) => {
-    const byType = `SELECT * FROM Show_Notes WHERE title = '${ req.body.notesFor }' && name = '${ req.body.userName.name }' ORDER BY note_type`
-    db.query(byType, (err, rows) => {
-        if (err) console.log(err)
-        res.send(rows)
-    })
-})
-
-app.post('/showsBySeason', (req, res) => {
-    const bySeason = `SELECT * FROM Show_Notes WHERE title = '${ req.body.notesFor }' && name = '${ req.body.userName.name }' ORDER BY note_season`
-    db.query(bySeason, (err, rows) => {
         if (err) console.log(err)
         res.send(rows)
     })

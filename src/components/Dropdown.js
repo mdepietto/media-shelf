@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Form } from 'semantic-ui-react'
-import PropagateLoader from "react-spinners/PropagateLoader";
-import { css } from "@emotion/react";
+import Loader from './Loader';
 
 const Dropdown = (props) => {
 
     const [ loading, setLoading ] = useState(false)
-
-    const override = css`
-        position: fixed;
-        top: 50%;
-        left: 50%;
-    `
 
     const [ notesFor, setNotesFor ] = useState('')
 
@@ -41,88 +34,68 @@ const Dropdown = (props) => {
 
     const userName = props.userName
 
-    const getAll = async (title, path, setPath, setPathFor) => {
-        setOpenSort(false)
+    const newLib = (newData) => {
+        props.set([])
+        newData.map(media => {
+            media.note_date = media.note_date.slice(0, 10)
+            return props.set(prev => [ ...prev, media ])
+        })
+    }
+
+    const getAll = async () => {
         setLoading(true)
-        if (title === 'All') {
-            const newData = await fetch(path, {
-                method: 'POST',
-                headers: { 'content-type': 'application/json' },
-                body: JSON.stringify({
-                    userName
-                })
-            })
-            .then(res => res.json())
-            newData.map(media => {
-                media.note_date = media.note_date.slice(0, 10)
-                return setPath(prev => [ ...prev, media ])
-            })
-            setPathFor(title)
-            setPath(newData)
-        }
+        setOpenSort(false)
+        const newData = await fetch(props.api, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ userName })
+        })
+        .then(res => res.json())
+        newLib(newData)
+        props.set(newData)
         setLoading(false)
     }
 
-    const getNotesByTitle = async (title, path, noteLib) => {
+    const getNotesByTitle = async (title) => {
         setLoading(true)
         setNotesFor(title)
-        await props.set([])
-        if (!title) {
-            getAll('All', props.api, props.set, setNotesFor)
-            return
-        }
-        if (title === 'All') {
+        if (!title || title === 'All') {
+            getAll()
             setOpenSort(false)
             return
         }
         setOpenSort(true)
-        const newData = await fetch(path, {
+        const newData = await fetch(props.path, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ title, userName })
         })
         .then(res => res.json())
-        newData.map(media => {
-            media.note_date = media.note_date.slice(0, 10)
-            return noteLib(prev => [ ...prev, media ])
-        })
-        if (notesFor !== 'All') setOpenSort(true)
-        setLoading(false)
-    }
-
-    const getNotesBySort = async (path) => {
-        setLoading(true)
-        const newData = await fetch(path, {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ notesFor, userName })
-        })
-        .then(res => res.json())
-        newData.map(media => {
-            media.note_date = media.note_date.slice(0, 10)
-            return props.set(prev => [ ...prev, media ])
-        })
+        newLib(newData)
         setLoading(false)
     }
 
     const onSort = async (e) => {
         setLoading(true)
-        props.set([])
         const { innerText } = e.target
         if (!innerText) {
-            getNotesByTitle(notesFor, props.path, props.set)
+            getNotesByTitle(notesFor)
         }
-        if (props.name === 'book') {
-            if (innerText === 'Type') await getNotesBySort('/booksByType')
-            if (innerText === 'Chapter') await getNotesBySort('/booksByChapter')
+        if (innerText === 'Chapter'){
+            const newData = props.noteLibrary.sort((a, b) => (a.note_chapter < b.note_chapter) ? 1 : -1)
+            newLib(newData)
         }
-        if (props.name === 'movie') {
-            if (innerText === 'Type') await getNotesBySort('/moviesByType')
-            if (innerText === 'Minute') await getNotesBySort('/moviesByMinute')
+        if (innerText === 'Minute'){
+            const newData = props.noteLibrary.sort((a, b) => (a.note_minute > b.note_minute) ? 1 : -1)
+            newLib(newData)
         }
-        if (props.name === 'show') {
-            if (innerText === 'Type') await getNotesBySort('/showsByType')
-            if (innerText === 'Season') await getNotesBySort('/showsBySeason')
+        if (innerText === 'Season'){
+            const newData = props.noteLibrary.sort((a, b) => (a.note_season > b.note_season) ? 1 : -1)
+            newLib(newData)
+        }
+        if (innerText === 'Type'){
+            const newData = props.noteLibrary.sort((a, b) => (a.note_type > b.note_type) ? 1 : -1)
+            newLib(newData)
         }
         setLoading(false)
     }
@@ -130,7 +103,7 @@ const Dropdown = (props) => {
     return (
         <div className='selectDrop' style={{ border: `2px solid rgb(${ props.border })` }}>
 
-        { loading && <PropagateLoader color={ `rgb(${ props.border })` } css={ override } loading={ loading } size={ 30 } /> }
+        { loading && <Loader color={ `rgb(${ props.border })` } loading={ loading } /> }
         
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <h3 style={{ fontFamily: "'Montagu Slab', serif" }}>Showing { props.name } notes for:</h3>
@@ -145,8 +118,7 @@ const Dropdown = (props) => {
                                 var text = e.target.innerText
                                 var newTitle = text.replace(/'/g, "''")
                                 props.set([])
-                                getAll(text, props.api, props.set, setNotesFor)
-                                getNotesByTitle(newTitle, props.path, props.set)
+                                getNotesByTitle(newTitle)
                             }}
                         />
                     </Form.Group>
