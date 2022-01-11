@@ -42,28 +42,17 @@ const Dropdown = (props) => {
         })
     }
 
-    const getAll = async () => {
-        setLoading(true)
-        setOpenSort(false)
-        const newData = await fetch(props.api, {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ userName })
-        })
-        .then(res => res.json())
-        newLib(newData)
-        props.set(newData)
-        setLoading(false)
-    }
-
     const getNotesByTitle = async (title) => {
         setLoading(true)
+        props.set([])
         setNotesFor(title)
         if (!title || title === 'All') {
-            getAll()
+            await props.getContent(props.api, props.set)
             setOpenSort(false)
+            setLoading(false)
             return
         }
+        if (!title || title === 'All') return
         setOpenSort(true)
         const newData = await fetch(props.path, {
             method: 'POST',
@@ -117,7 +106,6 @@ const Dropdown = (props) => {
                             onChange={ async (e) => {
                                 var text = e.target.innerText
                                 var newTitle = text.replace(/'/g, "''")
-                                props.set([])
                                 getNotesByTitle(newTitle)
                             }}
                         />

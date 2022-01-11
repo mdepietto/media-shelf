@@ -8,7 +8,6 @@ const calls = require('./src/back-end-calls/SQLCalls')
 // require('dotenv').config()
 
 // ENV FILE IS THE DEVIL
-// sort for notes
 
 const PORT = 6500
 

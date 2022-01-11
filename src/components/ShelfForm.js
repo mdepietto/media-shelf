@@ -31,22 +31,16 @@ function ShelfForm(props) {
     const sqlApostrophe = () => {
         var newName = data.name.replace(/'/g, "''")
         var newTitle = data.title.replace(/'/g, "''")
+        data.name = newName
+        data.title = newTitle
 
         if (props.name === 'book') {
             var newAuthor = data.author.replace(/'/g, "''")
-            data.name = newName
-            data.title = newTitle
             data.author = newAuthor
         }
         if (props.name === 'movie') {
             var newDirector = data.director.replace(/'/g, "''")
-            data.name = newName
-            data.title = newTitle
             data.director = newDirector
-        }
-        if (props.name === 'show') {
-            data.name = newName
-            data.title = newTitle
         }
     }
 
@@ -69,11 +63,9 @@ function ShelfForm(props) {
                     style={{ marginBottom: '15px' }}
                     onClick={ async () => {
                         sqlApostrophe()
-                        console.log(data);
                         await addMedia()
                         setData({ chapters: null, pages: null, rating: null, minutes: null, seasons: null, name: userName })
                         props.setForm(false)
-                        props.setLib([])
                         alert('Content added!')
                     }}
                 >Submit</Button>

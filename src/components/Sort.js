@@ -25,15 +25,15 @@ const Sort = (props) => {
         }
         props.setLib([])
         if (props.name === 'books') {
-            if (!innerText) props.getMedia('/apiBooks')
+            if (!innerText) props.getContent('/apiBooks', props.setLib)
             byType()
         }
         if (props.name === 'movies') {
-            if (!innerText) props.getMedia('/apiMovies')
+            if (!innerText) props.getContent('/apiMovies', props.setLib)
             byType()
         }
         if (props.name === 'shows') {
-            if (!innerText) props.getMedia('/apiShows')
+            if (!innerText) props.getContent('/apiShows', props.setLib)
             byType()
         }
     }

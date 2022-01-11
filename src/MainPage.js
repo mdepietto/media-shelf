@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Button, Icon } from 'semantic-ui-react'
 import { useAuth0 } from '@auth0/auth0-react';
 
+import { Link } from 'react-router-dom'
+
 import Loader from './components/Loader';
 import ScreenSaver from './components/ScreenSaver'
 import Dropdown from './components/Dropdown'
@@ -23,7 +25,7 @@ import NavBottom from './components/NavBottom'
 const MainPage = () => {
 
     const [ loading, setLoading ] = useState(false)
-    const [ screenSaver, setScreenSaver ] = useState(true)
+    const [ screenSaver, setScreenSaver ] = useState(false)
     const [ profile, setProfile ] = useState(false)
 
     const [ bookShelf, setBookShelf ] = useState(false)
@@ -77,9 +79,9 @@ const MainPage = () => {
     getCount('/apiShows', setShowCount)
     getCount('/apiShowNotes', setShowNoteCount)
     
-    const getMedia = async (path) => {
+    const getContent = async (path, set) => {
         setLoading(true)
-        setLibrary([])
+        set([])
         const newData = await fetch(path, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
@@ -87,7 +89,8 @@ const MainPage = () => {
         })
         .then(res => res.json())
         newData.map(media => {
-            return setLibrary(prev => [ ...prev, media ])
+            if (media.note_date) media.note_date = media.note_date.slice(0, 10)
+            return set(prev => [ ...prev, media ])
         })
         setLoading(false)
     }
@@ -104,22 +107,6 @@ const MainPage = () => {
                 return setLib(prev => [ ...prev, { key: media.id, text: media.title, value: media.id }])
             })
         }
-    }
-
-    const getNotes = async (path) => {
-        setLoading(true)
-        setNoteLibrary([])
-        const newData = await fetch(path, {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ userName })
-        })
-        .then(res => res.json())
-        newData.map(media => {
-            media.note_date = media.note_date.slice(0, 10);
-            return setNoteLibrary(prev => [ ...prev, media ])
-        })
-        setLoading(false)
     }
 
     return (
@@ -193,10 +180,10 @@ const MainPage = () => {
                             setProfile(false)
                             setNavButtons(true)
                             setLoader('202, 237, 114')
-                            getMedia('/apiBooks')
+                            getContent('/apiBooks', setLibrary)
                         }}>
                         <Button.Content visible>Books</Button.Content>
-                        <Button.Content hidden>{ bookCount }</Button.Content>
+                        <Button.Content hidden><Link to='/books'>{ bookCount }</Link></Button.Content>
                     </Button>
                     <Button
                         icon
@@ -250,7 +237,7 @@ const MainPage = () => {
                             setProfile(false)
                             setLoader('202, 237, 114')
                             getDropdown(books, '/apiBooks', setBooks)
-                            getNotes('/apiBookNotes')
+                            getContent('/apiBookNotes', setNoteLibrary)
                         }}>
                         <Button.Content visible>Book Notes</Button.Content>
                         <Button.Content hidden>{ bookNoteCount }</Button.Content>
@@ -294,26 +281,26 @@ const MainPage = () => {
                         color='yellow'
                         animated='fade'
                         onClick={ () => {
-                            setMovieShelf(true)
-                            setScreenSaver(false)
-                            setMovieForm(false)
-                            setMovieNoteShelf(false)
-                            setMovieNoteForm(false)
-                            setBookShelf(false)
-                            setBookForm(false)
-                            setBookNoteShelf(false)
-                            setBookNoteForm(false)
-                            setShowShelf(false)
-                            setShowForm(false)
-                            setShowNoteShelf(false)
-                            setShowNoteForm(false)
-                            setNavButtons(true)
-                            setProfile(false)
-                            setLoader('235, 229, 52')
-                            getMedia('/apiMovies')
+                            // setMovieShelf(true)
+                            // setScreenSaver(false)
+                            // setMovieForm(false)
+                            // setMovieNoteShelf(false)
+                            // setMovieNoteForm(false)
+                            // setBookShelf(false)
+                            // setBookForm(false)
+                            // setBookNoteShelf(false)
+                            // setBookNoteForm(false)
+                            // setShowShelf(false)
+                            // setShowForm(false)
+                            // setShowNoteShelf(false)
+                            // setShowNoteForm(false)
+                            // setNavButtons(true)
+                            // setProfile(false)
+                            // setLoader('235, 229, 52')
+                            // getContent('/apiMovies', setLibrary)
                         }}>
                         <Button.Content visible>Movies</Button.Content>
-                        <Button.Content hidden>{ movieCount }</Button.Content>
+                        <Button.Content hidden><Link to='/movies'>{ movieCount }</Link></Button.Content>
                     </Button>
                     <Button
                         icon
@@ -367,7 +354,7 @@ const MainPage = () => {
                             setNavButtons(true)
                             setLoader('235, 229, 52')
                             getDropdown(movies, '/apiMovies', setMovies)
-                            getNotes('/apiMovieNotes')
+                            getContent('/apiMovieNotes', setNoteLibrary)
                         }}>
                         <Button.Content visible>Movie Notes</Button.Content>
                         <Button.Content hidden>{ movieNoteCount }</Button.Content>
@@ -427,7 +414,7 @@ const MainPage = () => {
                             setProfile(false)
                             setNavButtons(true)
                             setLoader('242, 129, 7')
-                            getMedia('/apiShows')
+                            getContent('/apiShows', setLibrary)
                         }}>
                         <Button.Content visible>Shows</Button.Content>
                         <Button.Content hidden>{ showCount }</Button.Content>
@@ -484,7 +471,7 @@ const MainPage = () => {
                             setNavButtons(true)
                             setLoader('242, 129, 7')
                             getDropdown(shows, '/apiShows', setShows)
-                            getNotes('/apiShowNotes')
+                            getContent('/apiShowNotes', setNoteLibrary)
                         }}>
                         <Button.Content visible>Show Notes</Button.Content>
                         <Button.Content hidden>{ showNoteCount }</Button.Content>
@@ -557,7 +544,7 @@ const MainPage = () => {
                             lib={ library }
                             setLib={ setLibrary }
                             border='202, 237, 114'
-                            getMedia={ getMedia }
+                            getContent={ getContent }
                             loading={ loading }
                         />
                         <Shelf
@@ -582,6 +569,7 @@ const MainPage = () => {
                     <div>
                         <Dropdown
                             options={ books }
+                            getContent={ getContent }
                             name='book'
                             placeholder='Book'
                             set={ setNoteLibrary }
@@ -618,7 +606,7 @@ const MainPage = () => {
                             lib={ library }
                             setLib={ setLibrary }
                             border='235, 229, 52'
-                            getMedia={ getMedia }
+                            getContent={ getContent }
                             loading={ loading }
                         />
                         <Shelf
@@ -642,6 +630,7 @@ const MainPage = () => {
                     <div>
                         <Dropdown
                             options={ movies }
+                            getContent={ getContent }
                             name='movie'
                             placeholder='Movie'
                             set={ setNoteLibrary }
@@ -678,7 +667,7 @@ const MainPage = () => {
                             lib={ library }
                             setLib={ setLibrary }
                             border='242, 129, 7'
-                            getMedia={ getMedia }
+                            getContent={ getContent }
                             loading={ loading }
                         />
                         <Shelf
@@ -702,6 +691,7 @@ const MainPage = () => {
                     <div>
                         <Dropdown
                             options={ shows }
+                            getContent={ getContent }
                             name='show'
                             placeholder='Show'
                             set={ setNoteLibrary }
