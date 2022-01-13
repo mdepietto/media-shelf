@@ -14,7 +14,6 @@ const Loader = (props) => {
         <PropagateLoader
             color={ props.color }
             css={ override }
-            loading={ props.loading }
             size={ 30 }
         />
     )

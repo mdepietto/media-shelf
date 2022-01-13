@@ -1,134 +1,85 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Form } from 'semantic-ui-react'
-import Loader from './Loader';
+import { useAuth0 } from '@auth0/auth0-react'
 
 const Dropdown = (props) => {
 
-    const [ loading, setLoading ] = useState(false)
+    const { border, name, path, titlePath, library, setLibrary, getData, titles } = props
 
-    const [ notesFor, setNotesFor ] = useState('')
-
-    const [ openSort, setOpenSort ] = useState(false)
-
-    const [ options, setOptions ] = useState([
-        { key: 0, text: 'Type', value: 0 },
-        { key:1, text: 'Chapter', value: 1 }
-    ])
+    const userName = useAuth0().user
+    
+    var sortOptions = [{ key: 0, text: 'Type', value: 0 }, { key:1, text: 'Chapter', value: 1 }]
 
     useEffect(() => {
-        if (props.name === 'movie') {
-            setOptions([
-                { key: 0, text: 'Type', value: 0 },
-                { key:1, text: 'Minute', value: 1 }
-            ])
-            return
-        }
-        if (props.name === 'show') {
-            setOptions([
-                { key: 0, text: 'Type', value: 0 },
-                { key:1, text: 'Season', value: 1 }
-            ])
-            return
-        }
-    }, [ props ])
-
-    const userName = props.userName
+        if (name === 'movies') sortOptions[1].text = 'Minute'
+        if (name === 'shows') sortOptions[1].text = 'Season'
+    }, [ name, sortOptions ])
 
     const newLib = (newData) => {
-        props.set([])
+        setLibrary([])
         newData.map(media => {
             media.note_date = media.note_date.slice(0, 10)
-            return props.set(prev => [ ...prev, media ])
+            return setLibrary(prev => [ ...prev, media ])
         })
+    }
+    
+    const onSort = async (e) => {
+        const { innerText } = e.target
+        if (!innerText) newLib(library.sort((a, b) => (a.id > b.id) ? 1 : -1))
+        if (innerText === 'Chapter') newLib(library.sort((a, b) => (a.note_chapter < b.note_chapter) ? 1 : -1))
+        if (innerText === 'Minute') newLib(library.sort((a, b) => (a.note_minute > b.note_minute) ? 1 : -1))
+        if (innerText === 'Season') newLib(library.sort((a, b) => (a.note_season > b.note_season) ? 1 : -1))
+        if (innerText === 'Type') newLib(library.sort((a, b) => (a.note_type > b.note_type) ? 1 : -1))
     }
 
     const getNotesByTitle = async (title) => {
-        setLoading(true)
-        props.set([])
-        setNotesFor(title)
+        setLibrary([])
         if (!title || title === 'All') {
-            await props.getContent(props.api, props.set)
-            setOpenSort(false)
-            setLoading(false)
-            return
+            return await getData(path)
         }
-        if (!title || title === 'All') return
-        setOpenSort(true)
-        const newData = await fetch(props.path, {
+        const newData = await fetch(titlePath, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ title, userName })
         })
         .then(res => res.json())
         newLib(newData)
-        setLoading(false)
-    }
-
-    const onSort = async (e) => {
-        setLoading(true)
-        const { innerText } = e.target
-        if (!innerText) {
-            getNotesByTitle(notesFor)
-        }
-        if (innerText === 'Chapter'){
-            const newData = props.noteLibrary.sort((a, b) => (a.note_chapter < b.note_chapter) ? 1 : -1)
-            newLib(newData)
-        }
-        if (innerText === 'Minute'){
-            const newData = props.noteLibrary.sort((a, b) => (a.note_minute > b.note_minute) ? 1 : -1)
-            newLib(newData)
-        }
-        if (innerText === 'Season'){
-            const newData = props.noteLibrary.sort((a, b) => (a.note_season > b.note_season) ? 1 : -1)
-            newLib(newData)
-        }
-        if (innerText === 'Type'){
-            const newData = props.noteLibrary.sort((a, b) => (a.note_type > b.note_type) ? 1 : -1)
-            newLib(newData)
-        }
-        setLoading(false)
     }
 
     return (
-        <div className='selectDrop' style={{ border: `2px solid rgb(${ props.border })` }}>
-
-        { loading && <Loader color={ `rgb(${ props.border })` } loading={ loading } /> }
+        <div className='selectDrop' style={{ border: `2px solid rgb(${ border })` }}>
         
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <h3 style={{ fontFamily: "'Montagu Slab', serif" }}>Showing { props.name } notes for:</h3>
+            <div>
                 <Form>
                     <Form.Group width='equal'>
                         <Form.Select
                             clearable
-                            options={ props.options }
-                            name={ props.name }
-                            placeholder={ props.placeholder}
+                            options={ sortOptions }
+                            name='sortNotes'
+                            placeholder='Sort...'
+                            onChange={ onSort }
+                        />
+                    </Form.Group>
+                </Form>
+            </div>
+
+            <div>
+                <Form>
+                    <Form.Group width='equal'>
+                        <Form.Select
+                            clearable
+                            options={ titles }
+                            name={ name }
+                            placeholder='Title...'
                             onChange={ async (e) => {
-                                var text = e.target.innerText
-                                var newTitle = text.replace(/'/g, "''")
+                                const text = e.target.innerText
+                                const newTitle = text.replace(/'/g, "''")
                                 getNotesByTitle(newTitle)
                             }}
                         />
                     </Form.Group>
                 </Form>
             </div>
-
-            { openSort &&
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <h3 style={{ fontFamily: "'Montagu Slab', serif" }}>Sorted by:</h3>
-                    <Form>
-                        <Form.Group width='equal'>
-                            <Form.Select
-                                clearable
-                                options={ options }
-                                name='sortNotes'
-                                placeholder='Sort by'
-                                onChange={ onSort }
-                            />
-                        </Form.Group>
-                    </Form>
-                </div>
-            }
         </div>
     )
 }

@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import 'semantic-ui-css/semantic.min.css'
 import { Auth0Provider } from '@auth0/auth0-react'
-
 import { BrowserRouter, Routes, Route } from "react-router-dom"
+
 import App from './App';
-import Shelf from './components/Shelf';
+import ShelfPage from './routes/ShelfPage'
+import ShelfForm from './components/ShelfForm'
+import NotePage from './routes/NotePage'
+import NoteForm from './components/NoteForm'
 
 // const domain = process.env.REACT_APP_AUTH0_DOMAIN
 // const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID
@@ -20,22 +23,18 @@ ReactDOM.render(
         >
             <Routes>
                 <Route path='/' element={ <App /> } />
-                <Route
-                    path='books'
-                    element={ <Shelf
-                        name='book'
-                        path='/deleteBook'
-                        sortPath='/booksByTitle'
-                    /> }
-                />
-                <Route
-                    path='movies'
-                    element={ <Shelf
-                        name='movie'
-                        path='/deleteMovie'
-                        sortPath='/moviesByTitle'
-                    /> }
-                />
+                <Route path='books' element={ 
+                    <Fragment>
+                        {/* <App /> */}
+                        <ShelfPage name='books' />
+                    </Fragment>
+                 } />
+                <Route path='movies' element={ <ShelfPage name='movies' /> } />
+                <Route path='shows' element={ <ShelfPage name='shows' /> } />
+
+                <Route path='bookNotes' element={ <NotePage name='books' /> } />
+                <Route path='movieNotes' element={ <NotePage name='movies' /> } />
+                <Route path='showNotes' element={ <NotePage name='shows' /> } />
             </Routes>
         </Auth0Provider>
     </BrowserRouter>,

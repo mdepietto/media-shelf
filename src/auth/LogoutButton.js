@@ -12,8 +12,6 @@ const LogoutButton = () => {
                 inverted
                 color='red'
                 size='big'
-                className='navButton'
-                style={{ margin: '0 0 0 .5rem' }}
                 onClick={ () => logout({ returnTo: window.location.origin }) }
             >
                 Log out

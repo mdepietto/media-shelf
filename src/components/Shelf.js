@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Button } from 'semantic-ui-react'
 import { useAuth0 } from '@auth0/auth0-react';
+import { Link } from 'react-router-dom';
+import Loader from './Loader';
 
 const Shelf = (props) => {
 
-    var toBeDeleted = 0
+    const { name, library, setLibrary } = props
 
-    const [ library, setLibrary ] = useState([])
+    const [ loading, setLoading ] = useState(false)
+
     const userName = useAuth0().user
 
     useEffect(() => {
-        async function getData(path) {
+        const getData = async (path) => {
+            setLoading(true)
             setLibrary([])
             const newData = await fetch(path, {
                 method: 'POST',
@@ -21,17 +25,18 @@ const Shelf = (props) => {
             newData.map(media => {
                 return setLibrary(prev => [ ...prev, media ])
             })
+            setLoading(false)
         }
-        if (props.name === 'book') getData('/apiBooks')
-        if (props.name === 'movie') getData('/apiMovies')
-        if (props.name === 'show') getData('/apiShows')
-    }, [ userName, props.name ])
+        if (name === 'books') getData('/apiBooks')
+        if (name === 'movies') getData('/apiMovies')
+        if (name === 'shows') getData('/apiShows')
+    }, [ userName, name, setLibrary ])
 
-    const deleteMedia = async () => {
-        await fetch(props.path, {
+    const deleteMedia = async (path, media) => {
+        await fetch(path, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ toBeDeleted })
+            body: JSON.stringify({ media })
         })
         .then(res => res.json())
     }
@@ -44,22 +49,22 @@ const Shelf = (props) => {
 
     const DeleteButton = (props) => {
         return (
-            <Button
-                inverted color='red'
-                size='large'
-                onClick={ () => {
-                    toBeDeleted = props.media.id
-                    confirmation(deleteMedia)
-                    props.setShelf(false)
-                    props.setLib([])
-            }}>
-            Delete</Button>
+            <Link to='/'>
+                <Button
+                    inverted color='red'
+                    size='large'
+                    onClick={ () => confirmation(() => deleteMedia(props.path, props.media)) }
+                >
+                    Delete
+                </Button>
+            </Link>
         )
     }
 
-    if (props.name === 'book') {
+    if (name === 'books') {
         return (
             <div>
+                { loading && <Loader color={ 'rgb(202, 237, 114)' } /> }
                 { library.map(book => {
                     return (
                         <div className='shelf' key={ book.id } style={{ border: '2px solid rgb(202, 237, 114)' }}>
@@ -69,7 +74,7 @@ const Shelf = (props) => {
                             <p style={{ margin: '.5rem' }}><i>Pages:</i> { book.pages }</p>
                             <p style={{ margin: '.5rem' }}><i>Rating:</i> { book.rating }</p>
                             <br />
-                            {/* <DeleteButton media={ book } setShelf={ props.setShelf } setLib={ props.setLib } /> */}
+                            <DeleteButton path='/deleteBook' media={ book.id } />
                         </div>
                     )
                 })}
@@ -77,50 +82,38 @@ const Shelf = (props) => {
         )
     }
 
-    if (props.name === 'movie') {
+    if (name === 'movies') {
         return (
-            // <div>
-            //     { props.lib.map(movie => {
-            //         return (
-            //             <div className='shelf' key={ movie.id } style={{ border: '2px solid rgb(235, 229, 52)' }}>
-            //                 <h1 className='shelfTitles'>{ props.lib.indexOf(movie) + 1 }:   { movie.title }</h1>
-            //                 <p style={{ margin: '.5rem' }}><i>Director:</i> { movie.director }</p>
-            //                 <p style={{ margin: '.5rem' }}><i>Minutes:</i> { movie.minutes }</p>
-            //                 <p style={{ margin: '.5rem' }}><i>Rating:</i> { movie.rating }</p>
-            //                 <br />
-            //                 <DeleteButton media={ movie } setShelf={ props.setShelf } setLib={ props.setLib } />
-            //             </div>
-            //         )
-            //     })}
-            // </div>
             <div>
-            { library.map(movie => {
-                return (
-                    <div className='shelf' key={ movie.id } style={{ border: '2px solid rgb(235, 229, 52)' }}>
-                        <h1 className='shelfTitles'>{ library.indexOf(movie) + 1 }:   { movie.title }</h1>
-                        <p style={{ margin: '.5rem' }}><i>Director:</i> { movie.director }</p>
-                        <p style={{ margin: '.5rem' }}><i>Minutes:</i> { movie.minutes }</p>
-                        <p style={{ margin: '.5rem' }}><i>Rating:</i> { movie.rating }</p>
-                        <br />
-                        {/* <DeleteButton media={ movie } setShelf={ props.setShelf } setLib={ props.setLib } /> */}
-                    </div>
-                )
-            })}
-        </div>
+                { loading && <Loader color={ 'rgb(235, 229, 52)' } /> }
+                { library.map(movie => {
+                    return (
+                        <div className='shelf' key={ movie.id } style={{ border: '2px solid rgb(235, 229, 52)' }}>
+                            <h1 className='shelfTitles'>{ library.indexOf(movie) + 1 }:   { movie.title }</h1>
+                            <p style={{ margin: '.5rem' }}><i>Director:</i> { movie.director }</p>
+                            <p style={{ margin: '.5rem' }}><i>Minutes:</i> { movie.minutes }</p>
+                            <p style={{ margin: '.5rem' }}><i>Rating:</i> { movie.rating }</p>
+                            <br />
+                            <DeleteButton path='/deleteMovie' media={ movie.id } />
+                        </div>
+                    )
+                })}
+            </div>
         )
     }
 
-    if (props.name === 'show') {
+    if (name === 'shows') {
         return (
             <div>
-                { props.lib.map(show => {
+                { loading && <Loader color={ 'rgb(242, 129, 7)' } /> }
+                { library.map(show => {
                     return (
                         <div className='shelf' key={ show.id } style={{ border: '2px solid rgb(242, 129, 7)' }}>
-                            <h3 className='shelfTitles'>{ props.lib.indexOf(show) + 1 }:   { show.title }</h3>
+                            <h3 className='shelfTitles'>{ library.indexOf(show) + 1 }:   { show.title }</h3>
                             <p style={{ margin: '.5rem' }}><i>Seasons:</i> { show.seasons }</p>
                             <p style={{ margin: '.5rem' }}><i>Rating:</i> { show.rating }</p>
                             <br />
-                            <DeleteButton media={ show } setShelf={ props.setShelf } setLib={ props.setLib } />
+                            <DeleteButton path='/deleteShow' media={ show.id } />
                         </div>
                     )
                 })}

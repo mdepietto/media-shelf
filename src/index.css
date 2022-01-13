@@ -66,12 +66,6 @@ p {
   background: rgba(255, 226, 109, 0.4);
 }
 
-.sbsButtons {
-  display: flex;
-  justify-content: center;
-  margin: .2rem;
-}
-
 .mediaForm {
   top: 50%;
   left: 50%;
@@ -104,9 +98,9 @@ p {
 .selectDrop {
   background-color: rgba(27, 24, 24, 0.8);
   color:rgb(238, 238, 238);
-  width: 40%;
+  width: 30%;
   margin: 20px auto;
-  padding: 25px;
+  padding: 25px 0 10px 0;
   border-radius: 10px;
   display: flex;
   flex-direction: column;

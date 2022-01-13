@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import { Form, Input, TextArea, Button } from 'semantic-ui-react'
+import { useAuth0 } from '@auth0/auth0-react'
+import { Link } from 'react-router-dom'
 
 function NoteForm(props) {
 
-    const userName = props.userName.name
+    const { user } = useAuth0()
+    const userName = user.name
+
+    const { name, path, border, titles } = props
 
     const [ data, setData ] = useState({ note_chapter: null, note_page: null, note_minute: null, note_episode: null, note_season: null, name: userName })
 
-    var noAll = [ ...props.lib ]
+    const noAll = [ ...titles ]
     noAll.shift()
 
     const optionsNote = [
@@ -47,6 +52,18 @@ function NoteForm(props) {
         }))
     }
 
+    var pos = {
+        border: border,
+        position: 'fixed'
+    }
+
+    if (window.screen.width <= 1300) {
+        pos = {
+            border: border,
+            position: 'static'
+        }
+    }
+
     const sqlApostrophe = () => {
         const newBody = data.note_body.replace(/'/g, "''")
         const newTitle = data.title.replace(/'/g, "''")
@@ -57,7 +74,7 @@ function NoteForm(props) {
     }
 
     var addNote = async () => {
-        await fetch(props.path, {
+        await fetch(path, {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ ...data })
@@ -65,48 +82,43 @@ function NoteForm(props) {
         .then(res => res.json())
     }
 
-    var pos = {
-        border: props.border,
-        position: 'fixed'
-    }
-
-    if (window.screen.width <= 1300) {
-        pos = {
-            border: props.border,
-            position: 'static'
-        }
-    }
-
-    const EndButtons = (props) => {
+    const EndButtons = () => {
         return (
             <div className='endButtons'>
-                <Button
-                    inverted
-                    color='violet'
-                    size='large'
-                    style={{ margin: '15px 0' }}
-                    onClick={ () => {
-                        sqlApostrophe()
-                        addNote()
-                        setData({ note_chapter: null, note_page: null, note_minute: null, note_episode: null, note_season: null, name: userName })
-                        props.setNoteForm(false)
-                        props.setNotes([])
-                        alert('Note added!')
-                }}>Submit</Button>
-                <Button
-                    inverted
-                    color='red'
-                    size='large'
-                    onClick={ () => {
-                        setData({ note_chapter: null, note_page: null, note_minute: null, note_episode: null, note_season: null, name: userName })
-                        props.setNoteForm(false)
-                        alert('Note discarded')
-                }}>Cancel</Button>
+                <Link to='/'>
+                    <Button
+                        inverted
+                        color='violet'
+                        size='large'
+                        style={{ margin: '15px 0' }}
+                        onClick={ async () => {
+                            sqlApostrophe()
+                            await addNote()
+                            setData({ note_chapter: null, note_page: null, note_minute: null, note_episode: null, note_season: null, name: userName })
+                            alert('Note added!')
+                        }}
+                    >
+                        Submit
+                    </Button>
+                </Link>
+                <Link to='/'>
+                    <Button
+                        inverted
+                        color='red'
+                        size='large'
+                        onClick={ () => {
+                            setData({ note_chapter: null, note_page: null, note_minute: null, note_episode: null, note_season: null, name: userName })
+                            alert('Note discarded')
+                        }}
+                    >
+                        Cancel
+                    </Button>
+                </Link>
             </div>
         )
     }
 
-    if (props.name === 'book') {
+    if (name === 'books') {
         return (
             <Form className='mediaForm'
                 inverted
@@ -158,12 +170,12 @@ function NoteForm(props) {
                     onChange={ handleChange }
                     required
                 />
-                <EndButtons setNotes={ props.setNotes } setNoteForm={ props.setNoteForm } />
+                <EndButtons />
             </Form>
         )
     }
 
-    if (props.name === 'movie') {
+    if (name === 'movies') {
         return (
             <Form className='mediaForm'
                 inverted
@@ -205,12 +217,12 @@ function NoteForm(props) {
                     onChange={ handleChange }
                     required
                 />
-                <EndButtons setNotes={ props.setNotes } setNoteForm={ props.setNoteForm } />
+                <EndButtons />
             </Form>
         )
     }
 
-    if (props.name === 'show') {
+    if (name === 'shows') {
         return (
             <Form className='mediaForm'
                 inverted
@@ -262,7 +274,7 @@ function NoteForm(props) {
                     onChange={ handleChange }
                     required
                 />
-                <EndButtons setNotes={ props.setNotes } setNoteForm={ props.setNoteForm } />
+                <EndButtons />
             </Form>
         )
     }
