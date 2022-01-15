@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
+import { Button, Icon } from 'semantic-ui-react'
 
+import HomeButton from '../components/HomeButton';
 import Loader from '../components/Loader';
 import Dropdown from '../components/Dropdown'
 import NoteShelf from '../components/NoteShelf'
@@ -23,12 +25,12 @@ const NotePage = (props) => {
     const [ showTitles, setShowTitles ] = useState([{ key: 0, text: 'All', value: 0 }])
 
     useEffect(() => {
-        const getDropdown = async (titles, setTitles, path) => {
+        const getDropdown = async (titles, setTitles, api) => {
             if (!titles[1]) {
-                const newData = await fetch(path, {
+                const newData = await fetch('/apiMedia', {
                     method: 'POST',
                     headers: { 'content-type': 'application/json' },
-                    body: JSON.stringify({ userName })
+                    body: JSON.stringify({ api, userName })
                 })
                 .then(res => res.json())
                 newData.map(media => {
@@ -36,18 +38,18 @@ const NotePage = (props) => {
                 })
             }
         }
-        if (props.name === 'books') getDropdown(bookTitles, setBookTitles, '/apiBooks')
-        if (props.name === 'movies') getDropdown(movieTitles, setMovieTitles, '/apiMovies')
-        if (props.name === 'shows') getDropdown(showTitles, setShowTitles, '/apiShows')
+        if (props.name === 'books') getDropdown(bookTitles, setBookTitles, 'Books')
+        if (props.name === 'movies') getDropdown(movieTitles, setMovieTitles, 'Movies')
+        if (props.name === 'shows') getDropdown(showTitles, setShowTitles, 'Shows')
     }, [ bookTitles, movieTitles, showTitles, props.name, userName ])
 
-    const getData = async (path) => {
+    const getData = async (api) => {
         setLoading(true)
         setLibrary([])
-        const newData = await fetch(path, {
+        const newData = await fetch('apiMedia', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ userName })
+            body: JSON.stringify({ api, userName })
         })
         .then(res => res.json())
         newData.map(media => {
@@ -63,25 +65,39 @@ const NotePage = (props) => {
 
                 { loading && <Loader color={ 'rgb(202, 237, 114)' } /> }
 
-                <button onClick={() => setNoteForm(!noteForm)}>Add Book Note</button>
-
-                { noteForm && <NoteForm name='books' path='/addBookNote' border='2px solid rgb(202, 237, 114)' titles={ bookTitles } /> }
-
-                <Dropdown
-                    border='202, 237, 114'
-                    path='apiBookNotes'
-                    titles={ bookTitles }
-                    titlePath='apiBookNotesByTitle'
+                { noteForm && <NoteForm
                     name='books'
-                    getData={ getData }
-                    library={ library }
-                    setLibrary={ setLibrary }
-                />
+                    path='/addBookNote'
+                    border='2px solid rgb(202, 237, 114)'
+                    titles={ bookTitles }
+                /> }
+                <div>
+                    <Dropdown
+                        border='202, 237, 114'
+                        api='Book_Notes'
+                        titles={ bookTitles }
+                        titlePath='Book_Notes'
+                        name='books'
+                        getData={ getData }
+                        library={ library }
+                        setLibrary={ setLibrary }
+                    />
+                    <Button
+                        icon
+                        circular
+                        size='massive'
+                        color='olive'
+                        onClick={() => setNoteForm(!noteForm)}
+                    >
+                        <Icon name='plus' />
+                    </Button>
+                </div>
                 <NoteShelf
                     name='books'
                     getData={ getData }
                     library={ library }
                 />
+                <HomeButton />
                 <NavTop />
                 <NavBottom />
             </div>
@@ -93,25 +109,38 @@ const NotePage = (props) => {
 
                 { loading && <Loader color={ 'rgb(235, 229, 52)' } /> }
 
-                <button onClick={() => setNoteForm(!noteForm)}>Add Movie Note</button>
-
-                { noteForm && <NoteForm name='movies' path='/addMovieNote' border='2px solid rgb(235, 229, 52)' titles={ movieTitles } /> }
-
-                <Dropdown
-                    border='235, 229, 52'
-                    path='apiMovieNotes'
+                { noteForm && <NoteForm name='movies'
+                    path='/addMovieNote'
+                    border='2px solid rgb(235, 229, 52)'
                     titles={ movieTitles }
-                    titlePath='apiMovieNotesByTitle'
-                    name='movies'
-                    getData={ getData }
-                    library={ library }
-                    setLibrary={ setLibrary }
-                />
+                /> }
+                <div>
+                    <Dropdown
+                        border='235, 229, 52'
+                        api='Movie_Notes'
+                        titles={ movieTitles }
+                        titlePath='Movie_Notes'
+                        name='movies'
+                        getData={ getData }
+                        library={ library }
+                        setLibrary={ setLibrary }
+                    />
+                    <Button
+                        icon
+                        circular
+                        size='massive'
+                        color='yellow'
+                        onClick={() => setNoteForm(!noteForm)}
+                    >
+                        <Icon name='plus' />
+                    </Button>
+                </div>
                 <NoteShelf
                     name='movies'
                     getData={ getData }
                     library={ library }
                 />
+                <HomeButton />
                 <NavTop />
                 <NavBottom />
             </div>
@@ -123,25 +152,39 @@ const NotePage = (props) => {
 
                 { loading && <Loader color={ 'rgb(242, 129, 7)' } /> }
 
-                <button onClick={() => setNoteForm(!noteForm)}>Add Movie Note</button>
-
-                { noteForm && <NoteForm name='shows' path='/addShowNote' border='2px solid rgb(242, 129, 7)' titles={ showTitles } /> }
-
-                <Dropdown
-                    border='242, 129, 7'
-                    path='apiShowNotes'
-                    titles={ showTitles }
-                    titlePath='apiShowNotesByTitle'
+                { noteForm && <NoteForm
                     name='shows'
-                    getData={ getData }
-                    library={ library }
-                    setLibrary={ setLibrary }
-                />
+                    path='/addShowNote'
+                    border='2px solid rgb(242, 129, 7)'
+                    titles={ showTitles }
+                /> }
+                <div>
+                    <Dropdown
+                        border='242, 129, 7'
+                        api='Show_Notes'
+                        titles={ showTitles }
+                        titlePath='Show_Notes'
+                        name='shows'
+                        getData={ getData }
+                        library={ library }
+                        setLibrary={ setLibrary }
+                    />
+                    <Button
+                        icon
+                        circular
+                        size='massive'
+                        color='orange'
+                        onClick={() => setNoteForm(!noteForm)}
+                    >
+                        <Icon name='plus' />
+                    </Button>
+                </div>
                 <NoteShelf
                     name='shows'
                     getData={ getData }
                     library={ library }
                 />
+                <HomeButton />
                 <NavTop />
                 <NavBottom />
             </div>

@@ -13,13 +13,13 @@ const Shelf = (props) => {
     const userName = useAuth0().user
 
     useEffect(() => {
-        const getData = async (path) => {
+        const getData = async (api) => {
             setLoading(true)
             setLibrary([])
-            const newData = await fetch(path, {
+            const newData = await fetch('/apiMedia', {
                 method: 'POST',
                 headers: { 'content-type': 'application/json' },
-                body: JSON.stringify({ userName })
+                body: JSON.stringify({ api, userName })
             })
             .then(res => res.json())
             newData.map(media => {
@@ -27,18 +27,17 @@ const Shelf = (props) => {
             })
             setLoading(false)
         }
-        if (name === 'books') getData('/apiBooks')
-        if (name === 'movies') getData('/apiMovies')
-        if (name === 'shows') getData('/apiShows')
+        if (name === 'books') getData('Books')
+        if (name === 'movies') getData('Movies')
+        if (name === 'shows') getData('Shows')
     }, [ userName, name, setLibrary ])
 
-    const deleteMedia = async (path, media) => {
-        await fetch(path, {
+    const deleteMedia = async (api, media) => {
+        await fetch('/deleteMedia', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ media })
+            body: JSON.stringify({ api, media })
         })
-        .then(res => res.json())
     }
 
     const confirmation = (func) => {
@@ -51,9 +50,10 @@ const Shelf = (props) => {
         return (
             <Link to='/'>
                 <Button
-                    inverted color='red'
+                    inverted
+                    color='red'
                     size='large'
-                    onClick={ () => confirmation(() => deleteMedia(props.path, props.media)) }
+                    onClick={ () => confirmation(() => deleteMedia(props.api, props.media)) }
                 >
                     Delete
                 </Button>
@@ -74,7 +74,7 @@ const Shelf = (props) => {
                             <p style={{ margin: '.5rem' }}><i>Pages:</i> { book.pages }</p>
                             <p style={{ margin: '.5rem' }}><i>Rating:</i> { book.rating }</p>
                             <br />
-                            <DeleteButton path='/deleteBook' media={ book.id } />
+                            <DeleteButton api='Books' media={ book.id } />
                         </div>
                     )
                 })}
@@ -94,7 +94,7 @@ const Shelf = (props) => {
                             <p style={{ margin: '.5rem' }}><i>Minutes:</i> { movie.minutes }</p>
                             <p style={{ margin: '.5rem' }}><i>Rating:</i> { movie.rating }</p>
                             <br />
-                            <DeleteButton path='/deleteMovie' media={ movie.id } />
+                            <DeleteButton api='Movies' media={ movie.id } />
                         </div>
                     )
                 })}
@@ -113,7 +113,7 @@ const Shelf = (props) => {
                             <p style={{ margin: '.5rem' }}><i>Seasons:</i> { show.seasons }</p>
                             <p style={{ margin: '.5rem' }}><i>Rating:</i> { show.rating }</p>
                             <br />
-                            <DeleteButton path='/deleteShow' media={ show.id } />
+                            <DeleteButton api='Shows' media={ show.id } />
                         </div>
                     )
                 })}

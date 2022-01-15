@@ -7,7 +7,7 @@ const Loader = (props) => {
     const override = css`
         position: fixed;
         top: 50%;
-        left: 50%;
+        left: 48%;
     `
 
     return (

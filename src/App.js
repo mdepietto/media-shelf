@@ -1,9 +1,11 @@
 import React from 'react';
 import BackgroundImage from './images/book1.jpg'
-import MainPage from './MainPage';
+import HomePage from './HomePage';
 import DefaultPage from './components/DefaultPage'
 import Loader from './components/Loader';
 import { useAuth0 } from '@auth0/auth0-react'
+
+// add an edit func
 
 function App() {
 
@@ -16,13 +18,15 @@ function App() {
 
   return (
     <div className='App'>
+      
       { isLoading && <Loader color={ `rgb(222, 106, 185)` } loading={ isLoading } /> }
-          { !isLoading &&
-              <div>
-                  { !isAuthenticated && <DefaultPage /> }
-                  { isAuthenticated && <MainPage /> }
-              </div>
-          }
+      
+      { !isLoading &&
+          <div>
+              { !isAuthenticated && <DefaultPage /> }
+              { isAuthenticated && <HomePage /> }
+          </div>
+      }
     </div>
   );
 }

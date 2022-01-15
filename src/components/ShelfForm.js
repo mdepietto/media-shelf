@@ -33,21 +33,21 @@ const ShelfForm = (props) => {
         }
     }
 
-    const sqlApostrophe = () => {
-        var newName = data.name.replace(/'/g, "''")
-        var newTitle = data.title.replace(/'/g, "''")
-        data.name = newName
-        data.title = newTitle
+    // const sqlApostrophe = () => {
+    //     var newName = data.name.replace(/'/g, "''")
+    //     var newTitle = data.title.replace(/'/g, "''")
+    //     data.name = newName
+    //     data.title = newTitle
 
-        if (name === 'books') {
-            var newAuthor = data.author.replace(/'/g, "''")
-            data.author = newAuthor
-        }
-        if (name === 'movies') {
-            var newDirector = data.director.replace(/'/g, "''")
-            data.director = newDirector
-        }
-    }
+    //     if (name === 'books') {
+    //         var newAuthor = data.author.replace(/'/g, "''")
+    //         data.author = newAuthor
+    //     }
+    //     if (name === 'movies') {
+    //         var newDirector = data.director.replace(/'/g, "''")
+    //         data.director = newDirector
+    //     }
+    // }
 
     const addMedia = async () => {
         await fetch(path, {
@@ -55,7 +55,6 @@ const ShelfForm = (props) => {
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ ...data })
         })
-        .then(res => res.json())
     }
 
     const EndButtons = () => {
@@ -68,7 +67,7 @@ const ShelfForm = (props) => {
                         color='violet'
                         style={{ marginBottom: '15px' }}
                         onClick={ async () => {
-                            sqlApostrophe()
+                            // sqlApostrophe()
                             await addMedia()
                             setData({ chapters: null, pages: null, rating: null, minutes: null, seasons: null, name: userName })
                             alert('Content added!')
@@ -97,7 +96,7 @@ const ShelfForm = (props) => {
 
     if (name === 'books') {
         return (
-            <Form className='mediaForm'
+            <Form className='forms'
                 inverted
                 style={ pos }>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
@@ -158,7 +157,7 @@ const ShelfForm = (props) => {
 
     if (name === 'movies') {
         return (
-            <Form className='mediaForm'
+            <Form className='forms'
                 inverted
                 style={ pos }>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
@@ -209,7 +208,7 @@ const ShelfForm = (props) => {
 
     if (name === 'shows') {
         return (
-            <Form className='mediaForm'
+            <Form className='forms'
                 inverted
                 style={ pos }>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>

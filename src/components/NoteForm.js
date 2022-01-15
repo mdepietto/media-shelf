@@ -64,14 +64,14 @@ function NoteForm(props) {
         }
     }
 
-    const sqlApostrophe = () => {
-        const newBody = data.note_body.replace(/'/g, "''")
-        const newTitle = data.title.replace(/'/g, "''")
-        const newName = data.name.replace(/'/g, "''")
-        data.note_body = newBody
-        data.title = newTitle
-        data.name = newName
-    }
+    // const sqlApostrophe = () => {
+    //     const newBody = data.note_body.replace(/'/g, "''")
+    //     const newTitle = data.title.replace(/'/g, "''")
+    //     const newName = data.name.replace(/'/g, "''")
+    //     data.note_body = newBody
+    //     data.title = newTitle
+    //     data.name = newName
+    // }
 
     var addNote = async () => {
         await fetch(path, {
@@ -79,7 +79,6 @@ function NoteForm(props) {
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ ...data })
         })
-        .then(res => res.json())
     }
 
     const EndButtons = () => {
@@ -92,7 +91,7 @@ function NoteForm(props) {
                         size='large'
                         style={{ margin: '15px 0' }}
                         onClick={ async () => {
-                            sqlApostrophe()
+                            // sqlApostrophe()
                             await addNote()
                             setData({ note_chapter: null, note_page: null, note_minute: null, note_episode: null, note_season: null, name: userName })
                             alert('Note added!')
@@ -120,7 +119,7 @@ function NoteForm(props) {
 
     if (name === 'books') {
         return (
-            <Form className='mediaForm'
+            <Form className='forms'
                 inverted
                 style={ pos }>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column' }}>
@@ -177,7 +176,7 @@ function NoteForm(props) {
 
     if (name === 'movies') {
         return (
-            <Form className='mediaForm'
+            <Form className='forms'
                 inverted
                 style={ pos }>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column' }}>
@@ -224,7 +223,7 @@ function NoteForm(props) {
 
     if (name === 'shows') {
         return (
-            <Form className='mediaForm'
+            <Form className='forms'
                 inverted
                 style={ pos }>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column' }}>

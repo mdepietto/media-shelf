@@ -29,8 +29,7 @@ const NavTop = () => {
             <Button
                 animated='vertical'
                 circular
-                inverted
-                size='large'
+                size='huge'
                 color='blue'
                 onClick={ toTop }
                 style={{ display: visible ? 'flex' : 'none' }}

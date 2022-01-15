@@ -29,8 +29,7 @@ const NavBottom = () => {
             <Button
                 animated='vertical'
                 circular
-                inverted
-                size='large'
+                size='huge'
                 color='blue'
                 onClick={ toBottom }
                 style={{ display: visible ? 'flex' : 'none' }}
