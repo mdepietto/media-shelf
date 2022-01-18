@@ -34,7 +34,7 @@ const Shelf = (props) => {
 
     const deleteMedia = async (api, media) => {
         await fetch('/deleteMedia', {
-            method: 'POST',
+            method: 'DELETE',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ api, media })
         })

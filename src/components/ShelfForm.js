@@ -192,11 +192,11 @@ const ShelfForm = (props) => {
                     />
                 </Form.Group>
                 <Rating 
-                    icon='heart' 
+                    icon='heart'
                     size='massive'
                     name='rating'
-                    defaultRating={ 1 } 
-                    maxRating={ 5 } 
+                    defaultRating={ 1 }
+                    maxRating={ 5 }
                     clearable
                     onRate={ handleChange }
                 />
@@ -233,11 +233,11 @@ const ShelfForm = (props) => {
                     />
                 </Form.Group>
                 <Rating 
-                    icon='heart' 
-                    size='massive' 
+                    icon='heart'
+                    size='massive'
                     name='rating'
-                    defaultRating={ 1 } 
-                    maxRating={ 5 } 
+                    defaultRating={ 1 }
+                    maxRating={ 5 }
                     clearable
                     onRate={ handleChange }
                 />

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const NoteShelf = (props) => {
 
-    const { name, getData, library } = props
+    const { name, getData, library, editWindow, setEditWindow, newNote, setId } = props
 
     useEffect(() => {
         if (name === 'books') getData('Book_Notes')
@@ -14,7 +14,7 @@ const NoteShelf = (props) => {
 
     const deleteNote = async (api, media) => {
         await fetch('/deleteMedia', {
-            method: 'POST',
+            method: 'DELETE',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ api, media })
         })
@@ -25,14 +25,6 @@ const NoteShelf = (props) => {
             return func()
         }
     }
-    
-    // const editMedia = async (path, col, edit, id) => {
-    //     await fetch(path, {
-    //         method: 'POST',
-    //         headers: { 'content-type': 'application/json' },
-    //         body: JSON.stringify({ col, edit, id })
-    //     })
-    // }
 
     const EditButton = (props) => {
         return (
@@ -41,8 +33,8 @@ const NoteShelf = (props) => {
                 color='grey'
                 size='tiny'
                 onClick={ () => {
-                    // editMedia('/editBook', props.col, 69, props.id)
-                    console.log('test');
+                    setId(props.id)
+                    setEditWindow(!editWindow)
                 }}
             >
                 <Icon name='edit outline' />
@@ -75,7 +67,7 @@ const NoteShelf = (props) => {
                         <p style={{ margin: '.5rem' }}>Title: <i>{ note.title }</i></p>
                         <p style={{ margin: '.5rem' }}>Chapter: { note.note_chapter }</p>
                         <p style={{ margin: '.5rem' }}>Page: { note.note_page }</p>
-                        <p style={{ margin: '2rem' }}>"{ note.note_body }"</p>
+                        <p style={{ margin: '2rem' }}>"{ note.note_body }"<EditButton id={ note.id }/></p>
                         <DeleteButton api='Book_Notes' note={ note.id } />
                     </div>
                 )
@@ -92,7 +84,7 @@ const NoteShelf = (props) => {
                         <p style={{ margin: '.5rem' }}>Type: <i>{ note.note_type }</i></p>
                         <p style={{ margin: '.5rem' }}>Title: <i>{ note.title }</i></p>
                         <p style={{ margin: '.5rem' }}>Minute: { note.note_minute }</p>
-                        <p style={{ margin: '2rem' }}>"{ note.note_body }"</p>
+                        <p style={{ margin: '2rem' }}>"{ note.note_body }"<EditButton id={ note.id }/></p>
                         <DeleteButton api='Movie_Notes' note={ note.id } />
                     </div>
                 )
@@ -110,7 +102,7 @@ const NoteShelf = (props) => {
                         <p style={{ margin: '.5rem' }}>Title: <i>{ note.title }</i></p>
                         <p style={{ margin: '.5rem' }}>Season: { note.note_season }</p>
                         <p style={{ margin: '.5rem' }}>Episode: { note.note_episode }</p>
-                        <p style={{ margin: '2rem' }}>"{ note.note_body }"</p>
+                        <p style={{ margin: '2rem' }}>"{ note.note_body }"<EditButton id={ note.id }/></p>
                         <DeleteButton api='Show_Notes' note={ note.id } />
                     </div>
                 )

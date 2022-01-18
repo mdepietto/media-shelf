@@ -21,7 +21,7 @@ app.post('/apiMedia', (req, res) => {
     })
 })
 
-app.post('/deleteMedia', (req, res) => {
+app.delete('/deleteMedia', (req, res) => {
     var { api, media } = req.body
     db.query(`DELETE FROM ${ api } WHERE id = ?`, [ media ], (err) => { if (err) console.log(err) })
     res.send(console.log('Content deleted...'))
@@ -38,9 +38,12 @@ app.post('/notesByTitle', (req, res) => {
 })
 
 app.put('/editNote', (req, res) => {
-    const editNote = `UPDATE BookNotes SET note_body = ${ req.body.edit } WHERE id = ${ req.body.id }`
-    // noReturnCall(editBook)
-    console.log(req.body.col);
+    var { table, newNote, id } = req.body
+    db.query(`UPDATE ${ table } SET note_body = ? WHERE id = ?`,
+        [ newNote, id ],
+        (err) => { if (err) console.log(err) }
+    )
+    res.send(console.log('Note edited...'))
 })
 
 app.post('/addBook', (req, res) => {
