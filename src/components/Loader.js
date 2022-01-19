@@ -7,14 +7,14 @@ const Loader = (props) => {
     const override = css`
         position: fixed;
         top: 50%;
-        left: 48%;
+        left: 50%;
     `
 
     return (
         <PropagateLoader
             color={ props.color }
             css={ override }
-            size={ 30 }
+            size={ 35 }
         />
     )
 }

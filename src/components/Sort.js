@@ -1,9 +1,9 @@
 import React from 'react'
-import { Form } from 'semantic-ui-react'
+import { Form, Button, Icon } from 'semantic-ui-react'
 
 const Sort = (props) => {
 
-    const { border, library, setLibrary } = props
+    const { border, library, setLibrary, button, shelfForm, setShelfForm, shelf, setShelf } = props
 
     const options = [
         { key: 0, text: 'Title', value: 0 },
@@ -24,17 +24,28 @@ const Sort = (props) => {
     
     return (
         <div className='selectDrop' style={{ border: `2px solid rgb(${ border })` }}>
-                <Form>
-                    <Form.Group width='equal'>
-                        <Form.Select
-                            clearable
-                            options={ options }
-                            name='sort'
-                            placeholder='Sort...'
-                            onChange={ onSort }
-                        />
-                    </Form.Group>
+                <Form style={{ paddingRight: '20px' }}>
+                    <Form.Select
+                        clearable
+                        options={ options }
+                        name='sort'
+                        placeholder='Sort...'
+                        onChange={ onSort }
+                    />
                 </Form>
+                <Button
+                    icon
+                    inverted
+                    circular
+                    size='huge'
+                    color={ button }
+                    onClick={ () => {
+                        setShelfForm(!shelfForm)
+                        setShelf(!shelf)
+                    }}
+                >
+                    <Icon name='plus' />
+                </Button>
         </div>
     )
 }

@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import { Form, Input, Rating, Button } from 'semantic-ui-react'
 import { useAuth0 } from '@auth0/auth0-react'
-import { Link } from 'react-router-dom'
 
 const ShelfForm = (props) => {
 
     const { user } = useAuth0()
     const userName = user.name
 
-    const { name, path, border } = props
+    const { name, path, border, shelf, setShelf, shelfForm, setShelfForm } = props
 
     const [ data, setData ] = useState({ chapters: null, pages: null, rating: null, minutes: null, seasons: null, name: userName })
 
@@ -21,34 +20,6 @@ const ShelfForm = (props) => {
         }))
     }
 
-    var pos = {
-        border: border,
-        position: 'fixed'
-    }
-
-    if (window.screen.width <= 1300) {
-        pos = {
-            border: border,
-            position: 'static'
-        }
-    }
-
-    // const sqlApostrophe = () => {
-    //     var newName = data.name.replace(/'/g, "''")
-    //     var newTitle = data.title.replace(/'/g, "''")
-    //     data.name = newName
-    //     data.title = newTitle
-
-    //     if (name === 'books') {
-    //         var newAuthor = data.author.replace(/'/g, "''")
-    //         data.author = newAuthor
-    //     }
-    //     if (name === 'movies') {
-    //         var newDirector = data.director.replace(/'/g, "''")
-    //         data.director = newDirector
-    //     }
-    // }
-
     const addMedia = async () => {
         await fetch(path, {
             method: 'POST',
@@ -60,45 +31,39 @@ const ShelfForm = (props) => {
     const EndButtons = () => {
         return (
             <div className='endButtons'>
-                <Link to='/'>
-                    <Button
-                        inverted
-                        size='large'
-                        color='violet'
-                        style={{ marginBottom: '15px' }}
-                        onClick={ async () => {
-                            // sqlApostrophe()
-                            await addMedia()
-                            setData({ chapters: null, pages: null, rating: null, minutes: null, seasons: null, name: userName })
-                            alert('Content added!')
-                        }}
-                    >
-                        Submit
-                    </Button>
-                </Link>
-
-                <Link to='/'>
-                    <Button
-                        inverted
-                        size='large'
-                        color='red'
-                        onClick={ () => {
-                            setData({ chapters: null, pages: null, rating: null, minutes: null, seasons: null, name: userName })
-                            alert('Content discarded')
-                        }}
-                    >
-                        Cancel
-                    </Button>
-                </Link>
+                <Button
+                    inverted
+                    size='large'
+                    color='teal'
+                    style={{ marginBottom: '15px' }}
+                    onClick={ async () => {
+                        await addMedia()
+                        setShelf(!shelf)
+                        setShelfForm(!shelfForm)
+                        setData({ chapters: null, pages: null, rating: null, minutes: null, seasons: null, name: userName })
+                    }}
+                >
+                    Submit
+                </Button>
+                <Button
+                    inverted
+                    size='large'
+                    color='red'
+                    onClick={ () => {
+                        setShelf(!shelf)
+                        setShelfForm(!shelfForm)
+                        setData({ chapters: null, pages: null, rating: null, minutes: null, seasons: null, name: userName })
+                    }}
+                >
+                    Cancel
+                </Button>
             </div>
         )
     }
 
     if (name === 'books') {
         return (
-            <Form className='forms'
-                inverted
-                style={ pos }>
+            <Form className='forms' inverted style={{ position: 'fixed', border: border }}>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
                     <Form.Field
                         required
@@ -157,9 +122,7 @@ const ShelfForm = (props) => {
 
     if (name === 'movies') {
         return (
-            <Form className='forms'
-                inverted
-                style={ pos }>
+            <Form className='forms'  inverted style={{ position: 'fixed', border: border }}>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
                     <Form.Field
                         required
@@ -208,9 +171,7 @@ const ShelfForm = (props) => {
 
     if (name === 'shows') {
         return (
-            <Form className='forms'
-                inverted
-                style={ pos }>
+            <Form className='forms'  inverted style={{ position: 'fixed', border: border }}>
                 <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
                     <Form.Field
                         required

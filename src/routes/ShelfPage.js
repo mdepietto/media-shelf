@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Button, Icon } from 'semantic-ui-react'
 
 import HomeButton from '../components/HomeButton'
 import ShelfForm from '../components/ShelfForm'
@@ -12,26 +11,39 @@ const ShelfPage = (props) => {
 
     const [ library, setLibrary ] = useState([])
 
+    const [ shelf, setShelf ] = useState(true)
     const [ shelfForm, setShelfForm ] = useState(false)
 
     if (props.name === 'books') {
         return (
             <div className='body'>
-                { shelfForm && <ShelfForm name='books' path='/addBook' border='2px solid rgb(202, 237, 114)' /> }
+                { shelfForm && <ShelfForm
+                    name='books'
+                    path='/addBook'
+                    border='2px solid rgb(202, 237, 114)'
+                    shelf={ shelf }
+                    setShelf={ setShelf }
+                    shelfForm={ shelfForm }
+                    setShelfForm={ setShelfForm }
+                /> }
 
-                <div>
-                    <Sort border='202, 237, 114' library={ library } setLibrary={ setLibrary } />
-                    <Button
-                        icon
-                        circular
-                        size='massive'
-                        color='olive'
-                        onClick={ () => setShelfForm(!shelfForm) }
-                    >
-                        <Icon name='plus' />
-                    </Button>
-                </div>
-                <Shelf name='books' library={ library } setLibrary={ setLibrary } />
+                { shelf && <div>
+                    <Sort
+                        border='202, 237, 114'
+                        library={ library }
+                        setLibrary={ setLibrary }
+                        shelfForm={ shelfForm }
+                        setShelfForm={ setShelfForm }
+                        button='olive'
+                        shelf={ shelf }
+                        setShelf={ setShelf }
+                    />
+                    <Shelf
+                        name='books'
+                        library={ library }
+                        setLibrary={ setLibrary }
+                    />
+                </div> }
                 <HomeButton />
                 <NavTop />
                 <NavBottom />
@@ -42,21 +54,33 @@ const ShelfPage = (props) => {
         return (
             <div className='body'>
 
-                { shelfForm && <ShelfForm name='movies' path='/addMovie' border='2px solid rgb(235, 229, 52)' /> }
+                { shelfForm && <ShelfForm
+                    name='movies'
+                    path='/addMovie'
+                    border='2px solid rgb(235, 229, 52)'
+                    shelf={ shelf }
+                    setShelf={ setShelf }
+                    shelfForm={ shelfForm }
+                    setShelfForm={ setShelfForm }
+                /> }
 
-                <div>
-                    <Sort border='235, 229, 52' library={ library } setLibrary={ setLibrary } />
-                    <Button
-                        icon
-                        circular
-                        size='massive'
-                        color='yellow'
-                        onClick={ () => setShelfForm(!shelfForm) }
-                    >
-                        <Icon name='plus' />
-                    </Button>
-                </div>
-                <Shelf name='movies' library={ library } setLibrary={ setLibrary } />
+                { shelf && <div>
+                    <Sort
+                        border='235, 229, 52'
+                        library={ library }
+                        setLibrary={ setLibrary }
+                        shelfForm={ shelfForm }
+                        setShelfForm={ setShelfForm }
+                        button='yellow'
+                        shelf={ shelf }
+                        setShelf={ setShelf }
+                    />
+                    <Shelf
+                        name='movies'
+                        library={ library }
+                        setLibrary={ setLibrary }
+                    />
+                </div> }
                 <HomeButton />
                 <NavTop />
                 <NavBottom />
@@ -67,21 +91,33 @@ const ShelfPage = (props) => {
         return (
             <div className='body'>
 
-                { shelfForm && <ShelfForm name='shows' path='/addShow' border='2px solid rgb(242, 129, 7)' /> }
+                { shelfForm && <ShelfForm
+                    name='shows'
+                    path='/addShow'
+                    border='2px solid rgb(242, 129, 7)'
+                    shelf={ shelf }
+                    setShelf={ setShelf }
+                    shelfForm={ shelfForm }
+                    setShelfForm={ setShelfForm }
+                /> }
 
-                <div>
-                    <Sort border='242, 129, 7' library={ library } setLibrary={ setLibrary } />
-                    <Button
-                            icon
-                            circular
-                            size='massive'
-                            color='orange'
-                            onClick={ () => setShelfForm(!shelfForm) }
-                        >
-                        <Icon name='plus' />
-                    </Button>
-                </div>
-                <Shelf name='shows' library={ library } setLibrary={ setLibrary } />
+                { shelf && <div>
+                    <Sort   
+                        border='242, 129, 7'
+                        library={ library }
+                        setLibrary={ setLibrary }
+                        shelfForm={ shelfForm }
+                        setShelfForm={ setShelfForm }
+                        button='orange'
+                        shelf={ shelf }
+                        setShelf={ setShelf }
+                    />
+                    <Shelf
+                        name='shows'
+                        library={ library }
+                        setLibrary={ setLibrary }
+                    />
+                </div> }
                 <HomeButton />
                 <NavTop />
                 <NavBottom />

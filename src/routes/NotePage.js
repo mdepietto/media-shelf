@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
-import { Button, Icon } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 import HomeButton from '../components/HomeButton';
@@ -14,15 +14,17 @@ import EditWindow from '../components/EditWindow';
 
 const NotePage = (props) => {
 
+    const { table, name } = props
+
     const userName = useAuth0().user
 
     const [ library, setLibrary ] = useState([])
 
     const [ loading, setLoading ] = useState(false)
+    const [ noteShelf, setNoteShelf ] = useState(true)
     const [ noteForm, setNoteForm ] = useState(false)
     const [ editWindow, setEditWindow ] = useState(false)
 
-    const [ table, setTable ] = useState('')
     const [ newNote, setNewNote ] = useState('')
     const [ id, setId ] = useState()
 
@@ -44,19 +46,10 @@ const NotePage = (props) => {
                 })
             }
         }
-        if (props.name === 'books') {
-            setTable('Book_Notes')
-            getDropdown(bookTitles, setBookTitles, 'Books')
-        }
-        if (props.name === 'movies') {
-            setTable('Movie_Notes')
-            getDropdown(movieTitles, setMovieTitles, 'Movies')
-        }
-        if (props.name === 'shows') {
-            setTable('Show_Notes')
-            getDropdown(showTitles, setShowTitles, 'Shows')
-        }
-    }, [ bookTitles, movieTitles, showTitles, props.name, userName ])
+        if (name === 'books') getDropdown(bookTitles, setBookTitles, 'Books')
+        if (name === 'movies') getDropdown(movieTitles, setMovieTitles, 'Movies')
+        if (name === 'shows') getDropdown(showTitles, setShowTitles, 'Shows')
+    }, [ bookTitles, movieTitles, showTitles, name, userName ])
 
     const getData = async (api) => {
         setLoading(true)
@@ -80,18 +73,43 @@ const NotePage = (props) => {
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ table, newNote, id })
         })
+        setNewNote('')
+        setEditWindow(false)
+        if (name === 'books') getData('Book_Notes')
+        if (name === 'movies') getData('Movie_Notes')
+        if (name === 'shows') getData('Show_Notes')
     }
 
-    if (props.name === 'books') {
+    const EditButtons = () => {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px' }}>
+                <Button
+                    inverted
+                    color='grey'
+                    size='big'
+                    style={{ marginRight: '15px' }}
+                    onClick={ editMedia }
+                >Submit</Button>
+                <Button
+                    inverted
+                    color='red'
+                    size='big'
+                    onClick={ () => setEditWindow(false) }
+                >Cancel</Button>
+            </div>
+        )
+    }
+
+    if (name === 'books') {
         return (
             <div className='body'>
 
                 { loading && <Loader color={ 'rgb(202, 237, 114)' } /> }
 
                 { editWindow && 
-                    <div className='editWindow'>
+                    <div className='forms' style={{ position: 'fixed', border: '2px solid rgb(202, 237, 114)' }}>
                         <EditWindow newNote={ newNote } setNewNote={ setNewNote } />
-                        <Button onClick={ editMedia }><Link to='/'>Submit</Link></Button>
+                        <EditButtons />
                     </div>
                 }
 
@@ -100,8 +118,14 @@ const NotePage = (props) => {
                     path='/addBookNote'
                     border='2px solid rgb(202, 237, 114)'
                     titles={ bookTitles }
+                    user={ userName }
+                    noteForm={ noteForm }
+                    setNoteForm={ setNoteForm }
+                    noteShelf={ noteShelf }
+                    setNoteShelf={ setNoteShelf }
                 /> }
-                <div>
+
+                { noteShelf && <div>
                     <Dropdown
                         border='202, 237, 114'
                         api='Book_Notes'
@@ -111,27 +135,23 @@ const NotePage = (props) => {
                         getData={ getData }
                         library={ library }
                         setLibrary={ setLibrary }
+                        noteForm={ noteForm }
+                        setNoteForm={ setNoteForm }
+                        noteShelf={ noteShelf }
+                        setNoteShelf={ setNoteShelf }
+                        button='olive'
                     />
-                    <Button
-                        icon
-                        circular
-                        size='massive'
-                        color='olive'
-                        onClick={() => setNoteForm(!noteForm)}
-                    >
-                        <Icon name='plus' />
-                    </Button>
-                </div>
 
-                <NoteShelf
-                    name='books'
-                    getData={ getData }
-                    library={ library }
-                    editWindow={ editWindow }
-                    setEditWindow={ setEditWindow }
-                    newNote={ newNote }
-                    setId={ setId }
-                />
+                    <NoteShelf
+                        name='books'
+                        getData={ getData }
+                        library={ library }
+                        editWindow={ editWindow }
+                        setEditWindow={ setEditWindow }
+                        newNote={ newNote }
+                        setId={ setId }
+                    />
+                </div> }
                 <HomeButton />
                 <NavTop />
                 <NavBottom />
@@ -139,20 +159,31 @@ const NotePage = (props) => {
         )
     }
 
-    if (props.name === 'movies') {
+    if (name === 'movies') {
         return (
             <div className='body'>
 
                 { loading && <Loader color={ 'rgb(235, 229, 52)' } /> }
 
-                { editWindow && <EditWindow /> }
+                { editWindow && 
+                    <div className='forms' style={{ position: 'fixed', border: '2px solid rgb(235, 229, 52)' }}>
+                        <EditWindow newNote={ newNote } setNewNote={ setNewNote } />
+                        <EditButtons />
+                    </div>
+                }
 
                 { noteForm && <NoteForm name='movies'
                     path='/addMovieNote'
                     border='2px solid rgb(235, 229, 52)'
                     titles={ movieTitles }
+                    user={ userName }
+                    noteForm={ noteForm }
+                    setNoteForm={ setNoteForm }
+                    noteShelf={ noteShelf }
+                    setNoteShelf={ setNoteShelf }
                 /> }
-                <div>
+
+                { noteShelf && <div>
                     <Dropdown
                         border='235, 229, 52'
                         api='Movie_Notes'
@@ -162,26 +193,24 @@ const NotePage = (props) => {
                         getData={ getData }
                         library={ library }
                         setLibrary={ setLibrary }
+                        noteForm={ noteForm }
+                        setNoteForm={ setNoteForm }
+                        noteShelf={ noteShelf }
+                        setNoteShelf={ setNoteShelf }
+                        button='yellow'
                     />
-                    <Button
-                        icon
-                        circular
-                        size='massive'
-                        color='yellow'
-                        onClick={() => setNoteForm(!noteForm)}
-                    >
-                        <Icon name='plus' />
-                    </Button>
-                </div>
-                <NoteShelf
-                    name='movies'
-                    getData={ getData }
-                    library={ library }
-                    editWindow={ editWindow }
-                    setEditWindow={ setEditWindow }
-                    newNote={ newNote }
-                    setId={ setId }
-                />
+                    <NoteShelf
+                        name='movies'
+                        getData={ getData }
+                        library={ library }
+                        editWindow={ editWindow }
+                        setEditWindow={ setEditWindow }
+                        newNote={ newNote }
+                        setId={ setId }
+                        noteShelf={ noteShelf }
+                        setNoteShelf={ setNoteShelf }
+                    /> 
+                </div> }
                 <HomeButton />
                 <NavTop />
                 <NavBottom />
@@ -189,21 +218,32 @@ const NotePage = (props) => {
         )
     }
 
-    if (props.name === 'shows') {
+    if (name === 'shows') {
         return (
             <div className='body'>
 
                 { loading && <Loader color={ 'rgb(242, 129, 7)' } /> }
 
-                { editWindow && <EditWindow /> }
+                { editWindow && 
+                    <div className='forms' style={{ position: 'fixed', border: '2px solid rgb(242, 129, 7)' }}>
+                        <EditWindow newNote={ newNote } setNewNote={ setNewNote } />
+                        <EditButtons />
+                    </div>
+                }
 
                 { noteForm && <NoteForm
                     name='shows'
                     path='/addShowNote'
                     border='2px solid rgb(242, 129, 7)'
                     titles={ showTitles }
+                    user={ userName }
+                    noteForm={ noteForm }
+                    setNoteForm={ setNoteForm }
+                    noteShelf={ noteShelf }
+                    setNoteShelf={ setNoteShelf }
                 /> }
-                <div>
+
+                { noteShelf && <div>
                     <Dropdown
                         border='242, 129, 7'
                         api='Show_Notes'
@@ -213,26 +253,24 @@ const NotePage = (props) => {
                         getData={ getData }
                         library={ library }
                         setLibrary={ setLibrary }
+                        noteForm={ noteForm }
+                        setNoteForm={ setNoteForm }
+                        noteShelf={ noteShelf }
+                        setNoteShelf={ setNoteShelf }
+                        button='orange'
                     />
-                    <Button
-                        icon
-                        circular
-                        size='massive'
-                        color='orange'
-                        onClick={() => setNoteForm(!noteForm)}
-                    >
-                        <Icon name='plus' />
-                    </Button>
-                </div>
-                <NoteShelf
-                    name='shows'
-                    getData={ getData }
-                    library={ library }
-                    editWindow={ editWindow }
-                    setEditWindow={ setEditWindow }
-                    newNote={ newNote }
-                    setId={ setId }
-                />
+                    <NoteShelf
+                        name='shows'
+                        getData={ getData }
+                        library={ library }
+                        editWindow={ editWindow }
+                        setEditWindow={ setEditWindow }
+                        newNote={ newNote }
+                        setId={ setId }
+                        noteShelf={ noteShelf }
+                        setNoteShelf={ setNoteShelf }
+                    />
+                </div> }
                 <HomeButton />
                 <NavTop />
                 <NavBottom />

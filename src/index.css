@@ -87,10 +87,23 @@ p {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   width: 30%;
-  padding: 40px;
-  color:rgb(238, 238, 238);
-  background-color: rgba(27, 24, 24, 0.8);
   border-radius: 10px;
+  position: fixed;
+  padding: 40px;
+  background-color: rgb(27, 24, 24, 0.8);
+}
+
+.editWindow {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  background-color: rgba(27, 24, 24, 0.8);
+  align-items: center;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  margin: 0 auto;
 }
 
 .endButtons {
@@ -98,15 +111,22 @@ p {
   flex-direction: column;
 }
 
+.dropPlus {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .selectDrop {
   background-color: rgba(27, 24, 24, 0.8);
   color:rgb(238, 238, 238);
-  width: 30%;
   margin: 20px auto;
-  padding: 25px 0 10px 0;
+  width: 37%;
+  padding: 15px 0;
   border-radius: 10px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 }
@@ -140,10 +160,6 @@ p {
 
 @media screen and (max-width: 1300px) {
 
-  .body {
-    margin-top: 15%;
-  }
-
   .ScreenSaver {
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
@@ -152,19 +168,18 @@ p {
   }
 
   .nav {
-    left: 0;
-    top: 0;
+    /* left: 0; */
+    /* top: 0; */
     width: 100%;
-    transform: translateY(0%);
-    -ms-transform: translateY(0%);
-    padding: 10px;
-    color:rgb(238, 238, 238);
-    background-size: cover;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: row;
-    /* background-color: rgba(27, 24, 24); */
-    z-index: 2;
+    /* transform: translateY(0%); */
+    /* -ms-transform: translateY(0%); */
+    /* padding: 10px; */
+    /* color:rgb(238, 238, 238); */
+    /* background-size: cover; */
+    /* border-radius: 10px; */
+    /* display: flex; */
+    /* flex-direction: row; */
+    /* z-index: 2; */
   }
 
   .navButton {
@@ -172,13 +187,7 @@ p {
   }
 
   .forms {
-    position: static;
-    margin: 20px auto;
     width: 80%;
-    top: 0%;
-    left: 0%;
-    -ms-transform: translate(0%, 0%);
-    transform: translate(0%, 0%);
   }
 
   .NavTB {

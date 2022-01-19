@@ -26,9 +26,9 @@ ReactDOM.render(
                 <Route path='movies' element={ <ShelfPage name='movies' /> } />
                 <Route path='shows' element={ <ShelfPage name='shows' /> } />
 
-                <Route path='bookNotes' element={ <NotePage name='books' /> } />
-                <Route path='movieNotes' element={ <NotePage name='movies' /> } />
-                <Route path='showNotes' element={ <NotePage name='shows' /> } />
+                <Route path='bookNotes' element={ <NotePage name='books' table='Book_Notes' /> } />
+                <Route path='movieNotes' element={ <NotePage name='movies' table='Movie_Notes' /> } />
+                <Route path='showNotes' element={ <NotePage name='shows' table='Show_Notes' /> } />
             </Routes>
         </Auth0Provider>
     </BrowserRouter>,

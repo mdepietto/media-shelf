@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
-import { Button, Icon } from 'semantic-ui-react'
-import { Link } from 'react-router-dom';
+import { Button } from 'semantic-ui-react'
 
 const NoteShelf = (props) => {
 
-    const { name, getData, library, editWindow, setEditWindow, newNote, setId } = props
+    const { name, getData, library, editWindow, setEditWindow, setId } = props
 
     useEffect(() => {
         if (name === 'books') getData('Book_Notes')
@@ -18,6 +17,7 @@ const NoteShelf = (props) => {
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ api, media })
         })
+        getData(api)
     }
 
     const confirmation = (func) => {
@@ -27,37 +27,38 @@ const NoteShelf = (props) => {
     }
 
     const EditButton = (props) => {
+        const { id } = props
         return (
             <Button
-                icon
+                inverted
                 color='grey'
-                size='tiny'
+                size='big'
+                style={{ marginRight: '15px' }}
                 onClick={ () => {
-                    setId(props.id)
+                    setId(id)
                     setEditWindow(!editWindow)
                 }}
             >
-                <Icon name='edit outline' />
+                Edit
             </Button>
         )
     }
 
     const DeleteButton = (props) => {
+        const { api, note } = props
         return (
-            <Link to='/'>
-                <Button
-                    inverted
-                    color='red'
-                    size='large'
-                    onClick={ () => confirmation(() => deleteNote(props.api, props.note)) }
-                >
-                    Delete
-                </Button>
-            </Link>
+            <Button
+                inverted
+                color='red'
+                size='big'
+                onClick={ () => confirmation(() => deleteNote(api, note)) }
+            >
+                Delete
+            </Button>
         )
     }
     
-    if (props.name === 'books') {
+    if (name === 'books') {
         return (
             library.map(note => {
                 return (
@@ -67,15 +68,18 @@ const NoteShelf = (props) => {
                         <p style={{ margin: '.5rem' }}>Title: <i>{ note.title }</i></p>
                         <p style={{ margin: '.5rem' }}>Chapter: { note.note_chapter }</p>
                         <p style={{ margin: '.5rem' }}>Page: { note.note_page }</p>
-                        <p style={{ margin: '2rem' }}>"{ note.note_body }"<EditButton id={ note.id }/></p>
-                        <DeleteButton api='Book_Notes' note={ note.id } />
+                        <p style={{ margin: '1.5rem' }}>"{ note.note_body }"</p>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <EditButton id={ note.id } />
+                            <DeleteButton api='Book_Notes' note={ note.id } />
+                        </div>
                     </div>
                 )
             })
         )
     }
 
-    if (props.name === 'movies') {
+    if (name === 'movies') {
         return (
             library.map(note => {
                 return (
@@ -84,15 +88,18 @@ const NoteShelf = (props) => {
                         <p style={{ margin: '.5rem' }}>Type: <i>{ note.note_type }</i></p>
                         <p style={{ margin: '.5rem' }}>Title: <i>{ note.title }</i></p>
                         <p style={{ margin: '.5rem' }}>Minute: { note.note_minute }</p>
-                        <p style={{ margin: '2rem' }}>"{ note.note_body }"<EditButton id={ note.id }/></p>
-                        <DeleteButton api='Movie_Notes' note={ note.id } />
+                        <p style={{ margin: '1.5rem' }}>"{ note.note_body }"</p>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <EditButton id={ note.id } />
+                            <DeleteButton api='Movie_Notes' note={ note.id } />
+                        </div>
                     </div>
                 )
             })
         )
     }
 
-    if (props.name === 'shows') {
+    if (name === 'shows') {
         return (
             library.map(note => {
                 return (
@@ -102,8 +109,11 @@ const NoteShelf = (props) => {
                         <p style={{ margin: '.5rem' }}>Title: <i>{ note.title }</i></p>
                         <p style={{ margin: '.5rem' }}>Season: { note.note_season }</p>
                         <p style={{ margin: '.5rem' }}>Episode: { note.note_episode }</p>
-                        <p style={{ margin: '2rem' }}>"{ note.note_body }"<EditButton id={ note.id }/></p>
-                        <DeleteButton api='Show_Notes' note={ note.id } />
+                        <p style={{ margin: '1.5rem' }}>"{ note.note_body }"</p>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <EditButton id={ note.id } />
+                            <DeleteButton api='Show_Notes' note={ note.id } />
+                        </div>
                     </div>
                 )
             })

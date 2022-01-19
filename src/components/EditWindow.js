@@ -8,7 +8,9 @@ const EditWindow = (props) => {
     return (
         <Form>
             <TextArea
+                style={{ height: '15rem' }}
                 value={ newNote }
+                placeholder='New note...'
                 onChange={ (e) => setNewNote(e.target.value) }
             />
         </Form>

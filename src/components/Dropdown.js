@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form } from 'semantic-ui-react'
+import { Form, Button, Icon } from 'semantic-ui-react'
 import { useAuth0 } from '@auth0/auth0-react'
 
 import Loader from './Loader'
@@ -7,7 +7,21 @@ import NoContent from '../components/NoContent'
 
 const Dropdown = (props) => {
 
-    const { border, name, api, titlePath, library, setLibrary, getData, titles } = props
+    const {
+        border,
+        name,
+        api,
+        titlePath,
+        library,
+        setLibrary,
+        getData,
+        titles,
+        noteForm,
+        setNoteForm,
+        noteShelf,
+        setNoteShelf,
+        button
+    } = props
 
     const [ loading, setLoading ] = useState(false)
     
@@ -63,37 +77,37 @@ const Dropdown = (props) => {
     
             { noContent && <NoContent style={{ border: `2px solid rgb(${ border })` }} /> }
 
-            <div>
+            <div style={{ flexDirection: 'column', paddingRight: '20px' }}>
                 <Form>
-                    <Form.Group width='equal'>
-                        <Form.Select
-                            clearable
-                            options={ sortOptions }
-                            name='sortNotes'
-                            placeholder='Sort...'
-                            onChange={ onSort }
-                        />
-                    </Form.Group>
+                    <Form.Select
+                        clearable
+                        options={ sortOptions }
+                        name='sortNotes'
+                        placeholder='Sort...'
+                        onChange={ onSort }
+                    />
+                    <Form.Select
+                        clearable
+                        options={ titles }
+                        name={ name }
+                        placeholder='Title...'
+                        onChange={ async (e) => getNotesByTitle(e.target.innerText)}
+                    />
                 </Form>
             </div>
-
-            <div>
-                <Form>
-                    <Form.Group width='equal'>
-                        <Form.Select
-                            clearable
-                            options={ titles }
-                            name={ name }
-                            placeholder='Title...'
-                            onChange={ async (e) => {
-                                const text = e.target.innerText
-                                const newTitle = text.replace(/'/g, "''")
-                                getNotesByTitle(newTitle)
-                            }}
-                        />
-                    </Form.Group>
-                </Form>
-            </div>
+            <Button
+                icon
+                inverted
+                circular
+                size='huge'
+                color={ button }
+                onClick={ () => {
+                    setNoteShelf(!noteShelf)
+                    setNoteForm(!noteForm)
+                }}
+            >
+                <Icon name='plus' />
+            </Button>
         </div>
     )
 }

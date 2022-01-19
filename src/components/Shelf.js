@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Button } from 'semantic-ui-react'
 import { useAuth0 } from '@auth0/auth0-react';
-import { Link } from 'react-router-dom';
 import Loader from './Loader';
 
 const Shelf = (props) => {
@@ -33,11 +32,23 @@ const Shelf = (props) => {
     }, [ userName, name, setLibrary ])
 
     const deleteMedia = async (api, media) => {
+        setLoading(true)
         await fetch('/deleteMedia', {
             method: 'DELETE',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ api, media })
         })
+        setLibrary([])
+        const newData = await fetch('/apiMedia', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ api, userName })
+        })
+        .then(res => res.json())
+        newData.map(media => {
+            return setLibrary(prev => [ ...prev, media ])
+        })
+        setLoading(false)
     }
 
     const confirmation = (func) => {
@@ -47,17 +58,16 @@ const Shelf = (props) => {
     }
 
     const DeleteButton = (props) => {
+        const { api, media } = props
         return (
-            <Link to='/'>
-                <Button
-                    inverted
-                    color='red'
-                    size='large'
-                    onClick={ () => confirmation(() => deleteMedia(props.api, props.media)) }
-                >
-                    Delete
-                </Button>
-            </Link>
+            <Button
+                inverted
+                color='red'
+                size='big'
+                onClick={ () => confirmation(() => deleteMedia(api, media)) }
+            >
+                Delete
+            </Button>
         )
     }
 
