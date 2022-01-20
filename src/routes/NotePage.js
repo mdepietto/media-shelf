@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
 
 import HomeButton from '../components/HomeButton';
 import Loader from '../components/Loader';
@@ -11,6 +10,8 @@ import NoteForm from '../components/NoteForm';
 import NavTop from '../components/NavTop'
 import NavBottom from '../components/NavBottom'
 import EditWindow from '../components/EditWindow';
+
+// add previous note value to edit window
 
 const NotePage = (props) => {
 
