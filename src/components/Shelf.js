@@ -79,10 +79,10 @@ const Shelf = (props) => {
                     return (
                         <div className='shelf' key={ book.id } style={{ border: '2px solid rgb(202, 237, 114)' }}>
                             <h3 className='shelfTitles'>{ library.indexOf(book) + 1 }:   { book.title }</h3>
-                            <p style={{ margin: '.5rem' }}><i>Author:</i> { book.author }</p>
-                            <p style={{ margin: '.5rem' }}><i>Chapters:</i> { book.chapters }</p>
-                            <p style={{ margin: '.5rem' }}><i>Pages:</i> { book.pages }</p>
-                            <p style={{ margin: '.5rem' }}><i>Rating:</i> { book.rating }</p>
+                            <p><i>Author:</i> { book.author }</p>
+                            <p><i>Chapters:</i> { book.chapters }</p>
+                            <p><i>Pages:</i> { book.pages }</p>
+                            <p><i>Rating:</i> { book.rating }</p>
                             <br />
                             <DeleteButton api='Books' media={ book.id } />
                         </div>
@@ -100,9 +100,9 @@ const Shelf = (props) => {
                     return (
                         <div className='shelf' key={ movie.id } style={{ border: '2px solid rgb(235, 229, 52)' }}>
                             <h1 className='shelfTitles'>{ library.indexOf(movie) + 1 }:   { movie.title }</h1>
-                            <p style={{ margin: '.5rem' }}><i>Director:</i> { movie.director }</p>
-                            <p style={{ margin: '.5rem' }}><i>Minutes:</i> { movie.minutes }</p>
-                            <p style={{ margin: '.5rem' }}><i>Rating:</i> { movie.rating }</p>
+                            <p><i>Director:</i> { movie.director }</p>
+                            <p><i>Minutes:</i> { movie.minutes }</p>
+                            <p><i>Rating:</i> { movie.rating }</p>
                             <br />
                             <DeleteButton api='Movies' media={ movie.id } />
                         </div>
@@ -120,8 +120,8 @@ const Shelf = (props) => {
                     return (
                         <div className='shelf' key={ show.id } style={{ border: '2px solid rgb(242, 129, 7)' }}>
                             <h3 className='shelfTitles'>{ library.indexOf(show) + 1 }:   { show.title }</h3>
-                            <p style={{ margin: '.5rem' }}><i>Seasons:</i> { show.seasons }</p>
-                            <p style={{ margin: '.5rem' }}><i>Rating:</i> { show.rating }</p>
+                            <p><i>Seasons:</i> { show.seasons }</p>
+                            <p><i>Rating:</i> { show.rating }</p>
                             <br />
                             <DeleteButton api='Shows' media={ show.id } />
                         </div>

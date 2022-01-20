@@ -11,8 +11,6 @@ import NavTop from '../components/NavTop'
 import NavBottom from '../components/NavBottom'
 import EditWindow from '../components/EditWindow';
 
-// add previous note value to edit window
-
 const NotePage = (props) => {
 
     const { table, name } = props
@@ -88,7 +86,6 @@ const NotePage = (props) => {
                     inverted
                     color='grey'
                     size='big'
-                    style={{ marginRight: '15px' }}
                     onClick={ editMedia }
                 >Submit</Button>
                 <Button
@@ -151,6 +148,7 @@ const NotePage = (props) => {
                         setEditWindow={ setEditWindow }
                         newNote={ newNote }
                         setId={ setId }
+                        setNewNote={ setNewNote }
                     />
                 </div> }
                 <HomeButton />
@@ -210,6 +208,7 @@ const NotePage = (props) => {
                         setId={ setId }
                         noteShelf={ noteShelf }
                         setNoteShelf={ setNoteShelf }
+                        setNewNote={ setNewNote }
                     /> 
                 </div> }
                 <HomeButton />
@@ -270,6 +269,7 @@ const NotePage = (props) => {
                         setId={ setId }
                         noteShelf={ noteShelf }
                         setNoteShelf={ setNoteShelf }
+                        setNewNote={ setNewNote }
                     />
                 </div> }
                 <HomeButton />

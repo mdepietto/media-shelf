@@ -24,7 +24,7 @@ const Sort = (props) => {
     
     return (
         <div className='selectDrop' style={{ border: `2px solid rgb(${ border })` }}>
-                <Form style={{ paddingRight: '20px' }}>
+                <Form>
                     <Form.Select
                         clearable
                         options={ options }

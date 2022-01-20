@@ -35,7 +35,6 @@ const ShelfForm = (props) => {
                     inverted
                     size='large'
                     color='teal'
-                    style={{ marginBottom: '15px' }}
                     onClick={ async () => {
                         await addMedia()
                         setShelf(!shelf)

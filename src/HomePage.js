@@ -64,7 +64,7 @@ const HomePage = () => {
                     Profile
                 </Button>
                 <br /><br />
-                <Link to='books'><NavButton color='olive' visible='Books' hidden={ bookCount } /></Link>
+                <Link to='/books'><NavButton color='olive' visible='Books' hidden={ bookCount } /></Link>
                 <Link to='/bookNotes'><NavButton color='olive' visible='Book Notes' hidden={ bookNoteCount } /></Link>
                 <br /><br />
                 <Link to='/movies'><NavButton color='yellow' visible='Movies' hidden={ movieCount } /></Link>

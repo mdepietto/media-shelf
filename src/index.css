@@ -1,3 +1,10 @@
+html body{
+  background-image: url('./images/book1.jpg');
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
 .App {
   font-family: 'Montagu Slab', serif;
 }
@@ -46,6 +53,11 @@ p {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   display: flex;
+}
+
+.editAndDelete {
+  display: 'flex';
+  justify-content: center;
 }
 
 ::-webkit-scrollbar {
@@ -167,10 +179,22 @@ p {
     margin: 20px auto;
   }
 
-  .nav {
+  .ScreenSaver p {
+    font-size: 2.5rem;
+  }
+  
+    .shelf h3 {
+      font-size: 4rem;
+    }
+
+  .shelf p {
+    font-size: 3rem;
+  }
+
+  /* .nav { */
     /* left: 0; */
     /* top: 0; */
-    width: 100%;
+    /* width: 100%; */
     /* transform: translateY(0%); */
     /* -ms-transform: translateY(0%); */
     /* padding: 10px; */
@@ -180,24 +204,17 @@ p {
     /* display: flex; */
     /* flex-direction: row; */
     /* z-index: 2; */
-  }
-
-  .navButton {
-    width: 100%;
-  }
+  /* } */
 
   .forms {
     width: 80%;
   }
 
-  .NavTB {
-    position: fixed;
-    right: 2%;
-    bottom: 5%;
+  .homeButton {
+    left: 6%;
   }
 
-  .auth {
-    top: 70%;
-    bottom: 5%;
+  .NavTB {
+    left: 6%;
   }
 }

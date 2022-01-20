@@ -8,11 +8,11 @@ const Profile = (props) => {
             className='ScreenSaver'
             style={{ border: '2px solid rgb(89, 245, 247)' }}
         >
-            <img
+            {/* <img
                 src={ user.picture }
                 alt={ user.name }
                 style={{ marginBottom: '15px' }}
-            />
+            /> */}
             <p style={{ marginBottom: '.5rem' }}>Name: { user.name }</p>
             <p style={{ marginBottom: '.5rem' }}>Email: { user.email }</p>
             <br />
