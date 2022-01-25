@@ -43,10 +43,11 @@ const ShelfPage = (props) => {
                         library={ library }
                         setLibrary={ setLibrary }
                     />
+                    
+                    <NavTop />
+                    <NavBottom />
                 </div> }
                 <HomeButton />
-                <NavTop />
-                <NavBottom />
             </div>
         )
     }
@@ -80,10 +81,11 @@ const ShelfPage = (props) => {
                         library={ library }
                         setLibrary={ setLibrary }
                     />
+                    
+                    <NavTop />
+                    <NavBottom />
                 </div> }
                 <HomeButton />
-                <NavTop />
-                <NavBottom />
             </div>
         )
     }
@@ -117,10 +119,11 @@ const ShelfPage = (props) => {
                         library={ library }
                         setLibrary={ setLibrary }
                     />
+                    
+                    <NavTop />
+                    <NavBottom />
                 </div> }
                 <HomeButton />
-                <NavTop />
-                <NavBottom />
             </div>
         )
     }

@@ -27,12 +27,12 @@ function NoteForm(props) {
 
     const EndButtons = () => {
         return (
-            <div className='endButtons'>
+            <div className='subAndCancel'>
                 <Button
                     inverted
-                    color='teal'
-                    size='large'
-                    style={{ margin: '15px 0' }}
+                    color='grey'
+                    size='big'
+                    style={{ marginRight: '15px' }}
                     onClick={ async () => {
                         await addNote()
                         setNoteShelf(!noteShelf)
@@ -45,7 +45,7 @@ function NoteForm(props) {
                 <Button
                     inverted
                     color='red'
-                    size='large'
+                    size='big'
                     onClick={ () => {
                         setNoteShelf(!noteShelf)
                         setNoteForm(!noteForm)
@@ -60,10 +60,9 @@ function NoteForm(props) {
 
     if (name === 'books') {
         return (
-            <Form className='forms' inverted style={{ position: 'fixed', border: border }}>
-                <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column' }}>
+            <Form className='forms' inverted size='huge' style={{ position: 'fixed', border: border }}>
+                <Form.Group style={{ display: 'flex', flexDirection: 'column' }} width='equal'>
                     <Form.Select
-                        label='Book'
                         options={ noAll }
                         name='title'
                         placeholder='Book'
@@ -75,9 +74,8 @@ function NoteForm(props) {
                         control={ Input }
                         type='number'
                         min={ 1 }
-                        label='Chapter'
                         name='note_chapter'
-                        placeholder='#'
+                        placeholder='Chapter'
                         onChange={ (e) => setData(prev => ({ ...prev, [ e.target.name ]: e.target.value })) }
                     />
                     <br />
@@ -85,17 +83,15 @@ function NoteForm(props) {
                         control={ Input }
                         type='number'
                         min={ 1 }
-                        label='Page'
                         name='note_page'
-                        placeholder='#'
+                        placeholder='Page'
                         onChange={ (e) => setData(prev => ({ ...prev, [ e.target.name ]: e.target.value })) }
                     />
                     <br />
                     <Form.Select
-                        label='Type of Note'
                         options={ optionsNote }
                         name='note_type'
-                        placeholder='Note'
+                        placeholder='Note Type'
                         onChange={ (e) => setData(prev => ({ ...prev, note_type: e.target.innerText })) }
                         required
                     />
@@ -103,7 +99,7 @@ function NoteForm(props) {
                 <Form.Field
                     style={{ height: '10rem' }}
                     control={ TextArea }
-                    label='Your Note'
+                    placeholder='Your Note...'
                     name='note_body'
                     onChange={ (e) => setData(prev => ({ ...prev, [ e.target.name ]: e.target.value })) }
                     required
@@ -115,10 +111,9 @@ function NoteForm(props) {
 
     if (name === 'movies') {
         return (
-            <Form className='forms' inverted style={{ position: 'fixed', border: border }}>
-                <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column' }}>
+            <Form className='forms' inverted size='huge' style={{ position: 'fixed', border: border }}>
+                <Form.Group style={{ display: 'flex', flexDirection: 'column' }} width='equal'>
                     <Form.Select
-                        label='Movie'
                         options={ noAll }
                         name='title'
                         placeholder='Movie'
@@ -130,17 +125,15 @@ function NoteForm(props) {
                         control={ Input }
                         type='number'
                         min={ 1 }
-                        label='Minute'
                         name='note_minute'
-                        placeholder='#'
+                        placeholder='Minute'
                         onChange={ (e) => setData(prev => ({ ...prev, [ e.target.name ]: e.target.value })) }
                     />
                     <br />
                     <Form.Select
-                        label='Type of Note'
                         options={ optionsNote }
                         name='note_type'
-                        placeholder='Note'
+                        placeholder='Note Type'
                         onChange={ (e) => setData(prev => ({ ...prev, note_type: e.target.innerText })) }
                         required
                     />
@@ -148,7 +141,7 @@ function NoteForm(props) {
                 <Form.Field
                     style={{ height: '10rem' }}
                     control={ TextArea }
-                    label='Your Note'
+                    placeholder='Your Note...'
                     name='note_body'
                     onChange={ (e) => setData(prev => ({ ...prev, [ e.target.name ]: e.target.value })) }
                     required
@@ -160,10 +153,9 @@ function NoteForm(props) {
 
     if (name === 'shows') {
         return (
-            <Form className='forms' inverted style={{ position: 'fixed', border: border }}>
-                <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column' }}>
+            <Form className='forms' inverted size='huge' style={{ position: 'fixed', border: border }}>
+                <Form.Group style={{ display: 'flex', flexDirection: 'column' }} width='equal'>
                     <Form.Select
-                        label='Show'
                         options={ noAll }
                         name='title'
                         placeholder='Show'
@@ -175,9 +167,8 @@ function NoteForm(props) {
                         control={ Input }
                         type='number'
                         min={ 1 }
-                        label='Episode'
                         name='note_episode'
-                        placeholder='#'
+                        placeholder='Episode'
                         onChange={ (e) => setData(prev => ({ ...prev, [ e.target.name ]: e.target.value })) }
                     />
                     <br />
@@ -185,17 +176,15 @@ function NoteForm(props) {
                         control={ Input }
                         type='number'
                         min={ 1 }
-                        label='Season'
                         name='note_season'
-                        placeholder='#'
+                        placeholder='Season'
                         onChange={ (e) => setData(prev => ({ ...prev, [ e.target.name ]: e.target.value })) }
                     />
                     <br />
                     <Form.Select
-                        label='Type of Note'
                         options={ optionsNote }
                         name='note_type'
-                        placeholder='Note'
+                        placeholder='Note Type'
                         onChange={ (e) => setData(prev => ({ ...prev, note_type: e.target.innerText })) }
                         required
                     />
@@ -203,7 +192,7 @@ function NoteForm(props) {
                 <Form.Field
                     style={{ height: '10rem' }}
                     control={ TextArea }
-                    label='Your Note'
+                    placeholder='Your Note...'
                     name='note_body'
                     onChange={ (e) => setData(prev => ({ ...prev, [ e.target.name ]: e.target.value })) }
                     required

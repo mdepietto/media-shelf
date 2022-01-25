@@ -24,7 +24,7 @@ const Sort = (props) => {
     
     return (
         <div className='selectDrop' style={{ border: `2px solid rgb(${ border })` }}>
-                <Form>
+                <Form size='large'>
                     <Form.Select
                         clearable
                         options={ options }
@@ -37,6 +37,7 @@ const Sort = (props) => {
                     icon
                     inverted
                     circular
+                    style={{ margin: '0 0 0 15px' }}
                     size='huge'
                     color={ button }
                     onClick={ () => {

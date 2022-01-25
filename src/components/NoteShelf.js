@@ -29,10 +29,8 @@ const NoteShelf = (props) => {
     const EditButton = (props) => {
         const { id, body } = props
         return (
-            <Button
-                inverted
-                color='grey'
-                size='big'
+            <Button inverted color='grey' size='big'
+                style={{ marginRight: '15px' }}
                 onClick={ () => {
                     setId(id)
                     setNewNote(body)
@@ -60,14 +58,18 @@ const NoteShelf = (props) => {
             library.map(note => {
                 return (
                     <div className='shelf' key={ note.id } style={{ border: '2px solid rgb(202, 237, 114)' }}>
-                        <p>{ note.note_date }</p>
-                        <p>Type: <i>{ note.note_type }</i></p>
-                        <p>Title: <i>{ note.title }</i></p>
-                        <p>Chapter: { note.note_chapter }</p>
-                        <p>Page: { note.note_page }</p>
+                            <h4>{ note.note_date }</h4>
+                        <ul>
+                            <li>Type:<p>{ note.note_type }</p></li>
+                            <li>Title:<p>{ note.title }</p></li>
+                            <li>Chapter:<p>{ note.note_chapter }</p></li>
+                            <li>Page:<p>{ note.note_page }</p></li>
+                        </ul>
                         <p>"{ note.note_body }"</p>
-                        <EditButton id={ note.id } body={ note.note_body } />
-                        <DeleteButton api='Book_Notes' note={ note.id } />
+                        <div>
+                            <EditButton id={ note.id } body={ note.note_body } />
+                            <DeleteButton api='Book_Notes' note={ note.id } />
+                        </div>
                     </div>
                 )
             })
@@ -79,13 +81,17 @@ const NoteShelf = (props) => {
             library.map(note => {
                 return (
                     <div className='shelf' key={ note.id } style={{ border: '2px solid rgb(235, 229, 52)' }}>
-                        <p>{ note.note_date }</p>
-                        <p>Type: <i>{ note.note_type }</i></p>
-                        <p>Title: <i>{ note.title }</i></p>
-                        <p>Minute: { note.note_minute }</p>
+                        <h4>{ note.note_date }</h4>
+                        <ul>
+                            <li>Type:<p>{ note.note_type }</p></li>
+                            <li>Title:<p>{ note.title }</p></li>
+                            <li>Minute:<p>{ note.note_minute }</p></li>
+                        </ul>
                         <p>"{ note.note_body }"</p>
-                        <EditButton id={ note.id } body={ note.note_body } />
-                        <DeleteButton api='Movie_Notes' note={ note.id } />
+                        <div>
+                            <EditButton id={ note.id } body={ note.note_body } />
+                            <DeleteButton api='Movie_Notes' note={ note.id } />
+                        </div>
                     </div>
                 )
             })
@@ -97,14 +103,18 @@ const NoteShelf = (props) => {
             library.map(note => {
                 return (
                     <div className='shelf' key={ note.id } style={{ border: '2px solid rgb(242, 129, 7)' }}>
-                        <p>{ note.note_date }</p>
-                        <p>Type: <i>{ note.note_type }</i></p>
-                        <p>Title: <i>{ note.title }</i></p>
-                        <p>Season: { note.note_season }</p>
-                        <p>Episode: { note.note_episode }</p>
+                        <h4>{ note.note_date }</h4>
+                        <ul>
+                            <li>Type:<p>{ note.note_type }</p></li>
+                            <li>Title:<p>{ note.title }</p></li>
+                            <li>Season:<p>{ note.note_season }</p></li>
+                            <li>Episode:<p>{ note.note_episode }</p></li>
+                        </ul>
                         <p>"{ note.note_body }"</p>
-                        <EditButton id={ note.id } body={ note.note_body } />
-                        <DeleteButton api='Show_Notes' note={ note.id } />
+                        <div>
+                            <EditButton id={ note.id } body={ note.note_body } />
+                            <DeleteButton api='Show_Notes' note={ note.id } />
+                        </div>
                     </div>
                 )
             })

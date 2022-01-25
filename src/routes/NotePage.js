@@ -81,9 +81,10 @@ const NotePage = (props) => {
 
     const EditButtons = () => {
         return (
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center'}}>
                 <Button
                     inverted
+                    style={{ marginRight: '15px' }}
                     color='grey'
                     size='big'
                     onClick={ editMedia }
@@ -107,6 +108,7 @@ const NotePage = (props) => {
                 { editWindow && 
                     <div className='forms' style={{ position: 'fixed', border: '2px solid rgb(202, 237, 114)' }}>
                         <EditWindow newNote={ newNote } setNewNote={ setNewNote } />
+                        <br />
                         <EditButtons />
                     </div>
                 }
@@ -150,10 +152,12 @@ const NotePage = (props) => {
                         setId={ setId }
                         setNewNote={ setNewNote }
                     />
+
+                    <NavTop />
+                    <NavBottom />
                 </div> }
                 <HomeButton />
-                <NavTop />
-                <NavBottom />
+
             </div>
         )
     }
@@ -209,11 +213,12 @@ const NotePage = (props) => {
                         noteShelf={ noteShelf }
                         setNoteShelf={ setNoteShelf }
                         setNewNote={ setNewNote }
-                    /> 
+                    />
+
+                    <NavTop />
+                    <NavBottom />
                 </div> }
                 <HomeButton />
-                <NavTop />
-                <NavBottom />
             </div>
         )
     }
@@ -271,10 +276,11 @@ const NotePage = (props) => {
                         setNoteShelf={ setNoteShelf }
                         setNewNote={ setNewNote }
                     />
+
+                    <NavTop />
+                    <NavBottom />
                 </div> }
                 <HomeButton />
-                <NavTop />
-                <NavBottom />
             </div>
         )
     }

@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 
 import ScreenSaver from './components/ScreenSaver'
 import Profile from './auth/Profile'
-import LogoutButton from './auth/LogoutButton';
 
 const HomePage = () => {
 
@@ -65,15 +64,13 @@ const HomePage = () => {
                 </Button>
                 <br /><br />
                 <Link to='/books'><NavButton color='olive' visible='Books' hidden={ bookCount } /></Link>
-                <Link to='/bookNotes'><NavButton color='olive' visible='Book Notes' hidden={ bookNoteCount } /></Link>
+                <Link to='/bookNotes'><NavButton color='olive' visible='Notes' hidden={ bookNoteCount } /></Link>
                 <br /><br />
                 <Link to='/movies'><NavButton color='yellow' visible='Movies' hidden={ movieCount } /></Link>
-                <Link to='/movieNotes'><NavButton color='yellow' visible='Movie Notes' hidden={ movieNoteCount } /></Link>
+                <Link to='/movieNotes'><NavButton color='yellow' visible='Notes' hidden={ movieNoteCount } /></Link>
                 <br /><br />
                 <Link to='/shows'><NavButton color='orange' visible='Shows' hidden={ showCount } /></Link>
-                <Link to='/showNotes'><NavButton color='orange' visible='Show Notes' hidden={ showNoteCount } /></Link>
-                <br /><br />
-                <LogoutButton />
+                <Link to='/showNotes'><NavButton color='orange' visible='Notes' hidden={ showNoteCount } /></Link>
             </div>
         </div>
     )

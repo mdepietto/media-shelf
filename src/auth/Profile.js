@@ -1,25 +1,25 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react'
+import LogoutButton from './LogoutButton'
 
 const Profile = (props) => {
     const { user } = useAuth0()
     return (
         <div
-            className='ScreenSaver'
+            className='profile'
             style={{ border: '2px solid rgb(89, 245, 247)' }}
         >
-            {/* <img
-                src={ user.picture }
-                alt={ user.name }
-                style={{ marginBottom: '15px' }}
-            /> */}
-            <p style={{ marginBottom: '.5rem' }}>Name: { user.name }</p>
-            <p style={{ marginBottom: '.5rem' }}>Email: { user.email }</p>
+            <div>Name:<p>{ user.name }</p></div>
+            <div>Email:<p>{ user.email }</p></div>
             <br />
-            <p style={{ marginBottom: '.5rem' }}>You have:</p>
-            <p style={{ marginBottom: '.5rem' }}>{ props.bookCount } books / { props.bookNoteCount } notes</p>
-            <p style={{ marginBottom: '.5rem' }}>{ props.movieCount } movies / { props.movieNoteCount } notes</p>
-            <p style={{ marginBottom: '.5rem' }}>{ props.showCount } shows / { props.showNoteCount } notes</p>
+            <h3>Library:</h3>
+            <ul>
+                <li>{ props.bookCount } books / { props.bookNoteCount } notes</li>
+                <li>{ props.movieCount } movies / { props.movieNoteCount } notes</li>
+                <li>{ props.showCount } shows / { props.showNoteCount } notes</li>
+            </ul>
+            <br />
+            <LogoutButton />
         </div>
     )
 }

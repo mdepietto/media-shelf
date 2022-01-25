@@ -44,7 +44,7 @@ const Dropdown = (props) => {
     
     const onSort = async (e) => {
         const { innerText } = e.target
-        if (!innerText) newLib(library.sort((a, b) => (a.id > b.id) ? 1 : -1))
+        if (!innerText) newLib(library.sort((a, b) => (a.id < b.id) ? 1 : -1))
         if (innerText === 'Chapter') newLib(library.sort((a, b) => (a.note_chapter < b.note_chapter) ? 1 : -1))
         if (innerText === 'Minute') newLib(library.sort((a, b) => (a.note_minute < b.note_minute) ? 1 : -1))
         if (innerText === 'Season') newLib(library.sort((a, b) => (a.note_season > b.note_season) ? 1 : -1))
@@ -75,30 +75,29 @@ const Dropdown = (props) => {
         
             { loading && <Loader color={ `rgb(${ border })` } /> }
     
-            { noContent && <NoContent style={{ border: `2px solid rgb(${ border })` }} /> }
+            { noContent && <NoContent /> }
 
-            <div style={{ flexDirection: 'column', paddingRight: '20px' }}>
-                <Form>
-                    <Form.Select
-                        clearable
-                        options={ sortOptions }
-                        name='sortNotes'
-                        placeholder='Sort...'
-                        onChange={ onSort }
-                    />
-                    <Form.Select
-                        clearable
-                        options={ titles }
-                        name={ name }
-                        placeholder='Title...'
-                        onChange={ async (e) => getNotesByTitle(e.target.innerText)}
-                    />
-                </Form>
-            </div>
+            <Form size='large'>
+                <Form.Select
+                    clearable
+                    options={ sortOptions }
+                    name='sortNotes'
+                    placeholder='Sort...'
+                    onChange={ onSort }
+                />
+                <Form.Select
+                    clearable
+                    options={ titles }
+                    name={ name }
+                    placeholder='Title...'
+                    onChange={ async (e) => getNotesByTitle(e.target.innerText) }
+                />
+            </Form>
             <Button
                 icon
                 inverted
                 circular
+                style={{ margin: '0 0 0 15px' }}
                 size='huge'
                 color={ button }
                 onClick={ () => {

@@ -7,14 +7,11 @@ const HomeButton = () => {
         <Link to='/' className='homeButton'>
             <Button
                 circular
-                size='huge'
+                icon
+                size='massive'
                 color='purple'
-                animated='fade'
             >
-                <Button.Content visible>Home</Button.Content>
-                <Button.Content hidden>
-                    <Icon name='home' />
-                </Button.Content>
+                <Icon name='home' />
             </Button>
         </Link>
     )

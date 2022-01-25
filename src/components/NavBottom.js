@@ -28,6 +28,7 @@ const NavBottom = () => {
         <div className='NavTB'>
             <Button
                 animated='vertical'
+                inverted
                 circular
                 size='huge'
                 color='blue'

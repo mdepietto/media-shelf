@@ -78,12 +78,13 @@ const Shelf = (props) => {
                 { library.map(book => {
                     return (
                         <div className='shelf' key={ book.id } style={{ border: '2px solid rgb(202, 237, 114)' }}>
-                            <h3 className='shelfTitles'>{ library.indexOf(book) + 1 }:   { book.title }</h3>
-                            <p><i>Author:</i> { book.author }</p>
-                            <p><i>Chapters:</i> { book.chapters }</p>
-                            <p><i>Pages:</i> { book.pages }</p>
-                            <p><i>Rating:</i> { book.rating }</p>
-                            <br />
+                            <h3>{ library.indexOf(book) + 1 }: { book.title }</h3>
+                            <ul>
+                                <li>Author:<p>{ book.author }</p></li>
+                                <li>Chapters:<p>{ book.chapters }</p></li>
+                                <li>Pages:<p>{ book.pages }</p></li>
+                                <li>Rating:<p>{ book.rating }</p></li>
+                            </ul>
                             <DeleteButton api='Books' media={ book.id } />
                         </div>
                     )
@@ -99,11 +100,12 @@ const Shelf = (props) => {
                 { library.map(movie => {
                     return (
                         <div className='shelf' key={ movie.id } style={{ border: '2px solid rgb(235, 229, 52)' }}>
-                            <h1 className='shelfTitles'>{ library.indexOf(movie) + 1 }:   { movie.title }</h1>
-                            <p><i>Director:</i> { movie.director }</p>
-                            <p><i>Minutes:</i> { movie.minutes }</p>
-                            <p><i>Rating:</i> { movie.rating }</p>
-                            <br />
+                            <h3>{ library.indexOf(movie) + 1 }:   { movie.title }</h3>
+                            <ul>
+                                <li>Director:<p>{ movie.director }</p></li>
+                                <li>Minutes:<p>{ movie.minutes }</p></li>
+                                <li>Rating:<p>{ movie.rating }</p></li>
+                            </ul>
                             <DeleteButton api='Movies' media={ movie.id } />
                         </div>
                     )
@@ -119,10 +121,11 @@ const Shelf = (props) => {
                 { library.map(show => {
                     return (
                         <div className='shelf' key={ show.id } style={{ border: '2px solid rgb(242, 129, 7)' }}>
-                            <h3 className='shelfTitles'>{ library.indexOf(show) + 1 }:   { show.title }</h3>
-                            <p><i>Seasons:</i> { show.seasons }</p>
-                            <p><i>Rating:</i> { show.rating }</p>
-                            <br />
+                            <h3>{ library.indexOf(show) + 1 }:   { show.title }</h3>
+                            <ul>
+                                <li>Seasons:<p>{ show.seasons }</p></li>
+                                <li>Rating:<p>{ show.rating }</p></li>
+                            </ul>
                             <DeleteButton api='Shows' media={ show.id } />
                         </div>
                     )

@@ -30,11 +30,12 @@ const ShelfForm = (props) => {
 
     const EndButtons = () => {
         return (
-            <div className='endButtons'>
+            <div className='subAndCancel'>
                 <Button
                     inverted
-                    size='large'
-                    color='teal'
+                    size='big'
+                    color='grey'
+                    style={{ marginRight: '15px' }}
                     onClick={ async () => {
                         await addMedia()
                         setShelf(!shelf)
@@ -46,7 +47,7 @@ const ShelfForm = (props) => {
                 </Button>
                 <Button
                     inverted
-                    size='large'
+                    size='big'
                     color='red'
                     onClick={ () => {
                         setShelf(!shelf)
@@ -62,23 +63,20 @@ const ShelfForm = (props) => {
 
     if (name === 'books') {
         return (
-            <Form className='forms' inverted style={{ position: 'fixed', border: border }}>
-                <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
+            <Form className='forms' size='huge' inverted style={{ position: 'fixed', border: border }}>
+                <Form.Group style={{ display: 'flex', flexDirection: 'column' }} width='equal'>
                     <Form.Field
                         required
                         control={ Input }
                         type='text'
-                        label='Title'
                         name='title'
                         placeholder='Title'
                         onChange={ handleChange }
                     />
                     <br />
                     <Form.Field
-                        required
                         control={ Input }
                         type='text'
-                        label='Author'
                         name='author'
                         placeholder='Author'
                         onChange={ handleChange }
@@ -88,9 +86,8 @@ const ShelfForm = (props) => {
                         control={ Input }
                         min={ 1 }
                         type='number'
-                        label='Chapters'
                         name='chapters'
-                        placeholder='#'
+                        placeholder='Chapters'
                         onChange={ handleChange }
                     />
                     <br />
@@ -98,22 +95,24 @@ const ShelfForm = (props) => {
                         control={ Input }
                         min={ 1 }
                         type='number'
-                        label='Pages'
                         name='pages'
-                        placeholder='#'
+                        placeholder='Pages'
                         onChange={ handleChange }
                     />
                 </Form.Group>
-                <Rating
-                    icon='heart' 
-                    size='massive' 
-                    name='rating'
-                    defaultRating={ 1 } 
-                    maxRating={ 5 } 
-                    clearable
-                    onRate={ handleChange }
-                />
-                <br /><br />
+                <div className='rating' style={{ marginTop: '20px' }}>
+                    <p>Rating</p>
+                    <Rating
+                        icon='heart' 
+                        size='massive' 
+                        name='rating'
+                        defaultRating={ 1 } 
+                        maxRating={ 5 } 
+                        clearable
+                        onRate={ handleChange }
+                    />
+                </div>
+                <br />
                 <EndButtons />
             </Form>
         )
@@ -121,23 +120,20 @@ const ShelfForm = (props) => {
 
     if (name === 'movies') {
         return (
-            <Form className='forms'  inverted style={{ position: 'fixed', border: border }}>
-                <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
+            <Form className='forms' inverted size='huge' style={{ position: 'fixed', border: border, fontFamily: 'Montagu Slab' }}>
+                <Form.Group style={{ display: 'flex', flexDirection: 'column' }} width='equal'>
                     <Form.Field
                         required
                         control={ Input }
                         type='text'
-                        label='Title'
                         name='title'
                         placeholder='Title'
                         onChange={ handleChange }
                     />
                     <br />
                     <Form.Field
-                        required
                         control={ Input }
                         type='text'
-                        label='Director'
                         name='director'
                         placeholder='Director'
                         onChange={ handleChange }
@@ -147,22 +143,24 @@ const ShelfForm = (props) => {
                         control={ Input }
                         type='number'
                         min={ 1 }
-                        label='Minutes'
                         name='minutes'
-                        placeholder='#'
+                        placeholder='Minutes'
                         onChange={ handleChange }
                     />
                 </Form.Group>
-                <Rating 
-                    icon='heart'
-                    size='massive'
-                    name='rating'
-                    defaultRating={ 1 }
-                    maxRating={ 5 }
-                    clearable
-                    onRate={ handleChange }
-                />
-                <br /><br />
+                <div className='rating' style={{ marginTop: '20px' }}>
+                    <p>Rating</p>
+                    <Rating
+                        icon='heart' 
+                        size='massive' 
+                        name='rating'
+                        defaultRating={ 1 } 
+                        maxRating={ 5 } 
+                        clearable
+                        onRate={ handleChange }
+                    />
+                </div>
+                <br />
                 <EndButtons />
             </Form>
         )
@@ -170,13 +168,12 @@ const ShelfForm = (props) => {
 
     if (name === 'shows') {
         return (
-            <Form className='forms'  inverted style={{ position: 'fixed', border: border }}>
-                <Form.Group width='equal' style={{ display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
+            <Form className='forms' inverted size='huge' style={{ position: 'fixed', border: border }}>
+                <Form.Group style={{ display: 'flex', flexDirection: 'column' }} width='equal'>
                     <Form.Field
                         required
                         control={ Input }
                         type='text'
-                        label='Title'
                         name='title'
                         placeholder='Title'
                         onChange={ handleChange }
@@ -186,22 +183,24 @@ const ShelfForm = (props) => {
                         control={ Input }
                         type='number'
                         min={ 1 }
-                        label='Seasons'
                         name='seasons'
-                        placeholder='#'
+                        placeholder='Seasons'
                         onChange={ handleChange }
                     />
                 </Form.Group>
-                <Rating 
-                    icon='heart'
-                    size='massive'
-                    name='rating'
-                    defaultRating={ 1 }
-                    maxRating={ 5 }
-                    clearable
-                    onRate={ handleChange }
-                />
-                <br /><br />
+                <div className='rating' style={{ marginTop: '20px' }}>
+                    <p>Rating</p>
+                    <Rating
+                        icon='heart' 
+                        size='massive' 
+                        name='rating'
+                        defaultRating={ 1 } 
+                        maxRating={ 5 } 
+                        clearable
+                        onRate={ handleChange }
+                    />
+                </div>
+                <br />
                 <EndButtons />
             </Form>
         )

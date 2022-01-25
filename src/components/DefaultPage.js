@@ -4,9 +4,9 @@ import LoginButton from '../auth/LoginButton'
 
 const DefaultPage = () => {
     return (
-        <div className='ScreenSaver'>
+        <div className='publicHome'>
             <p><u>mediaShelf</u></p>
-            <p>A note-taking app for:</p>
+            <h4>a note-taking app for:</h4>
             <Button.Group>
                 <Button inverted animated='fade' color='teal' size='massive' style={{ cursor: 'default' }}>
                     <Button.Content visible>Books</Button.Content>
