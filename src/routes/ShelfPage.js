@@ -37,6 +37,8 @@ const ShelfPage = (props) => {
                         button='olive'
                         shelf={ shelf }
                         setShelf={ setShelf }
+                        notes={ 'Book_Notes' }
+                        link={ '/bookNotes' }
                     />
                     <Shelf
                         name='books'
@@ -75,6 +77,8 @@ const ShelfPage = (props) => {
                         button='yellow'
                         shelf={ shelf }
                         setShelf={ setShelf }
+                        notes={ 'Movie_Notes' }
+                        link={ '/movieNotes' }
                     />
                     <Shelf
                         name='movies'
@@ -113,6 +117,8 @@ const ShelfPage = (props) => {
                         button='orange'
                         shelf={ shelf }
                         setShelf={ setShelf }
+                        notes={ 'Show_Notes' }
+                        link={ '/showNotes' }
                     />
                     <Shelf
                         name='shows'

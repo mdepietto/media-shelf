@@ -64,13 +64,10 @@ const HomePage = () => {
                 </Button>
                 <br /><br />
                 <Link to='/books'><NavButton color='olive' visible='Books' hidden={ bookCount } /></Link>
-                <Link to='/bookNotes'><NavButton color='olive' visible='Notes' hidden={ bookNoteCount } /></Link>
-                <br /><br />
+                <br />
                 <Link to='/movies'><NavButton color='yellow' visible='Movies' hidden={ movieCount } /></Link>
-                <Link to='/movieNotes'><NavButton color='yellow' visible='Notes' hidden={ movieNoteCount } /></Link>
-                <br /><br />
+                <br />
                 <Link to='/shows'><NavButton color='orange' visible='Shows' hidden={ showCount } /></Link>
-                <Link to='/showNotes'><NavButton color='orange' visible='Notes' hidden={ showNoteCount } /></Link>
             </div>
         </div>
     )

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Form, Button, Icon } from 'semantic-ui-react'
 import { useAuth0 } from '@auth0/auth0-react'
+import { Link } from 'react-router-dom'
 
 import Loader from './Loader'
 import NoContent from '../components/NoContent'
@@ -20,12 +21,16 @@ const Dropdown = (props) => {
         setNoteForm,
         noteShelf,
         setNoteShelf,
-        button
+        button,
+        link,
+        media
     } = props
 
     const [ loading, setLoading ] = useState(false)
     
     const [ noContent, setNoContent ] = useState(false)
+
+    const [ count, setCount ] = useState(0)
 
     const userName = useAuth0().user
     
@@ -33,6 +38,17 @@ const Dropdown = (props) => {
 
     if (name === 'movies') sortOptions[1].text = 'Minute'
     if (name === 'shows') sortOptions[1].text = 'Season'
+
+    const getCount = async (api, count) => {
+        const newData = await fetch('/apiMedia', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ api, userName })
+        })
+        .then(res => res.json())
+        count(newData.length)
+    }
+    getCount(media, setCount)
 
     const newLib = (newData) => {
         setLibrary([])
@@ -77,6 +93,12 @@ const Dropdown = (props) => {
     
             { noContent && <NoContent /> }
 
+            <Link to={ link } className='subButton'>
+                <Button inverted circular size='huge' color={ button } animated='fade'>
+                    <Button.Content visible>{ media }</Button.Content>
+                    <Button.Content hidden>{ count }</Button.Content>
+                </Button>
+            </Link>
             <Form size='large'>
                 <Form.Select
                     clearable

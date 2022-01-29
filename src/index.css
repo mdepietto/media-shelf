@@ -37,7 +37,7 @@ html body{
 }
 
 .nav {
-  width: 18%;
+  width: 15%;
   position: fixed;
   top: 50%;
   left: 5%;
@@ -158,6 +158,10 @@ html body{
   padding-left: 15px;
 }
 
+.subButton {
+  margin-right: 15px;
+}
+
 .noContent {
   position: fixed;
   display: flex;
@@ -189,7 +193,7 @@ html body{
   background-color: rgba(27, 24, 24, 0.8);
   color:rgb(238, 238, 238);
   margin: 20px auto;
-  width: 39%;
+  width: 48%;
   padding: 12px 0;
   border-radius: 10px;
   display: flex;
@@ -280,10 +284,6 @@ textarea {
 }
 
 @media screen and (max-width: 1440px) {
-  .selectDrop {
-    width: 50%;
-  }
-
   .rating p {
     padding: 12px 0 12px 5px;
   }
@@ -298,9 +298,16 @@ textarea {
   .publicHome h4 {
     font-size: 38px;
   }
+
+  .selectDrop {
+    width: 62%;
+  }
 }
 
 @media screen and (max-width: 1024px) {
+  .nav {
+    width: 18%;
+  }
   .publicHome {
     width: 60%;
   }
@@ -344,7 +351,7 @@ textarea {
   }
 
   .selectDrop { 
-    width: 45%;
+    width: 65%;
     padding: 15px 0;
   }
   .ui.form .field>.selection.dropdown {
@@ -428,7 +435,8 @@ textarea {
     padding: 15px 10px;
   }
   .nav .ui.inverted.button {
-    font-size: 18px !important;
+    font-size: 22px !important;
+    margin: 0 15px;
   }
   .ui.button {
     font-size: 20px !important;
@@ -466,7 +474,7 @@ textarea {
   }
 
   .selectDrop { 
-    width: 52%;
+    width: 72%;
     padding: 20px 0;
   }
   .ui.form .field>.selection.dropdown {
@@ -558,10 +566,9 @@ textarea {
     padding: 10px 10px 0 10px;
   }
   .nav .ui.inverted.button {
-    font-size: 10px !important;
-  }
-  .nav .ui.button.teal.inverted {
-    height: 26px;
+    font-size: 13px !important;
+    height: 33px;
+    margin: 0 5px;
   }
 
   .screenSaver {
@@ -606,7 +613,7 @@ textarea {
   }
 
   .selectDrop { 
-    width: 66%;
+    width: 86%;
     padding: 10px 0;
   }
   .selectDrop .ui.inverted.button {
@@ -651,6 +658,7 @@ textarea {
     font-size: 12px !important;
   }
   textarea {
+    margin-top: 20px !important;
     font-size: 13px !important;
   }
 
@@ -666,5 +674,3 @@ textarea {
     font-size: 15px !important;
   }
 }
-
-/* 425px NoteForm spacing, handle long form inputs, enlarge navbar buttons */

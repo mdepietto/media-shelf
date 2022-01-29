@@ -140,6 +140,8 @@ const NotePage = (props) => {
                         noteShelf={ noteShelf }
                         setNoteShelf={ setNoteShelf }
                         button='olive'
+                        link='/books'
+                        media='Books'
                     />
 
                     <NoteShelf
@@ -201,6 +203,8 @@ const NotePage = (props) => {
                         noteShelf={ noteShelf }
                         setNoteShelf={ setNoteShelf }
                         button='yellow'
+                        link='/movies'
+                        media='Movies'
                     />
                     <NoteShelf
                         name='movies'
@@ -263,6 +267,8 @@ const NotePage = (props) => {
                         noteShelf={ noteShelf }
                         setNoteShelf={ setNoteShelf }
                         button='orange'
+                        link='/shows'
+                        media='Shows'
                     />
                     <NoteShelf
                         name='shows'
