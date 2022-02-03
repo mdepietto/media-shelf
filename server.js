@@ -4,11 +4,8 @@ const mysql = require('mysql')
 const bodyParser = require('body-parser')
 const { con } = require('./db')
 const db = mysql.createConnection(con)
-// require('dotenv').config()
-
-// ENV FILE IS THE DEVIL
-
-const PORT = 6500
+require('dotenv').config()
+const PORT = process.env.PORT || 6500
 
 app.use(express.json())
 app.use(bodyParser.json())
