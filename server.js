@@ -4,7 +4,7 @@ const mysql = require('mysql')
 const bodyParser = require('body-parser')
 const { con } = require('./db')
 const db = mysql.createConnection(con)
-const PORT = 6500
+const PORT = process.env.PORT || 6500
 
 app.use(express.json())
 app.use(bodyParser.json())
