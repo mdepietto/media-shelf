@@ -9,6 +9,10 @@ const PORT = process.env.PORT || 6500
 app.use(express.json())
 app.use(bodyParser.json())
 
+app.get('/', (req, res) => {
+    res.send('hello')
+})
+
 app.post('/apiMedia', (req, res) => {
     var { api, userName } = req.body
     db.query(`SELECT * FROM ${ api } WHERE name = ?`, [ userName.name ], (err, rows) => {
