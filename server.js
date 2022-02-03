@@ -4,14 +4,10 @@ const mysql = require('mysql')
 const bodyParser = require('body-parser')
 const { con } = require('./db')
 const db = mysql.createConnection(con)
-const PORT = process.env.PORT || 6500
+const PORT = 6500
 
 app.use(express.json())
 app.use(bodyParser.json())
-
-app.get('/', (req, res) => {
-    res.send('hello')
-})
 
 app.post('/apiMedia', (req, res) => {
     var { api, userName } = req.body
@@ -97,6 +93,6 @@ app.post('/addShowNote', (req, res) => {
     res.send(console.log('Note saved to database...'))
 })
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT || PORT, () => {
     console.log(`Listening on port ${ PORT }`)
 })
